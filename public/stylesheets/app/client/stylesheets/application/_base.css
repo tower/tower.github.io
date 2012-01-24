@@ -1,0 +1,22 @@
+html,
+body {
+  background: $tan-1;
+  margin: 0px !important;
+  padding: 0px !important;
+  width: 100%;
+  min-height: 100%;
+}
+.frame {
+  width: 960px;
+  height: auto;
+  margin: 0 auto;
+  include: clearfix;
+}
+#content img {
+  include: shadow(1px, 1px, 2px, #d9d9d9);
+  padding: 7px;
+  background: #fff;
+  border: 1px solid $tan-1;
+  margin: 0 0;
+  display: inline-block;
+}

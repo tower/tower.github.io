@@ -1,0 +1,35 @@
+{
+  "name": "design.io-example",
+  "version": "0.1.0",
+  "description": "Example usage for design.io",
+  "homepage": "http://github.com/viatropos/design.io",
+  "main": "lib/index.js",
+  "author": "Lance Pollard <lancejpollard@gmail.com>",
+  "keywords": [
+    "design",
+    "development",
+    "node"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mths.be/mit"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/viatropos/design.io/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viatropos/design.io.git"
+  },
+  "engines": { "node": ">= 0.4.0" },
+  "dependencies": {
+    "connect":            ">= 1.7.2",
+    "request":            ">= 2.1.1",
+    "express":            ">= 2.5.0",
+    "stylus":             ">= 0.19.0",
+    "jade":               ">= 0.16.4",
+    "design.io":          ">= 0.1.0"
+  }
+}

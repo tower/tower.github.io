@@ -1,0 +1,77 @@
+#paginator {
+  display: block;
+  @include clearfix;
+  padding-top: 21px;
+  @include rich-border;
+  display: none;
+  li {
+    list-style-type: none;
+    
+    a {
+      font-size: 20px;
+      color: $grey-2;
+    }
+  }
+  #prev {
+    float: left;
+  }
+  #next {
+    float: right;
+  }
+}
+
+#footer {
+  height: 55px;
+  background: $black-1;
+  @include clearfix;
+  clear: both;
+  position: relative;
+  .frame {
+    top: 10px;
+    position: relative;
+    padding: 0px 0px 0px 0px;
+  }
+  cite {
+    top: 13px;
+    display: block;
+    float: left;
+    position: relative;
+  }
+  .networks {
+    display: inline;
+    position: relative;
+    float: right;
+    list-style-type: none;
+    @include clearfix;
+    text-align: right;
+    margin: 0px;
+    padding: 0px;
+    float: right;
+    li {
+      display: inline-block;
+      margin: 1px 0px -11px 10px;
+      width: 31px;
+      height: 31px;
+      a {
+        display: block;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+  .facebook-network {
+    background: url(/images/social-icons/small/facebook.png) 0 0 no-repeat;
+  }
+  .github-network {
+    background: url(/images/social-icons/small/github.png) 0 0 no-repeat;
+  }
+  .linkedin-network {
+    background: url(/images/social-icons/small/linkedIn.png) 0 0 no-repeat;
+  }
+  .twitter-network {
+    background: url(/images/social-icons/small/twitter.png) 0 0 no-repeat;
+  }
+  .google-network {
+    background: url(/images/social-icons/small/google.png) 0 0 no-repeat;
+  }
+}

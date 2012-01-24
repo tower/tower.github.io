@@ -1,0 +1,75 @@
+form {
+  position: relative;
+  .legend {
+    @include rich-border;
+    width: $frame-width;
+    padding: 10px 0px 26px 0px;
+    font-size: 24px;
+    font-family: Helvetica;
+    font-weight: bold;
+    //text-transform: uppercase;
+    margin-bottom: 20px;
+    span {
+      //margin-left: 200px;
+      //text-align: right;
+      display: inline-block;
+    }
+  }
+  .fieldset {
+    margin-bottom: 20px;
+    width: $frame-width;
+    position: relative;
+  }
+  .field-list, .value-list {
+    position: relative;
+    width: $frame-width;
+    @include clearfix;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .value, .values {
+    list-style-type: none;
+  }
+  .value {
+    margin-left: 190px;
+    padding: 0px 10px;
+    span {
+      display: inline-block;
+      width: 280px;
+    }
+  }
+  .field {
+    position: relative;
+    @include clearfix;
+    list-style-type: none;
+    //width: 348px;
+    .label {
+      display: inline-block;
+      //width: 100px;
+      //text-align: left;
+      //float: right;
+      //margin-left: 10px;
+      text-align: left;
+      margin-left: 10px;
+      float: right;
+      padding: 6px 0px;
+      width: 670px;
+    }
+    .input {
+      float: left;
+      width: 260px;
+      margin: 0px 0px 0px 0px;
+      border: 1px solid $tan-1;
+      font-size: 14px;
+      padding: 6px 9px;
+      // 480
+    }
+    .text {
+      height: 100px;
+      resize: none;
+    }
+  }
+
+}
