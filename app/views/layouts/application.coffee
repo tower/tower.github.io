@@ -1255,7 +1255,7 @@ html ->
           <pre>cake assets:publish
           </pre>
           </div>
-        
+
 
           <h2>Test, Develop, Minify</h2>
 
@@ -1285,4 +1285,3 @@ html ->
           """
         
     footer id: "footer", role: "contentinfo", ->
-      
