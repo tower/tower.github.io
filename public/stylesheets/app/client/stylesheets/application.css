@@ -1043,7 +1043,6 @@ a {
 }
 body {
   font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-family: 'Esteban', serif;
   font-family: 'Forum', cursive;
   background: #eaecea;
   background: #79c5ce url("/images/noise.png");
@@ -1053,8 +1052,6 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: 'Antic', sans-serif;
-  font-family: 'Gruppo', cursive;
   font-family: 'Josefin Sans', sans-serif;
 }
 h2 {
@@ -1123,15 +1120,15 @@ h3 {
 }
 #body #background {
   position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
   background: #fff;
-  filter: alpha(opacity=0.9);
-  -khtml-opacity: 0.009000000000000001;
-  -moz-opacity: 0.009000000000000001;
-  opacity: 0.009000000000000001;
+  filter: alpha(opacity=90);
+  -khtml-opacity: 0.9;
+  -moz-opacity: 0.9;
+  opacity: 0.9;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
 }
 #body #content {
   position: relative;
