@@ -43,10 +43,6 @@ h1 {
   letter-spacing: 0.04em;
   font-size: 55px;
   color: #383838;
-  text-shadow: rgba(255,255,255,0.80) 0 1px 0;
-}
-h2 {
-  text-shadow: rgba(255,255,255,0.80) 0 1px 0;
 }
 h2,
 h3 {
@@ -1117,6 +1113,16 @@ h3 {
   width: auto;
   max-width: 610px;
   padding: 20px;
+}
+#body h1 {
+  background: #ec3d2f;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-left: -40px;
+  margin-right: -40px;
+  color: #fff;
+  font-size: 40px;
 }
 #body #background {
   position: absolute;
