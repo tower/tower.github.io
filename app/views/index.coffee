@@ -21,12 +21,29 @@ i = 20
 while i-- > 0
   text """
 <blockquote>
-<p>Full Stack Web Framework for Node.js and the Browser.  Minified &amp; Gzipped: 15.7kb</p>
+<p>Full Stack Web Framework for Node.js and the Browser.</p>
 </blockquote>
+<p>Built on top of Node's Connect and Express, modeled after Ruby on Rails.  Built for the client and server from the ground up.</p>
+
+<p>Includes a database-agnostic ORM with browser (memory) and MongoDB support, modeled after ActiveRecord and Mongoid for Ruby.  Includes a controller architecture that works the same on both the client and server, modeled after Rails.  The routing API is pretty much exactly like Rails 3's.  Templates work on client and server as well (and you can swap in any template engine no problem).  Includes asset pipeline that works just like Rails 3's - minifies and gzips assets with an md5-hashed name for optimal browser caching, only if you so desire.  And it includes a watcher that automatically injects javascripts and stylesheets into the browser as you develop.  It solves a lot of our problems, hope it solves yours too.  If not, let me know!</p>
+
+<p>More docs in the docs section on <a href="http://towerjs.org">towerjs.org</a>.  Docs are a work in progress.</p>
+
+<h2>Install</h2>
+
+<div class="highlight">
+<pre>npm install tower -g
+</pre>
+</div>
+
+
 <h2>Generator</h2>
 
 <div class="highlight">
-<pre>tower new my-app
+<pre>tower new app
+<span class="nb">cd </span>app
+tower generate scaffold Post title:string body:text belongsTo:user
+tower generate scaffold User email:string firstName:string lastName:string hasMany:posts
 </pre>
 </div>
 
@@ -91,11 +108,22 @@ while i-- > 0
 <div class="highlight">
 <pre><span class="c1"># config/application.coffee</span>
 <span class="k">class</span> <span class="nx">App</span> <span class="k">extends</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">Application</span>
-  <span class="vi">@config.encoding = </span><span class="s">"utf-8"</span>
-  <span class="nx">@config</span><span class="p">.</span><span class="nx">filterParameters</span> <span class="o">+=</span> <span class="p">[</span><span class="s">"password"</span><span class="p">,</span> <span class="s">"password_confirmation"</span><span class="p">]</span>
-  <span class="nx">@config</span><span class="p">.</span><span class="nx">loadPaths</span> <span class="o">+=</span> <span class="p">[</span><span class="s">"./themes"</span><span class="p">]</span>
+  <span class="nx">@configure</span> <span class="o">-&gt;</span>
+    <span class="nx">@use</span> <span class="s">"favicon"</span><span class="p">,</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">publicPath</span> <span class="o">+</span> <span class="s">"/favicon.ico"</span>
+    <span class="nx">@use</span> <span class="s">"static"</span><span class="p">,</span>  <span class="nx">Tower</span><span class="p">.</span><span class="nx">publicPath</span><span class="p">,</span> <span class="nv">maxAge: </span><span class="nx">Tower</span><span class="p">.</span><span class="nx">publicCacheDuration</span>
+    <span class="nx">@use</span> <span class="s">"profiler"</span> <span class="k">if</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">env</span> <span class="o">!=</span> <span class="s">"production"</span>
+    <span class="nx">@use</span> <span class="s">"logger"</span>
+    <span class="nx">@use</span> <span class="s">"query"</span>
+    <span class="nx">@use</span> <span class="s">"cookieParser"</span><span class="p">,</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">secret</span>
+    <span class="nx">@use</span> <span class="s">"session"</span><span class="p">,</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">key</span>
+    <span class="nx">@use</span> <span class="s">"bodyParser"</span>
+    <span class="nx">@use</span> <span class="s">"csrf"</span>
+    <span class="nx">@use</span> <span class="s">"methodOverride"</span><span class="p">,</span> <span class="s">"_method"</span>
+    <span class="nx">@use</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">Middleware</span><span class="p">.</span><span class="nx">Agent</span>
+    <span class="nx">@use</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">Middleware</span><span class="p">.</span><span class="nx">Location</span>
+    <span class="nx">@use</span> <span class="nx">Tower</span><span class="p">.</span><span class="nx">Middleware</span><span class="p">.</span><span class="nx">Router</span>
 
-<span class="nv">global.App = module.exports = </span><span class="nx">App</span>
+<span class="nv">module.exports = global.App = </span><span class="nx">App</span>
 </pre>
 </div>
 
@@ -247,12 +275,13 @@ while i-- > 0
 
 <div class="highlight">
 <pre><span class="c1"># app/views/posts/new.coffee</span>
-<span class="nx">formFor</span> <span class="nx">@post</span><span class="p">,</span> <span class="o">-&gt;</span>
-  <span class="nx">fieldset</span> <span class="o">-&gt;</span>
-    <span class="nx">legend</span> <span class="s">"Basic Info"</span>
-    <span class="nx">field</span> <span class="s">"title"</span>
-    <span class="nx">field</span> <span class="s">"body"</span><span class="p">,</span> <span class="nv">as: </span><span class="s">"text"</span>
-  <span class="nx">submit</span> <span class="s">"Save"</span>
+<span class="nx">formFor</span> <span class="s">"post"</span><span class="p">,</span> <span class="nf">(f) -&gt;</span>
+  <span class="nx">f</span><span class="p">.</span><span class="nx">fieldset</span> <span class="nf">(fields) -&gt;</span>
+    <span class="nx">fields</span><span class="p">.</span><span class="nx">field</span> <span class="s">"title"</span><span class="p">,</span> <span class="nv">as: </span><span class="s">"string"</span>
+    <span class="nx">fields</span><span class="p">.</span><span class="nx">field</span> <span class="s">"body"</span><span class="p">,</span> <span class="nv">as: </span><span class="s">"text"</span>
+
+  <span class="nx">f</span><span class="p">.</span><span class="nx">fieldset</span> <span class="nf">(fields) -&gt;</span>
+    <span class="nx">fields</span><span class="p">.</span><span class="nx">submit</span> <span class="s">"Submit"</span>
 </pre>
 </div>
 
@@ -261,17 +290,81 @@ while i-- > 0
 
 <div class="highlight">
 <pre><span class="c1"># app/views/posts/index.coffee</span>
-<span class="nx">tableFor</span> <span class="nx">@posts</span><span class="p">,</span> <span class="o">-&gt;</span>
-  <span class="nx">thead</span> <span class="o">-&gt;</span>
-    <span class="nx">tcell</span> <span class="s">"Title"</span>
-    <span class="nx">tcell</span> <span class="s">"Author"</span>
-  <span class="nx">tbody</span> <span class="o">-&gt;</span>
+<span class="nx">tableFor</span> <span class="s">"posts"</span><span class="p">,</span> <span class="nf">(t) -&gt;</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">head</span> <span class="o">-&gt;</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nx">row</span> <span class="o">-&gt;</span>
+      <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="s">"title"</span><span class="p">,</span> <span class="nv">sort: </span><span class="kc">true</span>
+      <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="s">"body"</span><span class="p">,</span> <span class="nv">sort: </span><span class="kc">true</span>
+      <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span><span class="p">()</span>
+      <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span><span class="p">()</span>
+      <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span><span class="p">()</span>
+  <span class="nx">t</span><span class="p">.</span><span class="nx">body</span> <span class="o">-&gt;</span>
     <span class="k">for</span> <span class="nx">post</span> <span class="k">in</span> <span class="nx">@posts</span>
-      <span class="nx">trow</span> 
-        <span class="nx">tcell</span> <span class="nx">post</span><span class="p">.</span><span class="nx">title</span>
-        <span class="nx">tcell</span> <span class="nx">post</span><span class="p">.</span><span class="nx">author</span><span class="p">.</span><span class="nx">name</span>
-  <span class="nx">tfoot</span> <span class="o">-&gt;</span>
-    <span class="nx">pagination</span> <span class="nx">@posts</span>
+      <span class="nx">t</span><span class="p">.</span><span class="nx">row</span> <span class="o">-&gt;</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="nx">post</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">"title"</span><span class="p">)</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="nx">post</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s">"body"</span><span class="p">)</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="nx">linkTo</span> <span class="s">'Show'</span><span class="p">,</span> <span class="nx">post</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="nx">linkTo</span> <span class="s">'Edit'</span><span class="p">,</span> <span class="nx">editPostPath</span><span class="p">(</span><span class="nx">post</span><span class="p">)</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nx">cell</span> <span class="nx">linkTo</span> <span class="s">'Destroy'</span><span class="p">,</span> <span class="nx">post</span><span class="p">,</span> <span class="nv">method: </span><span class="s">"delete"</span>
+  <span class="nx">linkTo</span> <span class="s">'New Post'</span><span class="p">,</span> <span class="nx">newPostPath</span><span class="p">()</span>
+</pre>
+</div>
+
+
+<h3>Layouts</h3>
+
+<div class="highlight">
+<pre><span class="c1"># app/views/layouts/application.coffee</span>
+<span class="nx">doctype</span> <span class="mi">5</span>
+<span class="nx">html</span> <span class="o">-&gt;</span>
+  <span class="nx">head</span> <span class="o">-&gt;</span>
+    <span class="nx">meta</span> <span class="nv">charset: </span><span class="s">"utf-8"</span>
+
+    <span class="nx">title</span> <span class="nx">t</span><span class="p">(</span><span class="s">"title"</span><span class="p">)</span>
+
+    <span class="nx">meta</span> <span class="nv">name: </span><span class="s">"description"</span><span class="p">,</span> <span class="nv">content: </span><span class="nx">t</span><span class="p">(</span><span class="s">"description"</span><span class="p">)</span>
+    <span class="nx">meta</span> <span class="nv">name: </span><span class="s">"keywords"</span><span class="p">,</span> <span class="nv">content: </span><span class="nx">t</span><span class="p">(</span><span class="s">"keywords"</span><span class="p">)</span>
+    <span class="nx">meta</span> <span class="nv">name: </span><span class="s">"robots"</span><span class="p">,</span> <span class="nv">content: </span><span class="nx">t</span><span class="p">(</span><span class="s">"robots"</span><span class="p">)</span>
+    <span class="nx">meta</span> <span class="nv">name: </span><span class="s">"author"</span><span class="p">,</span> <span class="nv">content: </span><span class="nx">t</span><span class="p">(</span><span class="s">"author"</span><span class="p">)</span>
+
+    <span class="nx">csrfMetaTag</span><span class="p">()</span>
+
+    <span class="nx">appleViewportMetaTag</span> <span class="nv">width: </span><span class="s">"device-width"</span><span class="p">,</span> <span class="nv">max: </span><span class="mi">1</span><span class="p">,</span> <span class="nv">scalable: </span><span class="kc">false</span>
+
+    <span class="nx">stylesheets</span> <span class="s">"lib"</span><span class="p">,</span> <span class="s">"vendor"</span><span class="p">,</span> <span class="s">"application"</span>
+
+    <span class="nx">javascriptTag</span> <span class="s">"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"</span>
+    <span class="nx">javascripts</span> <span class="s">"vendor"</span><span class="p">,</span> <span class="s">"lib"</span><span class="p">,</span> <span class="s">"application"</span>
+
+  <span class="nx">body</span> <span class="nv">role: </span><span class="s">"application"</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="nx">hasContentFor</span> <span class="s">"templates"</span>
+      <span class="nx">yield</span> <span class="s">"templates"</span>
+
+    <span class="nx">nav</span> <span class="nv">id: </span><span class="s">"navigation"</span><span class="p">,</span> <span class="nv">role: </span><span class="s">"navigation"</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="nx">div</span> <span class="k">class</span><span class="o">:</span> <span class="s">"frame"</span><span class="p">,</span> <span class="o">-&gt;</span>
+        <span class="nx">partial</span> <span class="s">"shared/navigation"</span>
+
+    <span class="nx">header</span> <span class="nv">id: </span><span class="s">"header"</span><span class="p">,</span> <span class="nv">role: </span><span class="s">"banner"</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="nx">div</span> <span class="k">class</span><span class="o">:</span> <span class="s">"frame"</span><span class="p">,</span> <span class="o">-&gt;</span>
+        <span class="nx">partial</span> <span class="s">"shared/header"</span>
+
+    <span class="nx">section</span> <span class="nv">id: </span><span class="s">"body"</span><span class="p">,</span> <span class="nv">role: </span><span class="s">"main"</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="nx">div</span> <span class="k">class</span><span class="o">:</span> <span class="s">"frame"</span><span class="p">,</span> <span class="o">-&gt;</span>
+        <span class="nx">yields</span> <span class="s">"body"</span>
+        <span class="nx">aside</span> <span class="nv">id: </span><span class="s">"sidebar"</span><span class="p">,</span> <span class="nv">role: </span><span class="s">"complementary"</span><span class="p">,</span> <span class="o">-&gt;</span>
+          <span class="k">if</span> <span class="nx">hasContentFor</span> <span class="s">"sidebar"</span>
+            <span class="nx">yields</span> <span class="s">"sidebar"</span>
+
+    <span class="nx">footer</span> <span class="nv">id: </span><span class="s">"footer"</span><span class="p">,</span> <span class="nv">role: </span><span class="s">"contentinfo"</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="nx">div</span> <span class="k">class</span><span class="o">:</span> <span class="s">"frame"</span><span class="p">,</span> <span class="o">-&gt;</span>
+        <span class="nx">partial</span> <span class="s">"shared/footer"</span>
+
+  <span class="k">if</span> <span class="nx">hasContentFor</span> <span class="s">"popups"</span>
+    <span class="nx">aside</span> <span class="nv">id: </span><span class="s">"popups"</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="nx">yields</span> <span class="s">"popups"</span>
+
+  <span class="k">if</span> <span class="nx">hasContentFor</span> <span class="s">"bottom"</span>
+    <span class="nx">yields</span> <span class="s">"bottom"</span>
 </pre>
 </div>
 
@@ -314,6 +407,32 @@ while i-- > 0
 
 <p>Actually, all that's built in!  So for the simple case you don't even need to write anything in your controllers (skinny controllers, fat models).</p>
 
+<h2>Databases</h2>
+
+<div class="highlight">
+<pre><span class="c1"># config/databases.coffee</span>
+<span class="nv">module.exports =</span>
+  <span class="nv">mongodb:</span>
+    <span class="nv">development:</span>
+      <span class="nv">name: </span><span class="s">"app-development"</span>
+      <span class="nv">port: </span><span class="mi">27017</span>
+      <span class="nv">host: </span><span class="s">"127.0.0.1"</span>
+    <span class="nv">test:</span>
+      <span class="nv">name: </span><span class="s">"app-test"</span>
+      <span class="nv">port: </span><span class="mi">27017</span>
+      <span class="nv">host: </span><span class="s">"127.0.0.1"</span>
+    <span class="nv">staging:</span>
+      <span class="nv">name: </span><span class="s">"app-staging"</span>
+      <span class="nv">port: </span><span class="mi">27017</span>
+      <span class="nv">host: </span><span class="s">"127.0.0.1"</span>
+    <span class="nv">production:</span>
+      <span class="nv">name: </span><span class="s">"app-production"</span>
+      <span class="nv">port: </span><span class="mi">27017</span>
+      <span class="nv">host: </span><span class="s">"127.0.0.1"</span>
+</pre>
+</div>
+
+
 <h2>Mailers</h2>
 
 <div class="highlight">
@@ -328,7 +447,8 @@ while i-- > 0
 <h2>Internationalization</h2>
 
 <div class="highlight">
-<pre><span class="nv">en:</span>
+<pre><span class="c1"># config/locales/en.coffee</span>
+<span class="nv">module.exports =</span>
   <span class="nv">hello: </span><span class="s">"world"</span>
   <span class="nv">forms:</span>
     <span class="nv">titles:</span>
@@ -382,7 +502,7 @@ while i-- > 0
 
 <div class="highlight">
 <pre><span class="c1"># config/assets.coffee</span>
-<span class="nv">Tower.assets =</span>
+<span class="nv">module.exports =</span>
   <span class="nv">javascripts:</span>
     <span class="nv">vendor: </span><span class="p">[</span>
       <span class="s">"/vendor/javascripts/jquery.js"</span>
@@ -430,7 +550,6 @@ while i-- > 0
 </pre>
 </div>
 
-
 <h2>Test, Develop, Minify</h2>
 
 <div class="highlight">
@@ -441,7 +560,11 @@ cake minify
 </div>
 
 
-<h2>License</h2>
+<h2>Examples</h2>
+
+<ul>
+<li><a href="https://github.com/viatropos/towerjs.org">towerjs.org (project site)</a></li>
+</ul><h2>License</h2>
 
 <p>(The MIT License)</p>
 
@@ -452,4 +575,8 @@ cake minify
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 
 <p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+<ul>
+<li><a href="https://github.com/jashkenas/coffee-script/issues/841">https://github.com/jashkenas/coffee-script/issues/841</a></li>
+</ul>
 """
