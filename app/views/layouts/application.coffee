@@ -5,6 +5,8 @@ html ->
   
   body role: "application", ->
     nav id: "navigation", role: "navigation", ->
+      header class: "header", ->
+        h3 "Guides"
       ul ->
         li ->
           a href: "/", "Overview"
@@ -15,7 +17,7 @@ html ->
         li ->
           a href: "https://github.com/viatropos/towerjs.org", "Examples"
         li ->
-          a class: "forkme", href: "http://github.com/viatropos/tower.js", ->
+          a class: "forkme", href: "http://github.com/viatropos/tower", ->
             img src: "https://a248.e.akamai.net/assets.github.com/img/4c7dc970b89fd04b81c8e221ba88ff99a06c6b61/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67", alt: "Fork me on GitHub"      
         
     header id: "header", role: "banner", ->
