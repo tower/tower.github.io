@@ -2,7 +2,7 @@
 module.exports = {
   title: "Tower.js",
   description: "",
-  keywords: "",
+  keywords: "Node.js, MVC, Ruby on Rails, JavaScript, CoffeeScript, MongoDB",
   author: "Lance Pollard",
   copyright: "&copy; undefined Lance Pollard. All rights reserved.",
   robots: "noodp,noydir,index,follow",

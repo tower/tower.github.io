@@ -1,0 +1,128 @@
+<header class="header subhead" id="overview"><h1>Generators</h1>
+<nav class="subnav"><ul class="nav nav-pills"><li><a href="#application-generator">application-generator</a></li><li><a href="#scaffold-generator">scaffold-generator</a></li><li><a href="#model-generator">model-generator</a></li><li><a href="#view-generator">view-generator</a></li><li><a href="#controller-generator">controller-generator</a></li></ul></nav></header><section class="section" id="application-generator"><h1>Application Generator</h1>
+
+<pre><code>tower new my-app
+</code></pre>
+
+<p>Your new application:</p>
+
+<pre><code>|-- app
+|   |-- client
+|   |   |-- stylesheets
+|   |   |   `-- application.stylus
+|   |   |-- config
+|   |   |   `-- assets.coffee
+|   |-- controllers
+|   |   `-- applicationController.coffee
+|   |-- models
+|   |-- views
+|   |   |-- layouts
+|   |   |   `-- application.coffee
+|   |   |-- index.coffee
+|   `-- helpers
+|   |   `-- applicationHelper.coffee
+|-- Cakefile
+|-- config
+|   |-- application.coffee
+|   |-- environments
+|   |   |-- development.coffee
+|   |   |-- production.coffee
+|   |   `-- test.coffee
+|   |-- locale
+|   |   `-- en.coffee
+|   |-- routes.coffee
+|   |-- database.coffee
+|-- lib
+|-- package.json
+|-- public
+|   |-- favicon.ico
+|   |-- humans.txt
+|   `-- robots.txt
+|-- README.md
+|-- spec
+|   |-- helper.coffee
+|   |-- models
+|   `-- acceptance
+`-- vendor
+|   |-- javascripts
+|   |   |-- tower.js
+|   |   |-- underscore.js
+|   `-- stylesheets
+`-- Watchfile
+</code></pre>
+
+<h3>Options for the <code>new</code> command:</h3>
+
+<pre><code>--javascripts &lt;format&gt;  Format for JavaScripts (coffee, js)
+--stylesheets &lt;format&gt;  Format for StyleSheets (styl, less, css)
+--views &lt;format&gt;        Format for Views (coffee, jade, mustache)
+--database &lt;type&gt;       Database type (mongodb, memory, sqlite3)
+--test &lt;framework&gt;      Testing framework (jasmine, vows, qunit, assert)
+--docs &lt;format&gt;         Documentation format (md, markdown, textile, txt)
+-v, --version           Output the version number
+-h, --help              Output usage information
+</code></pre>
+</section><section class="section" id="scaffold-generator"><h1>Scaffold Generator</h1>
+
+<pre><code>tower generate scaffold Post title:string body:text belongsTo:user
+</code></pre>
+
+<p>Generates:</p>
+
+<pre><code>|-- app
+|   |-- controllers
+|   |   |   `-- usersController.coffee
+|   |-- models
+|   |   |   `-- user.coffee
+|   |-- views
+|   |   |-- users
+|   |   |   `-- _form.coffee
+|   |   |   `-- edit.coffee
+|   |   |   `-- index.coffee
+|   |   |   `-- new.coffee
+|   |   |   `-- show.coffee
+|   `-- helpers
+|   |   |   `-- userHelper.coffee
+`-- spec
+|    |-- models
+|   |   |   `-- userSpec.coffee
+</code></pre>
+</section><section class="section" id="model-generator"><h1>Model Generator</h1>
+
+<pre><code>tower generate model Post title:string body:text belongsTo:user
+</code></pre>
+
+<p>Generates:</p>
+
+<pre><code>|-- app
+|   |-- models
+|   |   |   `-- user.coffee
+</code></pre>
+</section><section class="section" id="view-generator"><h1>View Generator</h1>
+
+<pre><code>tower generate view Post title:string body:text belongsTo:user
+</code></pre>
+
+<p>Generates:</p>
+
+<pre><code>|-- app
+|   |-- views
+|   |   |-- users
+|   |   |   `-- _form.coffee
+|   |   |   `-- edit.coffee
+|   |   |   `-- index.coffee
+|   |   |   `-- new.coffee
+|   |   |   `-- show.coffee
+</code></pre>
+</section><section class="section" id="controller-generator"><h1>Controller Generator</h1>
+
+<pre><code>tower generate controller Post
+</code></pre>
+
+<p>Generates:</p>
+
+<pre><code>|-- app
+|   |-- controllers
+|   |   |   `-- usersController.coffee
+</code></pre>
+</section>

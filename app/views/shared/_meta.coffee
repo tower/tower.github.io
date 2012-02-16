@@ -13,6 +13,7 @@ appleViewportMetaTag width: "device-width", max: 1, scalable: false
 
 stylesheetTag "http://fonts.googleapis.com/css?family=Forum|Josefin+Sans"
 stylesheets "lib", "vendor", "application"
+stylesheetTag "/stylesheets/lib/stylesheets/bootstrap/bootstrap.css"
 
 #if browserIs("firefox")
 #  stylesheets "font"

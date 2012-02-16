@@ -20,6 +20,10 @@ module.exports =
       '/vendor/javascripts/tower'
     ]
     
+    bootstrap: [
+      "/lib/stylesheets/bootstrap/bootstrap"
+    ]
+    
     development: [
       '/vendor/javascripts/mocha'
       '/vendor/javascripts/design.io'

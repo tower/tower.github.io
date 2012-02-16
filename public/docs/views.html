@@ -1,0 +1,272 @@
+<header class="header subhead" id="overview"><h1>Tower Views</h1>
+
+<p>Tower has built in support for every template framework.</p>
+
+<h2>Helper Methods</h2>
+
+<ul>
+<li>HTML5 tags</li>
+<li>formFor</li>
+<li>tableFor</li>
+<li>partial</li>
+<li>render</li>
+<li>yields</li>
+<li>contentFor</li>
+<li>hasContentFor</li>
+</ul>
+
+<h1>Components</h1>
+
+<ul>
+<li>Forms</li>
+<li>Tables</li>
+<li>Menus and lists</li>
+<li>Breadcrumbs</li>
+<li>Definition lists</li>
+<li>Generic &quot;widgets&quot;</li>
+</ul>
+
+<p>A lot of thought was put into figuring out the conventions behind most of the HTML components we use.  Where applicable, you can opt-into <a href="http://www.w3.org/TR/wai-aria/roles">ARIA-roles</a> as well. The structures all have sensible defaults, but they can be globally configured no problem.</p>
+
+<p>Tower also includes several &quot;meta-level&quot; helpers, such as:</p>
+
+<ul>
+<li>Internet explorer hacks to build things like vertically/horizontally centered images (where the width of the image is unknown), and to apply CSS sprites to rich buttons for IE6.  You need the structure <code>&lt;div&gt;&lt;span&gt;&lt;span&gt;[&lt;input/&gt;|&lt;img/&gt;]&lt;/div&gt;</code> to do this.</li>
+<li>User agent helpers (to perform human-readable checks on the browser, operating system, etc.).</li>
+<li>HTML &quot;head&quot; helpers (meta tags, titles, keywords, links, etc.).</li>
+<li>Fragment caching helpers, like conditional caching.</li>
+<li>An extension to the building in <code>t()</code> I18n method to allow past/present/future and zero/one/many keys and several more options.</li>
+</ul>
+<nav class="subnav"><ul class="nav nav-pills"><li><a href="#layouts">layouts</a></li><li><a href="#forms">forms</a></li><li><a href="#tables">tables</a></li><li><a href="#templates">templates</a></li></ul></nav></header><section class="section" id="layouts"><h1>Layouts</h1>
+
+<pre><code class="coffeescript">doctype 5
+html -&gt;
+  head -&gt;
+    partial &quot;shared/meta&quot;
+
+  body role: &quot;application&quot;, -&gt;
+    if hasContentFor &quot;templates&quot;
+      yields &quot;templates&quot;
+
+    nav id: &quot;navigation&quot;, role: &quot;navigation&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        partial &quot;shared/navigation&quot;
+
+    header id: &quot;header&quot;, role: &quot;banner&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        #if hasFlash()
+        #  renderFlash()
+        partial &quot;shared/header&quot;
+
+    section id: &quot;body&quot;, role: &quot;main&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        yields &quot;body&quot;
+        aside id: &quot;sidebar&quot;, role: &quot;complementary&quot;, -&gt;
+          if hasContentFor &quot;sidebar&quot;
+            yields &quot;sidebar&quot;
+
+    footer id: &quot;footer&quot;, role: &quot;contentinfo&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        partial &quot;shared/footer&quot;
+
+  if hasContentFor &quot;popups&quot;
+    aside id: &quot;popups&quot;, -&gt;
+      yields &quot;popups&quot;
+
+  if hasContentFor &quot;bottom&quot;
+    yields &quot;bottom&quot;
+</code></pre>
+</section><section class="section" id="forms"><h1>Forms</h1>
+
+<pre><code class="coffeescript">formFor @user, (form) -&gt;
+  form.fieldset &quot;Profile&quot;, (fields) -&gt;
+    fields.field &quot;firstName&quot;
+    fields.field &quot;lastName&quot;
+    fields.field &quot;email&quot;
+  form.fieldset &quot;Address&quot;, (fields) -&gt;
+    fields.field &quot;lat&quot;, as: hidden
+    fields.field &quot;lng&quot;, as: hidden
+    fields.field &quot;street&quot;
+    fields.field &quot;city&quot;, as: &quot;select&quot;, collection: [&quot;CA&quot;]
+</code></pre>
+
+<pre><code class="html">&lt;form class=&#39;form&#39; data-method=&#39;post&#39; method=&#39;post&#39; novalidate=&#39;true&#39; role=&#39;form&#39;&gt;
+  &lt;fieldset class=&#39;fieldset&#39; id=&#39;profile&#39;&gt;
+    &lt;legend class=&#39;legend&#39;&gt;
+      &lt;span&gt;Profile&lt;/span&gt;
+    &lt;/legend&gt;
+    &lt;ol class=&#39;field-list&#39;&gt;
+      &lt;li class=&#39;field string optional validate&#39;&gt;
+        &lt;label class=&#39;label&#39; for=&#39;active-record-user-first-name-input&#39;&gt;
+          &lt;span&gt;First Name&lt;/span&gt;
+          &lt;abbr class=&#39;optional&#39; title=&#39;Optional&#39;&gt;&lt;/abbr&gt;
+        &lt;/label&gt;
+        &lt;input accesskey=&#39;f&#39; class=&#39;string first-name optional input validate&#39; data-validate=&#39;presence&#39; data-validates-presence-message=&quot;can&#39;t be blank&quot; data-validates-presence=&#39;true&#39; id=&#39;active-record-user-first-name-input&#39; maxlength=&#39;255&#39; name=&#39;activeRecordUser[firstName]&#39; type=&#39;string&#39; value=&#39;Lance&#39; /&gt;
+        &lt;output class=&#39;error&#39;&gt;&lt;/output&gt;
+      &lt;/li&gt;
+      &lt;li class=&#39;field string optional validate&#39;&gt;
+        &lt;label class=&#39;label&#39; for=&#39;active-record-user-last-name-input&#39;&gt;
+          &lt;span&gt;Last Name&lt;/span&gt;
+          &lt;abbr class=&#39;optional&#39; title=&#39;Optional&#39;&gt;&lt;/abbr&gt;
+        &lt;/label&gt;
+        &lt;input accesskey=&#39;l&#39; class=&#39;string last-name optional input validate&#39; data-validate=&#39;presence&#39; data-validates-presence-message=&quot;can&#39;t be blank&quot; data-validates-presence=&#39;true&#39; id=&#39;active-record-user-last-name-input&#39; maxlength=&#39;255&#39; name=&#39;activeRecordUser[lastName]&#39; type=&#39;string&#39; value=&#39;Pollard&#39; /&gt;
+        &lt;output class=&#39;error&#39;&gt;&lt;/output&gt;
+      &lt;/li&gt;
+      &lt;li class=&#39;field email optional validate&#39;&gt;
+        &lt;label class=&#39;label&#39; for=&#39;active-record-user-email-input&#39;&gt;
+          &lt;span&gt;Email&lt;/span&gt;
+          &lt;abbr class=&#39;optional&#39; title=&#39;Optional&#39;&gt;&lt;/abbr&gt;
+        &lt;/label&gt;
+        &lt;input accesskey=&#39;e&#39; class=&#39;email string optional input validate&#39; data-validate=&#39;presence&#39; data-validates-presence-message=&quot;can&#39;t be blank&quot; data-validates-presence=&#39;true&#39; id=&#39;active-record-user-email-input&#39; maxlength=&#39;255&#39; name=&#39;activeRecordUser[email]&#39; type=&#39;email&#39; value=&#39;example@gmail.com&#39; /&gt;
+        &lt;output class=&#39;error&#39;&gt;&lt;/output&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/fieldset&gt;
+  &lt;fieldset class=&#39;fieldset&#39; id=&#39;address&#39;&gt;
+    &lt;legend class=&#39;legend&#39;&gt;
+      &lt;span&gt;Address&lt;/span&gt;
+    &lt;/legend&gt;
+    &lt;ol class=&#39;field-list&#39;&gt;
+      &lt;li class=&#39;field hidden optional&#39;&gt;
+        &lt;input accesskey=&#39;l&#39; class=&#39;hidden lat optional input&#39; id=&#39;active-record-user-lat-input&#39; name=&#39;activeRecordUser[lat]&#39; type=&#39;string&#39; /&gt;
+      &lt;/li&gt;
+      &lt;li class=&#39;field hidden optional&#39;&gt;
+        &lt;input accesskey=&#39;l&#39; class=&#39;hidden lng optional input&#39; id=&#39;active-record-user-lng-input&#39; name=&#39;activeRecordUser[lng]&#39; type=&#39;string&#39; /&gt;
+      &lt;/li&gt;
+      &lt;li class=&#39;field string optional&#39;&gt;
+        &lt;label class=&#39;label&#39; for=&#39;active-record-user-street-input&#39;&gt;
+          &lt;span&gt;Street&lt;/span&gt;
+          &lt;abbr class=&#39;optional&#39; title=&#39;Optional&#39;&gt;&lt;/abbr&gt;
+        &lt;/label&gt;
+        &lt;input accesskey=&#39;s&#39; class=&#39;string street optional input&#39; id=&#39;active-record-user-street-input&#39; name=&#39;activeRecordUser[street]&#39; type=&#39;string&#39; /&gt;
+        &lt;output class=&#39;error&#39;&gt;&lt;/output&gt;
+      &lt;/li&gt;
+      &lt;li class=&#39;field select optional&#39;&gt;
+        &lt;label class=&#39;label&#39; for=&#39;active-record-user-city-input&#39;&gt;
+          &lt;span&gt;City&lt;/span&gt;
+          &lt;abbr class=&#39;optional&#39; title=&#39;Optional&#39;&gt;&lt;/abbr&gt;
+        &lt;/label&gt;
+        &lt;select accesskey=&#39;c&#39; class=&#39;select city optional input&#39; id=&#39;active-record-user-city-input&#39; name=&#39;activeRecordUser[city]&#39;&gt;
+          &lt;option value=&#39;CA&#39;&gt;CA&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;output class=&#39;error&#39;&gt;&lt;/output&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
+</code></pre>
+</section><section class="section" id="tables"><h1>Tables</h1>
+
+<pre><code class="coffeescript">tableFor &quot;users&quot;, (t) -&gt;
+  t.head -&gt;
+    t.row -&gt;
+      t.header &quot;name&quot;, width: 400, sort: true
+      t.header &quot;createdAt&quot;, sort: true
+  t.body -&gt;
+    for user in users
+      t.row -&gt;
+        t.cell -&gt;
+          linkTo(user.name, adminUserPath(user))
+        t.cell -&gt;
+          time user.createdAt
+  t.foot -&gt;
+    t.row -&gt;
+      t.cell colspan: 2, -&gt;
+        render partial: &quot;shared/pagination&quot;, locals: {collection: @users}
+</code></pre>
+
+<pre><code class="html">&lt;table class=&#39;data-table&#39; data-for=&#39;users&#39; data-url=&#39;/admin/users&#39; id=&#39;users-table&#39; role=&#39;grid&#39; summary=&#39;Table for Users&#39;&gt;
+  &lt;thead&gt;
+    &lt;tr role=&#39;row&#39; scope=&#39;row&#39;&gt;
+      &lt;th abbr=&#39;name&#39; aria-sort=&#39;none&#39; class=&#39;sortable&#39; id=&#39;users-header-1-0&#39; role=&#39;columnheader&#39; scope=&#39;col&#39; width=&#39;400px&#39;&gt;
+        &lt;a href=&quot;/admin/users?sort=name+&quot;&gt;Name&lt;/a&gt;
+      &lt;/th&gt;
+      &lt;th abbr=&#39;createdAt&#39; aria-sort=&#39;none&#39; class=&#39;sortable&#39; id=&#39;users-header-1-1&#39; role=&#39;columnheader&#39; scope=&#39;col&#39;&gt;
+        &lt;a href=&quot;/admin/users?sort=createdAt+&quot;&gt;Created At&lt;/a&gt;
+      &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr class=&#39;odd&#39; role=&#39;row&#39; scope=&#39;row&#39;&gt;
+      &lt;td headers=&#39;users-header-1-0&#39; id=&#39;users-cell-1-0&#39; role=&#39;gridcell&#39;&gt;
+        &lt;a href=&quot;/admin/users/2288&quot;&gt;Lance Pollard&lt;/a&gt;
+      &lt;/td&gt;
+      &lt;td headers=&#39;users-header-1-1&#39; id=&#39;users-cell-1-1&#39; role=&#39;gridcell&#39;&gt;
+        &lt;time&gt;5/29/2011 @ 03:44pm&lt;/time&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr class=&#39;even&#39; role=&#39;row&#39; scope=&#39;row&#39;&gt;
+      &lt;td headers=&#39;users-header-1-0&#39; id=&#39;users-cell-2-0&#39; role=&#39;gridcell&#39;&gt;
+        &lt;a href=&quot;/admin/users/2287&quot;&gt;John Smith&lt;/a&gt;
+      &lt;/td&gt;
+      &lt;td headers=&#39;users-header-1-1&#39; id=&#39;users-cell-2-1&#39; role=&#39;gridcell&#39;&gt;
+        &lt;time&gt;5/29/2011 @ 03:40pm&lt;/time&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr role=&#39;row&#39; scope=&#39;row&#39;&gt;
+      &lt;td colspan=&#39;3&#39; headers=&#39;users-header-1-0&#39; id=&#39;users-cell-1-0&#39; role=&#39;gridcell&#39;&gt;
+        &lt;nav class=&#39;paginator&#39; role=&#39;toolbar&#39;&gt;
+          &lt;ul class=&#39;goto-pages&#39;&gt;
+            &lt;li class=&#39;goto-search&#39;&gt;
+              &lt;a href=&quot;#search&quot; class=&quot;search-pages&quot; title=&quot;Toggle Advanced Search&quot;&gt;&amp;#8981;&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&#39;goto-page&#39;&gt;
+              &lt;a href=&quot;/admin/users?page=1&quot; aria-disabled=&quot;true&quot; class=&quot;first-page disabled&quot; data-page=&quot;1&quot; rel=&quot;first&quot; title=&quot;Go to the first page&quot;&gt;&amp;#8676;&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&#39;goto-page&#39;&gt;
+              &lt;a href=&quot;/admin/users?page=1&quot; aria-disabled=&quot;true&quot; class=&quot;prev-page disabled&quot; data-page=&quot;1&quot; rel=&quot;prev&quot; title=&quot;Go to page 1&quot;&gt;&amp;#8672;&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li aria-valuemax=&#39;109&#39; aria-valuemin=&#39;1&#39; aria-valuetext=&#39;1&#39; class=&#39;goto-page current-page&#39; role=&#39;spinbutton&#39;&gt;
+              &lt;span&gt;Page&lt;/span&gt;
+              &lt;input class=&#39;current-page-input&#39; value=&#39;1&#39;&gt;
+              &lt;span&gt;of&lt;/span&gt;
+              &lt;span class=&#39;page-count&#39;&gt;109&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li class=&#39;goto-page&#39;&gt;
+              &lt;a href=&quot;/admin/users?page=2&quot; aria-disabled=&quot;false&quot; class=&quot;next-page yes&quot; data-page=&quot;2&quot; rel=&quot;next&quot; title=&quot;Go to page 2&quot;&gt;&amp;#8674;&lt;/a&gt;
+            &lt;/li&gt;
+            &lt;li class=&#39;goto-page&#39;&gt;
+              &lt;a href=&quot;/admin/users?page=109&quot; aria-disabled=&quot;false&quot; class=&quot;last-page yes&quot; data-page=&quot;109&quot; rel=&quot;last&quot; title=&quot;Go to the last page&quot;&gt;&amp;#8677;&lt;/a&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+          &lt;output class=&#39;record-count&#39;&gt;
+            &lt;span&gt;Viewing&lt;/span&gt;
+            &lt;span class=&#39;current-record-range&#39;&gt;1 - 20&lt;/span&gt;
+            &lt;span&gt;of&lt;/span&gt;
+            &lt;span class=&#39;total-record-count&#39;&gt;2178&lt;/span&gt;
+          &lt;/output&gt;
+        &lt;/nav&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+</code></pre>
+</section><section class="section" id="templates"><h1>Templates</h1>
+
+<h2>Automatic Template Refreshing in Browser</h2>
+
+<p>When you <em>save</em> a template, you&#39;re either saving a template, partial, or layout.</p>
+
+<ul>
+<li>If you save a layout, it will reload the html page.</li>
+<li>If you save a template, it will go to the url for that template.  If you have the templates in view it will render without refreshing.  If history.pushState is available then the url will change as well.  This triggers the controller to run the render method again.</li>
+<li>If you save a partial, it will use jQuery to find/replace the partial in the cached version in the browser, and rerun the controller action if that partial was used in the last controller action.</li>
+</ul>
+
+<h2>Examples</h2>
+
+<h3>Coffeekup + Mustache</h3>
+
+<pre><code class="coffeescript">mustacheEach &quot;posts&quot;, -&gt;
+  h2 &quot;{{title}}&quot;
+  p &quot;{{body}}&quot;
+</code></pre>
+
+<pre><code class="html">{{posts}}
+  &lt;h2&gt;{{title}}&lt;/h2&gt;
+  &lt;p&gt;{{body}}&lt;/p&gt;
+{{/posts}}
+</code></pre>
+</section>

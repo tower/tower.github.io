@@ -21,6 +21,10 @@ App.Post = (function(_super) {
     type: "String"
   });
 
+  Post.field("slug", {
+    type: "String"
+  });
+
   Post.timestamps();
 
   return Post;

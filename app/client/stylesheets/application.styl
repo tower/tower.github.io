@@ -1,34 +1,88 @@
 // @import '/lib/stylesheets/variables'
 // @import '/lib/stylesheets/mixins'
-// @import '/lib/stylesheets/typography'
-// @import '/lib/stylesheets/code'
-// @import "/app/client/stylesheets/application/_base"
-// @import "/app/client/stylesheets/application/_header"
-// @import "/app/client/stylesheets/application/_forms"
-// @import "/app/client/stylesheets/application/_tables"
-// @import "/app/client/stylesheets/application/_body"
-// @import "/app/client/stylesheets/application/_sidebar"
-// @import "/app/client/stylesheets/application/_footer"
+// import '/lib/stylesheets/typography'
+// import '/lib/stylesheets/code'
+// import "/app/client/stylesheets/application/_base"
+// import "/app/client/stylesheets/application/_header"
+// import "/app/client/stylesheets/application/_forms"
+// import "/app/client/stylesheets/application/_tables"
+// import "/app/client/stylesheets/application/_body"
+// import "/app/client/stylesheets/application/_sidebar"
+// import "/app/client/stylesheets/application/_footer"
+
+.nav-group-start a
+  border-left: 1px solid white !important
 
 $green  = #8BA341
 $blue   = #79C5CE //#92CBD3
 $white  = #eaecea
 $red    = #EC3D2F
-
-a
-  color: #EC3D2F
-
+.navbar-inner
+  background: #32747f url(/images/noise.png) !important;
+  a
+    color: $white !important
+    text-shadow: none !important
 body
-  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif
-  font-family: 'Forum', cursive;
-  background: $white
-  background: $blue url(/images/noise.png);
+  //font-family: 'Forum', cursive;
   position: relative;
+  background: white url(/images/noise.png) !important;
+  .header ul, .header li, .section li, .header p, .header ol, .section p, .section ul, .section ol, .section cite
+    font: 16px "Lucida Grande", Helvetica, Arial, sans-serif
+    line-height: 26px
+    color: #32373a
+    a
+      color: #32747f
+pre
+  background: #f7f7f9 url(/images/noise.png) !important;
+  border-color: #E1E1E8;
+  border-radius: 0px;
+pre code, code
+  font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Courier, monospace;
+  font-size: 14px
+pre, p
+  margin-bottom: 18px
+  margin-top: 18px
+code
+  color: #639566//#48484C
+  background: none
+  border: none
+  padding: 0 0 0 0
+pre code
+  color: #48484C
+  line-height: 22px
+pre
+  overflow-x: auto !important
+  white-space: pre
 h1, h2, h3, h4
-  font-family: 'Josefin Sans', sans-serif; // ok
-  //font-family: 'Maven Pro', sans-serif;
-  //font-family: 'Expletus Sans', cursive;
-  //font-family: 'Quattrocento Sans', sans-serif;
+  line-height: 1.2
+  background: transparent
+  //font-family: 'Josefin Sans', sans-serif; // ok
+  margin-bottom: 15px;
+  padding-bottom: 0px;
+  margin-top: 30px;
+  padding-bottom: 5px//$baseLineHeight - 1
+  margin: $baseLineHeight 0
+  
+.section
+  h1
+    border-top: 5px solid #e6e6e6
+    padding-top: 15px
+    margin-top: 0
+  h1, h2
+    border-bottom: 1px solid $grayLighter
+
+h1 code
+  font-weight: normal
+  font-size: 24px
+  
+h2 code
+  font-weight: normal
+  font-size: 18px
+
+h3 code
+  font-weight: normal
+  font-size: 16px
+
 h2
   font-size: 24px
   //background: white
@@ -38,12 +92,21 @@ h2
   //width: 20px
 h3
   font-size: 18px
+#footer
+  background: $green url(/images/noise.png);
+  color: $white
+  a
+    color: #EC3D2F
+/*
+a
+  color: #EC3D2F
+
 #navigation
   display: block
   position: relative;
   margin: 0 auto
   width: auto
-  max-width: 650px
+  max-width: 850px
   .header
     display: none
   li
@@ -55,7 +118,7 @@ h3
   position: relative;
   margin: 0 auto
   width: auto
-  max-width: 610px
+  max-width: 810px
   padding: 60px 20px 20px 20px
   h1
     text-align: left
@@ -88,7 +151,6 @@ h3
     font-size: 40px
   #background
     position: absolute
-    background: white
     opacity: 90
     top: 0px
     right: 0px
@@ -99,32 +161,52 @@ h3
   color: #111
   margin: 0 auto;
   width: auto
-  max-width: 610px
-  padding: 20px
+  max-width: 920px
+  clearfix()
   #content
+    padding: 20px
+    background: white
     position: relative
+    float: left
+    width: 610px
+    margin-left: 20px
+    z-index: 1
+  
+  #sidebar
+    width: 920px
+    left: 50%
+    margin-left: -460px
+    display: block
+    z-index: 0
+    position: fixed
+    right: 0
+    > ul
+      list-style-type: none
+      width: 270px
+      float: right
+      margin: 0px 0px 0px 0px
+      ul
+        display: none
+    li
+      background: $red
+      opacity: 90
+      color: white
+      padding: 2px 8px 2px 40px
+      margin: 0px 0px 0px 0px
+      a, a:hover
+        color: white
     
-@media screen and (max-width: 610px)
+@media screen and (max-width: 810px)
   .forkme
     display: none
-    
+*/    
 @media screen and (max-width: 480px)
-  #navigation
-    text-align: center
-    position: relative;
-    .header
-      display: none
-    ul
-      float: none
-      margin: 0 auto
-      display: inline-block;
-      position: relative;
-  #header
-    padding: 0px 10px 10px 10px
-    h1
-      text-align: center
-  #body
-    width: auto
-    max-width: 440px
-    pre
-      font-size: 10px;
+  body
+    .header ul, .header li, .section li, .header p, .header ol, .section p, .section ul, .section ol, .section cite
+      font-size: 13px
+      line-height: auto
+  pre code
+    font-size: 10px;
+    line-height: auto
+  content
+    margin-left: 0px
