@@ -12,6 +12,7 @@ html ->
     meta name: "keywords", content: t("keywords")
     meta name: "robots", content: t("robots")
     meta name: "author", content: t("author")
+    meta name: "viewport", content: "width=device-width, initial-scale=1.0"
     
     stylesheetTag "http://fonts.googleapis.com/css?family=Forum|Josefin+Sans:400,700"
     #stylesheets "lib", "vendor", "application"
