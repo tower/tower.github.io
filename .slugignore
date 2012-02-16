@@ -2,7 +2,6 @@
 *.pdf
 test
 spec
-./docs
 README.markdown
 Watchfile
 .gitignore
