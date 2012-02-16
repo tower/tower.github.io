@@ -42,6 +42,10 @@ Tower.View.cache = {
         javascriptTag("https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js");
         javascripts("vendor", "lib", "application");
         if (Tower.env === "development") javascripts("development");
+        link({
+          href: "http://i.imgur.com/e3VLW.png",
+          rel: "icon shortcut-icon favicon"
+        });
         contentFor("bottom", function() {
           return javascripts("bottom");
         });
