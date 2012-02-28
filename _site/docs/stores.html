@@ -1,0 +1,133 @@
+<header class="header subhead" id="overview"><h1>Stores</h1>
+<nav class="subnav"><ul class="nav nav-pills"><li><a href="#persistence">persistence</a></li><li><a href="#querying">querying</a></li><li><a href="#memory">memory</a></li><li><a href="#mongodb">mongodb</a></li></ul></nav></header><section class="section" id="persistence"><h1>Persistence</h1>
+
+<p>Each <code>Tower.Store</code> method requires exact parameters (there&#39;s no argument overloading).</p>
+
+<p>The store is used by the <code>Tower.Model</code> internally.</p>
+
+<ul>
+<li><code>Store#find</code></li>
+<li><code>Store#create</code></li>
+<li><code>Store#update</code></li>
+<li><code>Store#destroy</code></li>
+</ul>
+
+<h2><code>Store#find</code></h2>
+
+<p>Returns an array of models.  The database is free to perform more fine-grained optimizations, such as making a <code>collection.findOne</code> call in mongodb if there&#39;s only one <code>id</code> we&#39;re searching by.</p>
+
+<pre><code class="coffeescript">store.find { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } }
+store.find { &quot;id&quot; : { &quot;$nin&quot;: [1, 2, 3] } }
+store.find { &quot;tags&quot; : { &quot;$all&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }
+store.find { &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }
+store.find { &quot;$or&quot;: [ { &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }, { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } } ] }
+</code></pre>
+
+<h2><code>Store#create</code></h2>
+
+<p>Creates one model.</p>
+
+<pre><code class="coffeescript">store.create { &quot;tags&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }
+</code></pre>
+
+<h2><code>Store#update</code></h2>
+
+<p>Updates any models matching the query.</p>
+
+<pre><code class="coffeescript">store.update { &quot;$set&quot;: { &quot;tags&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] } }, { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } }
+</code></pre>
+
+<h2><code>Store#destroy</code></h2>
+
+<p>Deletes any models matching the query.</p>
+
+<pre><code class="coffeescript">store.destroy { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } }
+</code></pre>
+</section><section class="section" id="querying"><h1>Querying</h1>
+
+<h2>Operators</h2>
+
+<h3><code>$eq</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;status&quot; : &quot;active&quot; }
+store.find { &quot;status&quot; : &quot;$eq&quot; : &quot;active&quot; }
+</code></pre>
+
+<h3><code>$ne</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;status&quot; : &quot;$ne&quot; : &quot;inactive&quot; }
+</code></pre>
+
+<h3><code>&lt;, &lt;=, &gt;, &gt;=</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;likeCount&quot; : &quot;&gt;=&quot; : 10 }
+store.find { &quot;likeCount&quot; : &quot;$gte&quot; : 10 }
+</code></pre>
+
+<h3><code>$all</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$all&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] } }
+</code></pre>
+
+<h3><code>$in</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] } }
+</code></pre>
+
+<h3><code>$nin</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$nin&quot; : [&quot;java&quot;, &quot;asp&quot;] } }
+</code></pre>
+
+<h3><code>$match</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;name&quot; : /acme.*corp/i }
+</code></pre>
+
+<h3><code>$notMatch</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;name&quot; : /acme.*corp/i }
+</code></pre>
+
+<h3><code>$or</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;$or&quot;: [ { &quot;likeCount&quot; : 1000 }, { &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } } ] }
+</code></pre>
+
+<h3><code>$nor</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;$nor&quot;: [ { &quot;likeCount&quot; : 1000 }, { &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } } ] }
+</code></pre>
+
+<h3><code>$and</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;$and&quot; : [ { &quot;a&quot; : 1 }, { &quot;a&quot; : { $gt: 5 } } ] }
+</code></pre>
+
+<h2>Sorting</h2>
+
+<h3><code>sort</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }, &quot;sort&quot;: [[&quot;title&quot;, &quot;asc&quot;]] }
+</code></pre>
+
+<h2>Paginating</h2>
+
+<h3><code>limit</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }, &quot;limit&quot;: 20 }
+</code></pre>
+
+<h3><code>offset</code></h3>
+
+<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }, &quot;offset&quot;: 10 }
+</code></pre>
+
+<h2>Selecting Specific Fields</h2>
+
+<h3><code>fields</code></h3>
+</section><section class="section" id="memory"><h1>Memory Store</h1>
+
+<p>The memory story stores all the records in a JavaScript object.  It can perform all the same advanced queries as <code>Tower.Store.MongoDB</code>, making it really easy to reuse server-side model code on the client.</p>
+</section><section class="section" id="mongodb"><h1>MongoDB Store</h1>
+</section>
