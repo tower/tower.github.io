@@ -270,10 +270,10 @@ tableFor &quot;posts&quot;, (t) -&gt;
       t.row -&gt;
         t.cell post.get(&quot;title&quot;)
         t.cell post.get(&quot;body&quot;)
-        t.cell linkTo &#39;Show&#39;, post
-        t.cell linkTo &#39;Edit&#39;, Tower.urlFor(post, action: &quot;edit&quot;)
-        t.cell linkTo &#39;Destroy&#39;, post, method: &quot;delete&quot;
-  linkTo &#39;New Post&#39;, Tower.urlFor(App.Post, action: &quot;new&quot;)
+        t.cell linkTo &#39;Show&#39;, urlFor(post)
+        t.cell linkTo &#39;Edit&#39;, urlFor(post, action: &quot;edit&quot;)
+        t.cell linkTo &#39;Destroy&#39;, urlFor(post), method: &quot;delete&quot;
+  linkTo &#39;New Post&#39;, urlFor(App.Post, action: &quot;new&quot;)
 </code></pre>
 
 <h3>Layouts</h3>
