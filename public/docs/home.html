@@ -131,7 +131,7 @@ class App.User extends Tower.Model
   @hasOne &quot;address&quot;, embed: true
 
   @hasMany &quot;posts&quot;
-  @hasmany &quot;comments&quot;
+  @hasMany &quot;comments&quot;
 
   @scope &quot;thisWeek&quot;, -&gt; @where(createdAt: &quot;&gt;=&quot;: -&gt; require(&#39;moment&#39;)().subtract(&#39;days&#39;, 7))
 
