@@ -4,7 +4,7 @@ html ->
     meta charset: "utf-8"
     
     if @currentPage.slug == "home"
-      title "#{t("title")} - Full Stack JavaScript Framework for Node.js and the Browser"
+      title "#{t("title")} - Full Stack Web Framework for Node.js and the Browser"
     else
       title "#{t("title")} - #{@currentPage.title}"
 
