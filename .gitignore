@@ -39,3 +39,4 @@ public/assets/*.js
 # public/stylesheets/
 npm-debug.log
 tmp/
+_site/

@@ -34,7 +34,7 @@ html ->
     if Tower.env == "development"
       javascripts "development"
       
-    link href: "http://i.imgur.com/e3VLW.png", rel: "icon shortcut-icon favicon"
+    link href: "/favicon.png", rel: "icon shortcut-icon favicon"
 
     #if contentFor "headJavaScripts"
     #  yield "headJavaScripts"
