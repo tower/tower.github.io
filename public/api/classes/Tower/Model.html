@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>CoffeeScript API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+</head>
+  <body>
+    <div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <span class='title'>Model</span>
+    <nav>
+      <ul>
+        <li class='frames'>
+          (<a class='frames' href='../../frames.html'>frames</a>)
+        </li>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Class List</a>
+      <a id='method_list_link' href='../../method_list.html'>Method List</a>
+      <a id='file_list_link' href='../../file_list.html'>File List</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Tower.Model
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Inherits:</td>
+          <td>
+            <a href="../../classes/Tower/Class.html">Tower.Class</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Defined in:</td>
+          <td>src/tower/model.coffee</td>
+        </tr>
+      </table>
+      <h2>Class Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#configure-class'>
+        + (void) <strong>configure</strong>(object)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#defaults-class'>
+        + (void) <strong>defaults</strong>(object)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#default-class'>
+        + (void) <strong>default</strong>(key, value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#constructor-instance'>
+        - (void) <strong>constructor</strong>(attrs, options)
+      </a>
+    </span>
+    <span class='constructor note title'>Constructor</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#initialize-instance'>
+        - (void) <strong>initialize</strong>(attrs = {}, options = {})
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h3 class='inherited'>
+        Methods inherited from
+        <a href="../../classes/Tower/Class.html">Tower.Class</a>
+      </h3>
+      <p class='inherited'>
+                <a href="undefinedclasses/Tower/Class.html#global-class">.global</a>,
+                <a href="undefinedclasses/Tower/Class.html#alias-class">.alias</a>,
+                <a href="undefinedclasses/Tower/Class.html#accessor-class">.accessor</a>,
+                <a href="undefinedclasses/Tower/Class.html#getter-class">.getter</a>,
+                <a href="undefinedclasses/Tower/Class.html#setter-class">.setter</a>,
+                <a href="undefinedclasses/Tower/Class.html#classAlias-class">.classAlias</a>,
+                <a href="undefinedclasses/Tower/Class.html#classAccessor-class">.classAccessor</a>,
+                <a href="undefinedclasses/Tower/Class.html#classGetter-class">.classGetter</a>,
+                <a href="undefinedclasses/Tower/Class.html#classSetter-class">.classSetter</a>,
+                <a href="undefinedclasses/Tower/Class.html#classEval-class">.classEval</a>,
+                <a href="undefinedclasses/Tower/Class.html#delegate-class">.delegate</a>,
+                <a href="undefinedclasses/Tower/Class.html#mixin-class">.mixin</a>,
+                <a href="undefinedclasses/Tower/Class.html#extend-class">.extend</a>,
+                <a href="undefinedclasses/Tower/Class.html#include-class">.include</a>,
+                <a href="undefinedclasses/Tower/Class.html#className-class">.className</a>,
+                <a href="undefinedclasses/Tower/Class.html#className-instance">#className</a>,
+                <a href="undefinedclasses/Tower/Class.html#constructor-instance">#constructor</a>,
+        <a href="../../classes/Tower/Class.html#initialize-instance">#initialize</a>
+      </p>
+      <h2>Class Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='configure-class'>
+      + (void) <strong>configure</strong>(object)
+    </p>
+    <div class='docstring'>
+  
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      All configuration options
+    </h4>
+    <pre><code class='coffee'>class App.User extends Tower.Model
+  @configure</code></pre>
+    <h4>
+      Configure using a function
+    </h4>
+    <pre><code class='coffee'>class App.User extends Tower.Model
+  @configure -&gt;
+    defaultStore: Tower.Store.Memory
+</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='defaults-class'>
+      + (void) <strong>defaults</strong>(object)
+    </p>
+    <div class='docstring'>
+  
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      All default options
+    </h4>
+    <pre><code class='coffee'>class App.User extends Tower.Model
+  @defaults store: Tower.Store.Memory, scope: @desc(&quot;createdAt&quot;)
+</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='default-class'>
+      + (void) <strong>default</strong>(key, value)
+    </p>
+    <div class='docstring'>
+  
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      All default options
+    </h4>
+    <pre><code class='coffee'>class App.User extends Tower.Model
+  @default &quot;store&quot;, Tower.Store.Memory
+  @default &quot;scope&quot;, @desc(&quot;createdAt&quot;)
+</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-instance'>
+      - (void) <strong>constructor</strong>(attrs, options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='initialize-instance'>
+      - (void) <strong>initialize</strong>(attrs = {}, options = {})
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Wed Mar 21 2012 12:38:28 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
+  v0.5.0
+  (Node.js v0.6.11).
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

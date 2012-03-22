@@ -18,15 +18,7 @@ App = (function(_super) {
     if (Tower.env !== "production") this.use("profiler");
     this.use("logger");
     this.use("query");
-    this.use("cookieParser", Tower.cookieSecret);
-    this.use("session", {
-      secret: Tower.sessionSecret,
-      cookie: {
-        domain: "." + Tower.cookieDomain
-      }
-    });
     this.use("bodyParser");
-    this.use("csrf");
     this.use("methodOverride", "_method");
     this.use(Tower.Middleware.Agent);
     this.use(Tower.Middleware.Location);

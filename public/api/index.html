@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>CoffeeScript API Documentation</title>
+  <link rel='stylesheet' href='assets/codo.css' type='text/css'>
+  <script src='assets/codo.js'></script>
+</head>
+  <body>
+    <div id='header'>
+  <div id='menu'>
+    <a href='class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>README.md</span>
+    <nav>
+      <ul>
+        <li class='frames'>
+          (<a class='frames' href='frames.html'>frames</a>)
+        </li>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='class_list.html'>Class List</a>
+      <a id='method_list_link' href='method_list.html'>Method List</a>
+      <a id='file_list_link' href='file_list.html'>File List</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+</div>
+    <div id='content'>
+      <div id='filecontents'>
+        <h1>Tower.js <img src="http://i.imgur.com/e3VLW.png"/></h1>
+<blockquote>
+<p>Full Stack Web Framework for Node.js and the Browser.
+
+</p>
+</blockquote>
+<p>Built on top of Node&#39;s Connect and Express, modeled after Ruby on Rails.  Built for the client and server from the ground up.
+
+</p>
+<p><a href="http://travis-ci.org/viatropos/tower"><img src="https://secure.travis-ci.org/viatropos/tower.png" alt="Build Status"></a>
+
+</p>
+<p>Follow me <a href="http://twitter.com/viatropos">@viatropos</a>.
+
+</p>
+<p>Docs are a work in progress.
+
+</p>
+<h2>Default Development Stack</h2>
+<ul>
+<li>MongoDB (database)</li>
+<li>Redis (background jobs)</li>
+<li>CoffeeScript</li>
+<li>Stylus (LESS is also supported)</li>
+<li>Mocha (tests)</li>
+<li>jQuery</li>
+</ul>
+<p>Includes a database-agnostic ORM with browser (memory) and MongoDB support, modeled after ActiveRecord and Mongoid for Ruby.  Includes a controller architecture that works the same on both the client and server, modeled after Rails.  The routing API is pretty much exactly like Rails 3&#39;s.  Templates work on client and server as well (and you can swap in any template engine no problem).  Includes asset pipeline that works just like Rails 3&#39;s - minifies and gzips assets with an md5-hashed name for optimal browser caching, only if you so desire.  And it includes a watcher that automatically injects javascripts and stylesheets into the browser as you develop.  It solves a lot of our problems, hope it solves yours too.  If not, let me know!
+
+</p>
+<h2>Install</h2>
+<pre><code class="bash">npm install tower -g
+npm install design.io -g</code></pre>
+<h2>Generate</h2>
+<pre><code class="bash">tower new app
+cd app
+npm install
+tower generate scaffold Post title:string body:text
+node server</code></pre>
+<h2>Structure</h2>
+<p>Here&#39;s how you might organize a blog:
+
+</p>
+<pre><code class="bash">.
+|-- app
+|   |-- client
+|   |   |-- stylesheets
+|   |-- controllers
+|   |   |-- admin
+|   |   |   |-- postsController.coffee
+|   |   |   `-- usersController.coffee
+|   |   |-- commentsController.coffee
+|   |   |-- postsController.coffee
+|   |   |-- sessionsController.coffee
+|   |   `-- usersController.coffee
+|   |-- models
+|   |   |-- comment.coffee
+|   |   |-- post.coffee
+|   |   `-- user.coffee
+|   |-- views
+|   |   |-- admin
+|   |   |   `-- posts
+|   |   |       |-- _form.coffee
+|   |   |       |-- edit.coffee
+|   |   |       |-- index.coffee
+|   |   |       |-- new.coffee
+|   |   |       |-- show.coffee
+|   |   |-- layouts
+|   |   |   `-- application.coffee
+|   |   |-- shared
+|   |   `-- posts
+|   |       |-- index.coffee
+|   |       `-- show.coffee
+|   `-- helpers
+|       |-- admin
+|       |   |-- postsHelper.coffee
+|       |   `-- usersHelper.coffee
+|       `-- postsHelper.coffee
+`-- config
+|    |-- application.coffee
+|    |-- assets.coffee
+|    |-- databases.coffee
+|    |-- environments
+|       |-- development
+|       |-- production
+|       `-- test
+|    |-- locale
+|       `-- en.coffee
+|    |-- routes.coffee
+`-- test
+|    |-- helper.coffee
+|    |-- models
+|    |   |-- postTest.coffee
+|    |   |-- userTest.coffee
+|    `-- acceptance
+|        |-- login.coffee
+|        |-- signup.coffee
+|        `-- posts.coffee</code></pre>
+<h2>Application</h2>
+<pre><code class="coffeescript"># config/application.coffee
+class App extends Tower.Application
+  @configure -&gt;
+    @use &quot;favicon&quot;, Tower.publicPath + &quot;/favicon.ico&quot;
+    @use &quot;static&quot;,  Tower.publicPath, maxAge: Tower.publicCacheDuration
+    @use &quot;profiler&quot; if Tower.env != &quot;production&quot;
+    @use &quot;logger&quot;
+    @use &quot;query&quot;
+    @use &quot;cookieParser&quot;, Tower.session.secret
+    @use &quot;session&quot;, Tower.session.key
+    @use &quot;bodyParser&quot;
+    @use &quot;csrf&quot;
+    @use &quot;methodOverride&quot;, &quot;_method&quot;
+    @use Tower.Middleware.Agent
+    @use Tower.Middleware.Location
+    @use Tower.Middleware.Router
+
+module.exports = global.App = App</code></pre>
+<h2>Models</h2>
+<pre><code class="coffeescript"># app/models/user.coffee
+class App.User extends Tower.Model
+  @field &quot;firstName&quot;
+  @field &quot;lastName&quot;
+  @field &quot;email&quot;
+  @field &quot;activatedAt&quot;, type: &quot;Date&quot;, default: -&gt; new Date()
+
+  @hasOne &quot;address&quot;, embed: true
+
+  @hasMany &quot;posts&quot;
+  @hasMany &quot;comments&quot;
+
+  @scope &quot;thisWeek&quot;, -&gt; @where(createdAt: &quot;&gt;=&quot;: -&gt; require(&#39;moment&#39;)().subtract(&#39;days&#39;, 7))
+
+  @validates &quot;firstName&quot;, presence: true
+  @validates &quot;email&quot;, format: /\w+@\w+.com/
+
+  @after &quot;create&quot;, &quot;welcome&quot;
+
+  welcome: -&gt;
+    Tower.Mailer.welcome(@).deliver()</code></pre>
+<pre><code class="coffeescript"># app/models/post.coffee
+class App.Post extends Tower.Model
+  @field &quot;title&quot;
+  @field &quot;body&quot;
+  @field &quot;tags&quot;, type: [&quot;String&quot;], default: []
+  @field &quot;slug&quot;
+
+  @belongsTo &quot;author&quot;, type: &quot;User&quot;
+
+  @hasMany &quot;comments&quot;, as: &quot;commentable&quot;
+
+  @before &quot;validate&quot;, &quot;slugify&quot;
+
+  slugify: -&gt;
+    @set &quot;slug&quot;, @get(&quot;title&quot;).replace(/[^a-z0-9]+/g, &quot;-&quot;).toLowerCase()</code></pre>
+<pre><code class="coffeescript"># app/models/comment.coffee
+class App.Comment extends Tower.Model
+  @field &quot;message&quot;
+
+  @belongsTo &quot;author&quot;, type: &quot;User&quot;
+  @belongsTo &quot;commentable&quot;, polymorphic: true</code></pre>
+<pre><code class="coffeescript"># app/models/address.coffee
+class App.Address extends Tower.Model
+  @field &quot;street&quot;
+  @field &quot;city&quot;
+  @field &quot;state&quot;
+  @field &quot;zip&quot;
+  @field &quot;coordinates&quot;, type: &quot;Geo&quot;
+
+  @belongsTo &quot;user&quot;, embed: true</code></pre>
+<h3>Chainable Scopes, Queries, and Pagination</h3>
+<pre><code class="coffeescript">App.User
+  .where(createdAt: &quot;&gt;=&quot;: _(2).days().ago(), &quot;&lt;=&quot;: new Date())
+  .desc(&quot;createdAt&quot;)
+  .asc(&quot;firstName&quot;)
+  .paginate(page: 5)
+  .all()</code></pre>
+<h3>Associations</h3>
+<pre><code class="coffeescript">user  = App.User.first()
+
+# hasMany &quot;posts&quot;
+posts = user.posts().where(title: &quot;First Post&quot;).first()
+post  = user.posts().build(title: &quot;A Post!&quot;)
+post  = user.posts().create(title: &quot;A Saved Post!&quot;)
+posts = user.posts().all()
+
+post  = App.Post.first()
+
+# belongsTo &quot;author&quot;
+user  = post.author()</code></pre>
+<h3>Validations</h3>
+<pre><code class="coffeescript">user = new User
+user.save() #=&gt; false
+user.errors #=&gt; {&quot;email&quot;: [&quot;Email must be present&quot;]}
+user.email  = &quot;me@gmail.com&quot;
+user.save() #=&gt; true
+user.errors #=&gt; {}</code></pre>
+<h2>Routes</h2>
+<pre><code class="coffeescript"># config/routes.coffee
+Tower.Route.draw -&gt;
+  @match &quot;/login&quot;, &quot;sessions#new&quot;, via: &quot;get&quot;, as: &quot;login&quot;
+  @match &quot;/logout&quot;, &quot;sessions#destroy&quot;, via: &quot;get&quot;, as: &quot;logout&quot;
+
+  @resources &quot;posts&quot;, -&gt;
+    @resources &quot;comments&quot;
+
+  @namespace &quot;admin&quot;, -&gt;
+    @resources &quot;users&quot;
+    @resources &quot;posts&quot;, -&gt;
+      @resources &quot;comments&quot;
+
+  @constraints subdomain: /^api$/, -&gt;
+    @resources &quot;posts&quot;, -&gt;
+      @resources &quot;comments&quot;
+
+  @match &quot;(/*path)&quot;, to: &quot;application#index&quot;, via: &quot;get&quot;</code></pre>
+<h2>Views</h2>
+<p>Views adhere to the <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2.x</a> markup conventions.
+
+</p>
+<h3>Forms</h3>
+<pre><code class="coffeescript"># app/views/posts/new.coffee
+formFor &quot;post&quot;, (f) -&gt;
+  f.fieldset (fields) -&gt;
+    fields.field &quot;title&quot;, as: &quot;string&quot;
+    fields.field &quot;body&quot;, as: &quot;text&quot;
+
+  f.fieldset (fields) -&gt;
+    fields.submit &quot;Submit&quot;</code></pre>
+<h3>Tables</h3>
+<pre><code class="coffeescript"># app/views/posts/index.coffee
+tableFor &quot;posts&quot;, (t) -&gt;
+  t.head -&gt;
+    t.row -&gt;
+      t.cell &quot;title&quot;, sort: true
+      t.cell &quot;body&quot;, sort: true
+      t.cell()
+      t.cell()
+      t.cell()
+  t.body -&gt;
+    for post in @posts
+      t.row -&gt;
+        t.cell post.get(&quot;title&quot;)
+        t.cell post.get(&quot;body&quot;)
+        t.cell linkTo &#39;Show&#39;, post
+        t.cell linkTo &#39;Edit&#39;, Tower.urlFor(post, action: &quot;edit&quot;)
+        t.cell linkTo &#39;Destroy&#39;, post, method: &quot;delete&quot;
+  linkTo &#39;New Post&#39;, Tower.urlFor(App.Post, action: &quot;new&quot;)</code></pre>
+<h3>Layouts</h3>
+<pre><code class="coffeescript"># app/views/layouts/application.coffee
+doctype 5
+html -&gt;
+  head -&gt;
+    meta charset: &quot;utf-8&quot;
+
+    title t(&quot;title&quot;)
+
+    meta name: &quot;description&quot;, content: t(&quot;description&quot;)
+    meta name: &quot;keywords&quot;, content: t(&quot;keywords&quot;)
+    meta name: &quot;robots&quot;, content: t(&quot;robots&quot;)
+    meta name: &quot;author&quot;, content: t(&quot;author&quot;)
+
+    csrfMetaTag()
+
+    appleViewportMetaTag width: &quot;device-width&quot;, max: 1, scalable: false
+
+    stylesheets &quot;lib&quot;, &quot;vendor&quot;, &quot;application&quot;
+
+    javascriptTag &quot;https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js&quot;
+    javascripts &quot;vendor&quot;, &quot;lib&quot;, &quot;application&quot;
+
+  body role: &quot;application&quot;, -&gt;
+    if hasContentFor &quot;templates&quot;
+      yield &quot;templates&quot;
+
+    nav id: &quot;navigation&quot;, role: &quot;navigation&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        partial &quot;shared/navigation&quot;
+
+    header id: &quot;header&quot;, role: &quot;banner&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        partial &quot;shared/header&quot;
+
+    section id: &quot;body&quot;, role: &quot;main&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        yields &quot;body&quot;
+        aside id: &quot;sidebar&quot;, role: &quot;complementary&quot;, -&gt;
+          if hasContentFor &quot;sidebar&quot;
+            yields &quot;sidebar&quot;
+
+    footer id: &quot;footer&quot;, role: &quot;contentinfo&quot;, -&gt;
+      div class: &quot;frame&quot;, -&gt;
+        partial &quot;shared/footer&quot;
+
+  if hasContentFor &quot;popups&quot;
+    aside id: &quot;popups&quot;, -&gt;
+      yields &quot;popups&quot;
+
+  if hasContentFor &quot;bottom&quot;
+    yields &quot;bottom&quot;</code></pre>
+<p>The default templating engine is <a href="http://coffeekup.org/">CoffeeKup</a>, which is pure CoffeeScript.  It&#39;s much more powerful than Jade, and it&#39;s just as performant if not more so.  You can set Jade or any other templating engine as the default by setting <code>Tower.View.engine = &quot;jade&quot;</code> in <code>config/application</code>.  Tower uses <a href="http://github.com/viatropos/mint.js">Mint.js</a>, which is a normalized interface to most of the Node.js templating languages.
+
+</p>
+<h2>Styles</h2>
+<p>It&#39;s all using Twitter Bootstrap, so check out their docs.  <a href="http://twitter.github.com/bootstrap/">http://twitter.github.com/bootstrap/</a>
+
+</p>
+<h2>Controllers</h2>
+<pre><code class="coffeescript"># app/controllers/postsController.coffee
+class App.PostsController extends Tower.Controller
+  index: -&gt;
+    App.Post.all (error, posts) =&gt;
+      @render &quot;index&quot;, locals: posts: posts
+
+  new: -&gt;
+    @post = new App.Post
+    @render &quot;new&quot;
+
+  create: -&gt;
+    @post = new App.Post(@params.post)
+
+    super (success, failure) -&gt;
+      @success.html =&gt; @render &quot;posts/edit&quot;
+      @success.json =&gt; @render text: &quot;success!&quot;
+      @failure.html =&gt; @render text: &quot;Error&quot;, status: 404
+      @failure.json =&gt; @render text: &quot;Error&quot;, status: 404
+
+  show: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render &quot;show&quot;
+
+  edit: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render &quot;edit&quot;
+
+  update: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      post.updateAttributes @params.post, (error) =&gt;
+        @redirectTo action: &quot;show&quot;
+
+  destroy: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      post.destroy (error) =&gt;
+        @redirectTo action: &quot;index&quot;</code></pre>
+<p>Actually, all that&#39;s built in!  So for the simple case you don&#39;t even need to write anything in your controllers (skinny controllers, fat models).  The default implementation is actually a lot more robust than that, just wanted to show a simple example.
+
+</p>
+<h2>Databases</h2>
+<pre><code class="coffeescript"># config/databases.coffee
+module.exports =
+  mongodb:
+    development:
+      name: &quot;app-development&quot;
+      port: 27017
+      host: &quot;127.0.0.1&quot;
+    test:
+      name: &quot;app-test&quot;
+      port: 27017
+      host: &quot;127.0.0.1&quot;
+    staging:
+      name: &quot;app-staging&quot;
+      port: 27017
+      host: &quot;127.0.0.1&quot;
+    production:
+      name: &quot;app-production&quot;
+      port: 27017
+      host: &quot;127.0.0.1&quot;</code></pre>
+<h2>Mailers</h2>
+<pre><code class="coffeescript">class App.Notification extends Tower.Mailer
+  # app/views/mailers/welcome.coffee template
+  @welcome: (user) -&gt;
+    @mail to: user.email, from: &quot;me@gmail.com&quot;</code></pre>
+<h2>Internationalization</h2>
+<pre><code class="coffeescript"># config/locales/en.coffee
+module.exports =
+  hello: &quot;world&quot;
+  forms:
+    titles:
+      signup: &quot;Signup&quot;
+  pages:
+    titles:
+      home: &quot;Welcome to %{site}&quot;
+  posts:
+    comments:
+      none: &quot;No comments&quot;
+      one: &quot;1 comment&quot;
+      other: &quot;%{count} comments&quot;
+  messages:
+    past:
+      none: &quot;You never had any messages&quot;
+      one: &quot;You had 1 message&quot;
+      other: &quot;You had %{count} messages&quot;
+    present:
+      one: &quot;You have 1 message&quot;
+    future:
+      one: &quot;You might have 1 message&quot;</code></pre>
+<h2>Helpers</h2>
+<p>Since all of the controller/routing code is available on the client, you can go directly through that system just like you would the server.
+
+</p>
+<pre><code class="coffeescript"># Just request the url, and let it do it&#39;s thing
+Tower.get &#39;/posts&#39;
+
+# Same thing, this time passing parameters
+Tower.get &#39;/posts&#39;, createdAt: &quot;2011-10-26..2011-10-31&quot;
+
+# Dynamic
+Tower.urlFor(Post.first()) #=&gt; &quot;/posts/the-id&quot;</code></pre>
+<p>Those methods pass through the router and client-side middleware so you have access to <code>request</code> and <code>response</code> objects like you would on the server.
+
+</p>
+<h2>Middleware</h2>
+<p>It&#39;s built on <a href="http://github.com/sencha/connect">connect</a>, so you can use any of the middleware libs out there.
+
+</p>
+<h2>Assets</h2>
+<pre><code class="coffeescript"># config/assets.coffee
+module.exports =
+  javascripts:
+    vendor: [
+      &quot;/vendor/javascripts/jquery.js&quot;
+      &quot;/vendor/javascripts/underscore.js&quot;
+      &quot;/vendor/javascripts/socket.io&quot;
+      &quot;/vendor/javascripts/tower.js&quot;
+    ]
+
+    lib: [
+      &quot;/lib/grid.js&quot;
+      &quot;/lib/profiler.js&quot;
+    ]
+
+    application: [
+      &quot;/app/models/post.js&quot;
+      &quot;/app/models/comment.js&quot;
+    ]
+
+  stylesheets:
+    vendor: [
+      &quot;/vendor/stylesheets/reset.css&quot;
+    ]
+    application: [
+      &quot;/app/assets/stylesheets/application.css&quot;
+      &quot;/app/assets/stylesheets/theme.css&quot;
+    ]</code></pre>
+<p>All assets are read from <code>/public</code>, which is the compiled output of everything in <code>/app</code>, <code>/lib</code>, <code>/vendor</code>, and wherever else you might put things.  The default is to use stylus for css in <code>/app/assets/stylesheets</code>.
+
+</p>
+<p>By having this <code>assets.coffee</code> file, you can specify exactly how you want to compile your files for the client so it&#39;s as optimized and cacheable as possible in production.
+
+</p>
+<h3>Minify and Gzip</h3>
+<pre><code class="bash">cake assets:compile</code></pre>
+<h3>Push to S3</h3>
+<pre><code class="bash">cake assets:publish</code></pre>
+<h2>Watchfile</h2>
+<pre><code class="coffeescript">require(&#39;design.io&#39;).extension(&#39;watchfile&#39;)
+
+# stylesheet watcher
+require(&quot;design.io-stylesheets&quot;)
+  ignore: /(public|node_modules|zzz|less)/
+  outputPath: (path) -&gt;
+    &quot;public/stylesheets/#{path}&quot;.replace(/\.(css|styl|less)$/, &quot;.css&quot;)
+
+# javascript watcher
+require(&quot;design.io-javascripts&quot;)
+  ignore:   /(public|node_modules|server|spec.*[sS]pec)/
+  outputPath: (path) -&gt;
+    &quot;public/javascripts/#{path}&quot;.replace(/\.(js|coffee)$/, &quot;.js&quot;)
+
+watch /app\/views\/.+\.mustache/
+  update: (path) -&gt;
+    # do anything!</code></pre>
+<h2>Test</h2>
+<pre><code class="bash">npm test</code></pre>
+<h2>Examples</h2>
+<ul>
+<li><a href="https://github.com/viatropos/towerjs.org">towerjs.org (project site)</a></li>
+</ul>
+<h2>Accent Libraries</h2>
+<p>Tower.js is just the bare bones, so you&#39;re free to choose a date parsing library, a template engine, or a form validation library, whatever.
+
+</p>
+<p>Here&#39;s some other useful libraries:
+
+</p>
+<ul>
+<li><a href="http://momentjs.com/">moment.js</a> for date parsing</li>
+<li><a href="http://documentcloud.github.com/underscore/">underscore.js</a></li>
+<li><a href="http://socket.io/">socket.io</a> for web sockets.</li>
+<li><a href="https://github.com/caolan/async">async.js</a> for taming callback spaghetti</li>
+<li><a href="https://github.com/manuelbieh/Geolib">geolib</a> for geo calculations</li>
+<li><a href="https://github.com/viatropos/tiny-require.js">tiny-require.js</a> for using <code>require()</code> in the browser</li>
+<li><a href="https://github.com/viatropos/mint.js">mint.js</a> for a generic interface to the JavaScript template engines</li>
+</ul>
+<h2>License</h2>
+<p>(The MIT License)
+
+</p>
+<p>Copyright &copy; 2012 <a href="http://twitter.com/viatropos">Lance Pollard</a> &lt;lancejpollard@gmail.com&gt;
+
+</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &#39;Software&#39;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+</p>
+<p>THE SOFTWARE IS PROVIDED &#39;AS IS&#39;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+      </div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Wed Mar 21 2012 12:38:28 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
+  v0.5.0
+  (Node.js v0.6.11).
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

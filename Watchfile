@@ -2,7 +2,6 @@ require('design.io').extension('watchfile')
 
 async = require('async')
 File  = require('pathfinder').File
-Shift = require('shift')
 
 require("design.io-stylesheets") /(app\/client|lib\/stylesheets)/
   compress: false
@@ -17,6 +16,7 @@ require("design.io-javascripts")
   ignore:   /(public|node_modules|server|test.*|spec.*[sS]pec|app\/views)/
   outputPath: (path) ->
     "public/javascripts/#{path}".replace(/\.(js|coffee)/, ".js")
+
 
 watch /app\/views.*\.coffee$/
   update: (path, callback) ->

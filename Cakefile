@@ -178,3 +178,10 @@ task 'compile', ->
   pages = [overview, models, controllers, views, stores, assets, generators, application, testing]
   
   async.forEachSeries pages, compilePage, (error) ->
+    
+    
+task 'copy-docs', ->
+  wrench  = require 'wrench'
+  from    = "/Users/viatropos/Documents/git/personal/plugins/tower.js/doc"
+  to      = "./public/api"
+  wrench.copyDirSyncRecursive(from, to)

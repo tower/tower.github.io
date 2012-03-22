@@ -5,10 +5,10 @@ class App extends Tower.Application
     @use "profiler" if Tower.env != "production"
     @use "logger"
     @use "query"
-    @use "cookieParser", Tower.cookieSecret
-    @use "session", secret: Tower.sessionSecret, cookie: {domain: ".#{Tower.cookieDomain}"}
+    #@use "cookieParser", Tower.cookieSecret
+    #@use "session", secret: Tower.sessionSecret, cookie: {domain: ".#{Tower.cookieDomain}"}
     @use "bodyParser"
-    @use "csrf"
+    #@use "csrf"
     @use "methodOverride", "_method"
     @use Tower.Middleware.Agent
     @use Tower.Middleware.Location

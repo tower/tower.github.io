@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>CoffeeScript API Documentation</title>
+  <link rel='stylesheet' href='../../../assets/codo.css' type='text/css'>
+  <script src='../../../assets/codo.js'></script>
+</head>
+  <body>
+    <div id='header'>
+  <div id='menu'>
+    <a href='../../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <a href='../../../classes/Tower/Store.html' title='Store'>Store</a>
+    &raquo;
+    <span class='title'>Ajax</span>
+    <nav>
+      <ul>
+        <li class='frames'>
+          (<a class='frames' href='../../../frames.html'>frames</a>)
+        </li>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../../class_list.html'>Class List</a>
+      <a id='method_list_link' href='../../../method_list.html'>Method List</a>
+      <a id='file_list_link' href='../../../file_list.html'>File List</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Tower.Store.Ajax
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Inherits:</td>
+          <td>
+            <a href="../../../classes/Tower/Store/Memory.html">Tower.Store.Memory</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Defined in:</td>
+          <td>src/tower/client/store/ajax.coffee</td>
+        </tr>
+      </table>
+      <h2>Constant Summary</h2>
+      <h3 class='inherited'>
+        Constants inherited from
+        <a href="../../../classes/Tower/Store.html">Tower.Store</a>
+      </h3>
+      <p class='inherited'>
+                <a href="undefinedclasses/Tower/Store.html#defaultLimit-constant">defaultLimit</a>,
+                <a href="undefinedclasses/Tower/Store.html#atomicModifiers-constant">atomicModifiers</a>,
+        <a href="../../../classes/Tower/Store.html#queryOperators-constant">queryOperators</a>
+      </p>
+      <h2>Class Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#ajax-class'>
+        + (void) <strong>ajax</strong>(params, defaults)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toJSON-class'>
+        + (void) <strong>toJSON</strong>(record, format, method)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#disable-class'>
+        + (void) <strong>disable</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#requestNext-class'>
+        + (void) <strong>requestNext</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#request-class'>
+        + (void) <strong>request</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#queue-class'>
+        + (void) <strong>queue</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#constructor-instance'>
+        - (void) <strong>constructor</strong>()
+      </a>
+    </span>
+    <span class='constructor note title'>Constructor</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#success-instance'>
+        - (void) <strong>success</strong>(record, options = {})
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#failure-instance'>
+        - (void) <strong>failure</strong>(record, options = {})
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#queue-instance'>
+        - (void) <strong>queue</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#request-instance'>
+        - (void) <strong>request</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#ajax-instance'>
+        - (void) <strong>ajax</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toJSON-instance'>
+        - (void) <strong>toJSON</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#create-instance'>
+        - (void) <strong>create</strong>(data, options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#update-instance'>
+        - (void) <strong>update</strong>(updates, query, options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroy-instance'>
+        - (void) <strong>destroy</strong>(query, options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#createRequest-instance'>
+        - (void) <strong>createRequest</strong>(records, options = {})
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#createSuccess-instance'>
+        - (void) <strong>createSuccess</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#createFailure-instance'>
+        - (void) <strong>createFailure</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#updateRequest-instance'>
+        - (void) <strong>updateRequest</strong>(record, options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#updateSuccess-instance'>
+        - (void) <strong>updateSuccess</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#updateFailure-instance'>
+        - (void) <strong>updateFailure</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroyRequest-instance'>
+        - (void) <strong>destroyRequest</strong>(record, options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroySuccess-instance'>
+        - (void) <strong>destroySuccess</strong>(data)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroyFailure-instance'>
+        - (void) <strong>destroyFailure</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findRequest-instance'>
+        - (void) <strong>findRequest</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findSuccess-instance'>
+        - (void) <strong>findSuccess</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findFailure-instance'>
+        - (void) <strong>findFailure</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findOneRequest-instance'>
+        - (void) <strong>findOneRequest</strong>(options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findOneSuccess-instance'>
+        - (void) <strong>findOneSuccess</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findOneFailure-instance'>
+        - (void) <strong>findOneFailure</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#refresh-instance'>
+        - (void) <strong>refresh</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#fetch-instance'>
+        - (void) <strong>fetch</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h3 class='inherited'>
+        Methods inherited from
+        <a href="../../../classes/Tower/Store/Memory.html">Tower.Store.Memory</a>
+      </h3>
+      <p class='inherited'>
+                <a href="undefinedclasses/Tower/Store/Memory.html#stores-class">.stores</a>,
+                <a href="undefinedclasses/Tower/Store/Memory.html#clear-class">.clear</a>,
+                <a href="undefinedclasses/Tower/Store/Memory.html#constructor-instance">#constructor</a>,
+        <a href="../../../classes/Tower/Store/Memory.html#initialize-instance">#initialize</a>
+      </p>
+      <h3 class='inherited'>
+        Methods inherited from
+        <a href="../../../classes/Tower/Store.html">Tower.Store</a>
+      </h3>
+      <p class='inherited'>
+                <a href="undefinedclasses/Tower/Store.html#isKeyword-class">.isKeyword</a>,
+                <a href="undefinedclasses/Tower/Store.html#hasKeyword-class">.hasKeyword</a>,
+                <a href="undefinedclasses/Tower/Store.html#serialize-instance">#serialize</a>,
+                <a href="undefinedclasses/Tower/Store.html#deserialize-instance">#deserialize</a>,
+                <a href="undefinedclasses/Tower/Store.html#serializeModel-instance">#serializeModel</a>,
+                <a href="undefinedclasses/Tower/Store.html#deserializeModel-instance">#deserializeModel</a>,
+                <a href="undefinedclasses/Tower/Store.html#constructor-instance">#constructor</a>,
+                <a href="undefinedclasses/Tower/Store.html#_defaultOptions-instance">#_defaultOptions</a>,
+                <a href="undefinedclasses/Tower/Store.html#load-instance">#load</a>,
+                <a href="undefinedclasses/Tower/Store.html#fetch-instance">#fetch</a>,
+                <a href="undefinedclasses/Tower/Store.html#schema-instance">#schema</a>,
+        <a href="../../../classes/Tower/Store.html#supports-instance">#supports</a>
+      </p>
+      <h3 class='inherited'>
+        Methods inherited from
+        <a href="../../../classes/Tower/Class.html">Tower.Class</a>
+      </h3>
+      <p class='inherited'>
+                <a href="undefinedclasses/Tower/Class.html#global-class">.global</a>,
+                <a href="undefinedclasses/Tower/Class.html#alias-class">.alias</a>,
+                <a href="undefinedclasses/Tower/Class.html#accessor-class">.accessor</a>,
+                <a href="undefinedclasses/Tower/Class.html#getter-class">.getter</a>,
+                <a href="undefinedclasses/Tower/Class.html#setter-class">.setter</a>,
+                <a href="undefinedclasses/Tower/Class.html#classAlias-class">.classAlias</a>,
+                <a href="undefinedclasses/Tower/Class.html#classAccessor-class">.classAccessor</a>,
+                <a href="undefinedclasses/Tower/Class.html#classGetter-class">.classGetter</a>,
+                <a href="undefinedclasses/Tower/Class.html#classSetter-class">.classSetter</a>,
+                <a href="undefinedclasses/Tower/Class.html#classEval-class">.classEval</a>,
+                <a href="undefinedclasses/Tower/Class.html#delegate-class">.delegate</a>,
+                <a href="undefinedclasses/Tower/Class.html#mixin-class">.mixin</a>,
+                <a href="undefinedclasses/Tower/Class.html#extend-class">.extend</a>,
+                <a href="undefinedclasses/Tower/Class.html#include-class">.include</a>,
+                <a href="undefinedclasses/Tower/Class.html#className-class">.className</a>,
+                <a href="undefinedclasses/Tower/Class.html#className-instance">#className</a>,
+                <a href="undefinedclasses/Tower/Class.html#constructor-instance">#constructor</a>,
+        <a href="../../../classes/Tower/Class.html#initialize-instance">#initialize</a>
+      </p>
+      <h2>Class Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='ajax-class'>
+      + (void) <strong>ajax</strong>(params, defaults)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='toJSON-class'>
+      + (void) <strong>toJSON</strong>(record, format, method)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='disable-class'>
+      + (void) <strong>disable</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='requestNext-class'>
+      + (void) <strong>requestNext</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='request-class'>
+      + (void) <strong>request</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='queue-class'>
+      + (void) <strong>queue</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-instance'>
+      - (void) <strong>constructor</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='success-instance'>
+      - (void) <strong>success</strong>(record, options = {})
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='failure-instance'>
+      - (void) <strong>failure</strong>(record, options = {})
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='queue-instance'>
+      - (void) <strong>queue</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='request-instance'>
+      - (void) <strong>request</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='ajax-instance'>
+      - (void) <strong>ajax</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='toJSON-instance'>
+      - (void) <strong>toJSON</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='create-instance'>
+      - (void) <strong>create</strong>(data, options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='update-instance'>
+      - (void) <strong>update</strong>(updates, query, options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroy-instance'>
+      - (void) <strong>destroy</strong>(query, options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='createRequest-instance'>
+      - (void) <strong>createRequest</strong>(records, options = {})
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='createSuccess-instance'>
+      - (void) <strong>createSuccess</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='createFailure-instance'>
+      - (void) <strong>createFailure</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='updateRequest-instance'>
+      - (void) <strong>updateRequest</strong>(record, options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='updateSuccess-instance'>
+      - (void) <strong>updateSuccess</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='updateFailure-instance'>
+      - (void) <strong>updateFailure</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroyRequest-instance'>
+      - (void) <strong>destroyRequest</strong>(record, options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroySuccess-instance'>
+      - (void) <strong>destroySuccess</strong>(data)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroyFailure-instance'>
+      - (void) <strong>destroyFailure</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findRequest-instance'>
+      - (void) <strong>findRequest</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findSuccess-instance'>
+      - (void) <strong>findSuccess</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findFailure-instance'>
+      - (void) <strong>findFailure</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findOneRequest-instance'>
+      - (void) <strong>findOneRequest</strong>(options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findOneSuccess-instance'>
+      - (void) <strong>findOneSuccess</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findOneFailure-instance'>
+      - (void) <strong>findOneFailure</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='refresh-instance'>
+      - (void) <strong>refresh</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='fetch-instance'>
+      - (void) <strong>fetch</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Wed Mar 21 2012 12:38:28 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
+  v0.5.0
+  (Node.js v0.6.11).
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>
