@@ -3,16 +3,25 @@ require('design.io').extension('watchfile')
 async = require('async')
 File  = require('pathfinder').File
 
-require("design.io-stylesheets") /(app\/client|lib\/stylesheets)/
+require("design.io-stylesheets") /(app\/client|lib\/stylesheets|vendor\/stylesheets)/
   compress: false
   debug:    false
   ignore:   /(public|node_modules)/
+  paths:    ["./app/client/stylesheets", "./vendor/stylesheets/bootstrap"]
   outputPath: (path) ->
     "public/stylesheets/#{path}".replace(/\.(sass|scss|stylus|styl|less|css)/, ".css")
 
 require("design.io-javascripts")
   compress: false
   debug:    false
-  ignore:   /(public|node_modules|server|test.*|spec.*[sS]pec|app\/views)/
+  ignore:   /(public|node_modules|server|app\/views|config)/
+  outputPath: (path) ->
+    "public/javascripts/#{path}".replace(/\.(js|coffee)/, ".js")
+
+# client config
+require("design.io-javascripts") /(config\/locales\/.*|config\/routes|app\/client\/config\/.*)\.(js|coffee)$/
+  compress: false
+  debug:    false
+  ignore:   /(public|node_modules)/
   outputPath: (path) ->
     "public/javascripts/#{path}".replace(/\.(js|coffee)/, ".js")

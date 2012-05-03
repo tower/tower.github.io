@@ -17,6 +17,7 @@ module.exports =
       '/vendor/javascripts/socket.io'
       '/vendor/javascripts/history'
       '/vendor/javascripts/moment'
+      '/vendor/javascripts/ember'
       '/vendor/javascripts/tower'
       "/vendor/javascripts/bootstrap/bootstrap-transition"
       "/vendor/javascripts/bootstrap/bootstrap-alert"
@@ -38,7 +39,9 @@ module.exports =
     
     development: [
       '/vendor/javascripts/mocha'
-      '/vendor/javascripts/design.io'
+      "/vendor/javascripts/chai"
+      "/vendor/javascripts/design.io"
+      "/test/client"
     ]
     
     bottom: []

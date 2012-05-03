@@ -27,7 +27,7 @@ pre {
   padding: 0px 0px 0px 0px;
 }
 pre .str {
-  color: #d14;
+  color: #579339;
 }
 pre .kwd {
   color: #000;
@@ -36,13 +36,13 @@ pre .com {
   color: #8e8e7e;
 }
 pre .typ {
-  color: #458;
+  color: #395793;
 }
 pre .lit {
-  color: #099;
+  color: #398a93;
 }
 pre .pun {
-  color: #626262;
+  color: #7d9438;
 }
 pre .pln {
   color: #458;
