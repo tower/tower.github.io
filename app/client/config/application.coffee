@@ -4,4 +4,5 @@ class App extends Tower.Application
     @use Tower.Middleware.Location
     @use Tower.Middleware.Router
 
-window.App = new App
+window.App = App
+App.initialze()

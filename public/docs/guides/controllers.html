@@ -1,0 +1,426 @@
+<header class="header subhead" id="overview"><h1>Controllers</h1>
+<nav class="subnav"><ul class="nav nav-pills"><li><a href="#actions">actions</a></li><li><a href="#events">events</a></li><li><a href="#params">params</a></li><li><a href="#rendering">rendering</a></li><li><a href="#resources">resources</a></li></ul></nav></header><section class="section" id="actions"><h1>Controller Actions</h1>
+
+<p>By convention there are 7 RESTful actions for a controller:</p>
+
+<ol>
+<li><code>index</code>: Show all resources (<code>GET</code>)</li>
+<li><code>new</code>: Build a new resource and render a form (<code>GET</code>)</li>
+<li><code>create</code>: Create a new resource (<code>POST</code>)</li>
+<li><code>show</code>: Find and show a resource by id (<code>GET</code>)</li>
+<li><code>edit</code>: Find a resource by id and render it in a form to edit (<code>GET</code>)</li>
+<li><code>update</code>: Update an existing resource (<code>PUT</code>)</li>
+<li><code>destroy</code>: Destroy an existing resource (<code>DELETE</code>)</li>
+</ol>
+
+<p>If you wanted to manually write out simple controller actions, this is how you might do it:</p>
+
+<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
+  index: -&gt;
+    App.Post.all (error, posts) =&gt;
+      @render &quot;index&quot;, locals: {posts}
+
+  new: -&gt;
+    post = new App.Post
+    @render &quot;new&quot;, locals: {post}
+
+  create: -&gt;
+    App.Post.create @params.post, (error, post) =&gt;
+      @redirectTo post
+
+  show: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render &quot;show&quot;, locals: {post}
+
+  edit: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render &quot;edit&quot;, locals: {post}
+
+  update: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      post.updateAttributes @params.post, (error) =&gt;
+        if error
+          @render &quot;edit&quot;, locals: {post}
+        else
+          @redirectTo post
+
+  destroy: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      post.destroy (error) =&gt;
+        @redirectTo &quot;index&quot;
+</code></pre>
+
+<p><strong>Note</strong>: The above actions won&#39;t respond to different content types differently (i.e. for JSON, give me a JSON string, for HTML give me some rendered HTML).  But for some cases that&#39;s all you need.</p>
+
+<p>In order for those actions to be accessible, routes must be defined.  Routes to all 7 RESTful actions are generated with the following declaration in <code>config/routes.coffee</code>:</p>
+
+<pre><code class="coffeescript">Tower.Route.draw -&gt;
+  @resources &quot;posts&quot;
+</code></pre>
+
+<p>More on routes in the <a href="/docs/routes">routes section</a>.</p>
+
+<h2>Custom Actions</h2>
+
+<p>Sometimes RESTful actions aren&#39;t enough.  To add custom actions, just add a route mapping to the method name for the controller.</p>
+
+<pre><code class="coffeescript">Tower.Route.draw -&gt;
+  @resources &quot;posts&quot;, -&gt;
+    @get &quot;dashboard&quot;
+</code></pre>
+
+<p><strong>Note</strong>: If you start thinking you need to add a custom action to your controller, I personally recommend asking the community (stack overflow, twitter, github, etc.) if there&#39;s a way to fit it into the paradigm.  Several times I thought &quot;this is the one time I need a custom action&quot;, but 99% of the time I found a way to fit it in.  This always simplified the system.</p>
+</section><section class="section" id="events"><h1>Events</h1>
+
+<p>All controller actions are just events.  This means then that controllers handle events:</p>
+
+<ul>
+<li>DOM events</li>
+<li>Keyboard events</li>
+<li>Gesture events</li>
+<li>socket messages</li>
+<li>url requests</li>
+</ul>
+
+<p>Instead of having to create a controller for each type of message, why not just establish some conventions:</p>
+
+<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
+  # socket.io handler
+  @on &quot;create&quot;, &quot;syncCreate&quot; # created by default... knows because it&#39;s named after an action
+  @on &quot;notification&quot;, &quot;flashMessage&quot; # knows it&#39;s socket because &#39;notification&#39; isn&#39;t an action or dom event keyword
+  @on &quot;mousemove&quot;, &quot;updateHeatMap&quot;, type: &#39;socket&#39; # if you name a socket event after a keyword then pass the `type: &#39;socket&#39;` option.
+
+  # dom event handler
+  @on &quot;click&quot;, &quot;click&quot;
+  @on &quot;click .item a&quot;, &quot;clickItem&quot;
+  # or as an object
+  @on &quot;click .itemA a&quot;: &quot;clickItemA&quot;,
+    &quot;click .itemB a&quot;: &quot;clickItemB&quot;,
+    &quot;click .itemC a&quot;: &quot;clickItemC&quot;
+
+  @on &quot;change #user-first-name-input&quot;, &quot;enable&quot;, dependent: &quot;#user-last-name-input&quot;
+  @on &quot;change #user-first-name-input&quot;, &quot;enable #user-last-name-input&quot; # enable: (selector)
+  @on &quot;change #user-first-name-input&quot;, &quot;validate&quot;
+  @on &quot;change #user-first-name-input&quot;, bind: &quot;firstName&quot;
+  @bind &quot;change #user-first-name-input&quot;, &quot;firstName&quot;
+  @on &quot;click #add-user-address&quot;, &quot;addAddress&quot;
+  @on &quot;click #add-user-address&quot;, &quot;add&quot;, object: &quot;address&quot;
+  @on &quot;click #remove-user-address&quot;, &quot;removeAddress&quot;
+  # $(window).on(&#39;click&#39;, &#39;#user-details&#39;, &quot;toggleDetails&quot;);
+  @on &quot;click #user-details&quot;, &quot;toggleDetails&quot;
+
+  # show or hide
+  toggleShowHide: -&gt;
+
+  show: -&gt;
+
+  hide: -&gt;
+
+  toggleSelectDeselect: -&gt;
+
+  select: -&gt;
+
+  deselect: -&gt;
+
+  toggleAddRemove: -&gt;
+
+  add: -&gt;
+
+  remove: -&gt;
+
+  toggleEnableDisable: -&gt;  
+    if _.blank(value)
+      @disable()
+    else
+      @enable()
+
+  # enable or disable
+  enable: -&gt;
+    $(options.dependent).attr(&quot;disabled&quot;, false)
+
+  disable: -&gt;
+    $(options.dependent).attr(&quot;disabled&quot;, true)
+
+  validate: (element) -&gt;
+    element
+
+  invalidate: -&gt;
+
+  bind: -&gt;
+
+  next: -&gt;
+
+  prev: -&gt;
+</code></pre>
+</section><section class="section" id="params"><h1><code>Tower.Controller.Params</code></h1>
+
+<p>You can define parameters which should be parsed into a <code>Tower.Model.Criteria</code>.  This allows you to build a very robust query api with minimal effort.</p>
+
+<p>Tower uses a set of pseudo-ruby conventions for defining ranges and sets of values to query by.  They are defined with the <code>@param</code> class method on a controller.  Tower looks for the attribute definition on the model class associated with the controller, unless you have specified the <code>type</code> option.</p>
+
+<pre><code class="coffeescript">class App.EventsController extends Tower.Controller
+  @param &quot;title&quot;
+  @param &quot;createdAt&quot;
+  @param &quot;memberCount&quot;
+  @param &quot;tags&quot;, type: &quot;Array&quot;
+  @param &quot;coordinates&quot;
+  @param &quot;admin&quot;, source: &quot;admin.firstName&quot;
+
+  index: -&gt;
+    App.Event.where(@criteria()).all (error, events) =&gt;
+      @render json: events
+</code></pre>
+
+<ul>
+<li><code>String</code></li>
+<li><code>Date</code></li>
+<li><code>Array</code></li>
+<li><code>Number</code></li>
+<li><code>Order</code></li>
+<li><code>Coordinates</code></li>
+</ul>
+
+<h2><code>String</code></h2>
+
+<h3>Query</h3>
+
+<pre><code class="coffeescript">title=Hello+World
+title=Hello+-World
+title=&#39;Hello+World&#39;
+</code></pre>
+
+<h3>Criteria</h3>
+
+<pre><code class="coffeescript">{ &quot;title&quot; : { &quot;$match&quot; : [&quot;Hello&quot;, &quot;World&quot;] } }
+{ &quot;title&quot; : { &quot;$match&quot; : [&quot;Hello&quot;], &quot;$notMatch&quot; : [&quot;World&quot;] } }
+{ &quot;title&quot; : { &quot;$match&quot; : [&quot;Hello World&quot;] } }
+</code></pre>
+
+<h2><code>Date</code></h2>
+
+<h3>Query</h3>
+
+<pre><code class="coffeescript">createdAt=12-31-2011
+createdAt=12-31-2011..t
+createdAt=t..12-31-2011
+createdAt=12-21-2011..12-31-2011
+createdAt=12-21-2011..12-31-2011,01-04-2012
+</code></pre>
+
+<h3>Criteria</h3>
+
+<pre><code class="coffeescript">{ &quot;createdAt&quot; : Date(12-31-2011) }
+{ &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-31-2011) } }
+{ &quot;createdAt&quot; : { &quot;$lte&quot;: Date(12-31-2011) } }
+{ &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-21-2011), &quot;$lte&quot;: Date(12-31-2011) } }
+{ &quot;$or&quot;: [ { &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-21-2011), &quot;$lte&quot;: Date(12-31-2011) } }, { &quot;createdAt&quot; : Date(01-04-2012) } ] }
+</code></pre>
+
+<h2><code>Number</code></h2>
+
+<h3>Query</h3>
+
+<pre><code class="coffeescript">likeCount=1
+likeCount=1..n
+likeCount=n..100
+likeCount=1..100
+likeCount=1..100,1000
+likeCount=-10
+likeCount=^10
+likeCount=^10,1000
+likeCount=^10..1000
+likeCount=^-1000
+</code></pre>
+
+<h3>Criteria</h3>
+
+<pre><code class="coffeescript">{ &quot;likeCount&quot; : 1 }
+{ &quot;likeCount&quot; : { &quot;$gte&quot;: 1 } }
+{ &quot;likeCount&quot; : { &quot;$lte&quot;: 1 } }
+{ &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } }
+{ &quot;$or&quot;: [{ &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } }, { &quot;likeCount&quot; : 1000 }] }
+{ &quot;likeCount&quot;: -10 }
+{ &quot;likeCount&quot;: { &quot;$neq&quot;: -10 } }
+{ &quot;likeCount&quot;: { &quot;$neq&quot;: 10, &quot;$in&quot;: [1000] } }
+{ &quot;nor&quot;: [ { &quot;likeCount&quot; : { &quot;$gte&quot;: 10, &quot;$lte&quot;: 1000 } } ] }
+{ &quot;likeCount&quot;: { &quot;$neq&quot;: -1000 } }
+</code></pre>
+
+<h2><code>Array</code></h2>
+
+<h3>Query</h3>
+
+<pre><code class="coffeescript">tags=javascript
+tags=^java
+tags=ruby,^java
+tags=[ruby,javascript]
+</code></pre>
+
+<h3>Criteria</h3>
+
+<pre><code class="coffeescript">{ &quot;tags&quot; : { &quot;$in&quot;: [&quot;javascript&quot;] } }
+{ &quot;tags&quot; : { &quot;$nin&quot;: [&quot;java&quot;] } }
+{ &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;], &quot;$nin&quot;: [&quot;java&quot;] } }
+{ &quot;tags&quot; : { &quot;$all&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }
+</code></pre>
+
+<h2><code>Coordinates</code></h2>
+
+<h3>Query</h3>
+
+<pre><code class="coffeescript">coordinates=51.509981,-0.074704
+coordinates=51.509981,-0.074704,10
+</code></pre>
+
+<h3>Criteria</h3>
+
+<pre><code class="coffeescript">{ &quot;coordinates&quot; : { &quot;$near&quot;: [51.509981, -0.074704] } }
+{ &quot;coordinates&quot; : { &quot;$near&quot;: [51.509981, -0.074704] , &quot;$maxDistance&quot; : 10 } }
+</code></pre>
+
+<h2><code>Order</code></h2>
+
+<h3>Query</h3>
+
+<pre><code class="coffeescript">sort=title
+sort=title+
+sort=title-
+sort=createdAt-,title
+sort=createdAt+,title+
+</code></pre>
+
+<h3>Criteria</h3>
+
+<pre><code class="coffeescript">{ &quot;sort&quot; : [[&quot;title&quot;, &quot;asc&quot;]] }
+{ &quot;sort&quot; : [[&quot;title&quot;, &quot;asc&quot;]] }
+{ &quot;sort&quot; : [[&quot;title&quot;, &quot;desc&quot;]] }
+{ &quot;sort&quot; : [[&quot;createdAt&quot;, &quot;desc&quot;], [&quot;title&quot;, &quot;asc&quot;]] }
+{ &quot;sort&quot; : [[&quot;createdAt&quot;, &quot;asc&quot;], [&quot;title&quot;, &quot;asc&quot;]] }
+</code></pre>
+
+<h2>Examples</h2>
+
+<pre><code class="coffeescript">http://events.towerjs.org/?createdAt=12-25-2011
+http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011
+http://events.towerjs.org/?tags=javascript,ruby
+http://events.towerjs.org/?memberCount=10..n
+http://events.towerjs.org/?sort=createdAt-,title+
+http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby
+http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby&amp;sort=createdAt-,title+
+http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby&amp;memberCount=10..n&amp;sort=createdAt-,title+
+http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby&amp;memberCount=10..n&amp;coordinates=51.509981,-0.074704,10&amp;sort=createdAt-,title+
+</code></pre>
+
+<p>The last url above would generate the criteria:</p>
+
+<pre><code class="coffeescript">{ 
+  &quot;coordinates&quot; : { &quot;$near&quot;: [51.509981, -0.074704] , &quot;$maxDistance&quot; : 10 },
+  &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-21-2011), &quot;$lte&quot;: Date(12-31-2011) },
+  &quot;memberCount&quot; : { &quot;$gte&quot;: 10 },
+  &quot;sort&quot; : [[&quot;createdAt&quot;, &quot;desc&quot;], [&quot;title&quot;, &quot;asc&quot;]], 
+  &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] }
+}
+</code></pre>
+
+<h3>(todo) <code>OR</code> Queries Over Several Attributes</h3>
+
+<p>You can do <code>OR</code> searches over several attributes, i.e. &quot;find all posts in the past 2 days OR those tagged with &#39;javascript&#39;&quot;.  Just prepend each <code>OR</code> block with an array index:</p>
+
+<pre><code class="coffeescript"># find all posts between christmas and new years eve, or those tagged with &quot;javascript&quot; and &quot;ruby&quot;, then sort by date and title
+[0]createdAt=12-25-2011..12-31-2011&amp;[1]tags=javascript,ruby&amp;sort=createdAt-,title+
+createdAt[0]=12-25-2011..12-31-2011&amp;tags[1]=javascript,ruby&amp;sort=createdAt-,title+
+</code></pre>
+</section><section class="section" id="rendering"><h1><code>Tower.Controller.Rendering</code></h1>
+
+<ul>
+<li>Templates</li>
+<li>JSON</li>
+<li>The Rendering Process</li>
+</ul>
+
+<h2>Templates</h2>
+
+<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
+  index: -&gt;
+    @render &quot;index&quot;
+</code></pre>
+
+<h2>JSON</h2>
+
+<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
+  show: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render json: post
+</code></pre>
+
+<h2>The Rendering Process</h2>
+
+<h3><code>respondWith</code></h3>
+
+<pre><code class="coffeescript">show: -&gt;
+  App.Post.find @params.id, (error, post) =&gt;
+    @respondWith post, (format) =&gt;
+      format.html =&gt; @render &quot;show&quot;
+</code></pre>
+
+<p>This will perform <em>content negotiation</em>, i.e. it will figure out what the mime type the browser prefers and run the corresponding responder method (for html, json, csv, etc.).  Those methods then call the <code>render</code> method.</p>
+
+<h3><code>render</code></h3>
+
+<pre><code class="coffeescript">show: -&gt;
+  App.Post.find @params.id, (error, post) =&gt;
+    @render &quot;show&quot;
+</code></pre>
+
+<p>Calling the render method directly forces a specific content type to be rendered.  Here is the method signature:</p>
+
+<pre><code class="coffeescript">render json: {hello: &quot;world&quot;}
+render &quot;show&quot;                 # render action: &quot;show&quot;
+render &quot;posts/show&quot;           # render file: &quot;posts/show&quot;
+render -&gt; h1 &quot;Hello World&quot;
+render text: &quot;success&quot;, status: 200
+</code></pre>
+
+<h3><code>_normalizeRender</code></h3>
+
+<p>This converts the render arguments into a normalized options hash.</p>
+
+<h3><code>_renderToBody</code></h3>
+
+<h3><code>_renderOption</code></h3>
+
+<h3><code>_renderTemplate</code></h3>
+</section><section class="section" id="resources"><h1><code>Tower.Controller.Resources</code></h1>
+
+<p>Tower goes by the convention that every controller represents one resource, one model.</p>
+
+<p>A controller doesn&#39;t <em>need</em> to follow these conventions, for example with a <code>DashboardController</code> or <code>SearchController</code>.  In those cases, overriding the methods starts you with a clean slate.  However, you&#39;ll quickly see how powerful this is.</p>
+
+<h2>The Resource</h2>
+
+<p>You can customize the variable names and resource type:</p>
+
+<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
+  @resource type: &quot;Article&quot;, collection: &quot;articles&quot;, resource: &quot;article&quot;, key: &quot;data&quot;, id: &quot;dataId&quot;
+</code></pre>
+
+<h2>Internals</h2>
+
+<p>The default implementation for a <code>Tower.Controller</code> looks like this:</p>
+
+<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
+  index: -&gt;
+
+  new: -&gt;
+
+  create: -&gt;
+
+  show: -&gt;
+
+  edit: -&gt;
+
+  update: -&gt;
+
+  destroy: -&gt;
+</code></pre>
+</section>

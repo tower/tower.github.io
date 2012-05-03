@@ -26,7 +26,7 @@ $keyframes progress-bar-stripes to {
   overflow: hidden;
   height: 18px;
   margin-bottom: 18px;
-rgba(0,0,0,0.10)
+rgba(0,0,0,0.1)
 }
 .progress .bar {
   width: 0%;

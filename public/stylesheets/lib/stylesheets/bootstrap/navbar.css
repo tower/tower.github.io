@@ -86,13 +86,13 @@ rgba(0,0,0,0.25)
   color: $white;
   color: rgba(255,255,255,0.75);
   background: #666;
-  background: rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.3);
   border: 1px solid #111;
 }
 .navbar-search .search-query:hover {
   color: $white;
   background-color: $grayLight;
-  background-color: rgba(255,255,255,0.50);
+  background-color: rgba(255,255,255,0.5);
 }
 .navbar-search .search-query:focus,
 .navbar-search .search-query.focused {
@@ -147,7 +147,7 @@ rgba(0,0,0,0.15)
   color: $navbarLinkColorHover;
   text-decoration: none;
   background-color: $navbarBackground;
-  background-color: rgba(0,0,0,0.50);
+  background-color: rgba(0,0,0,0.5);
 }
 .navbar .divider-vertical {
   height: $navbarHeight;
@@ -170,7 +170,7 @@ rgba(0,0,0,0.15)
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
   border-bottom: 7px solid #ccc;
-  border-bottom-color: rgba(0,0,0,0.20);
+  border-bottom-color: rgba(0,0,0,0.2);
   position: absolute;
   top: -7px;
   left: 9px;

@@ -7,7 +7,7 @@
 - /community
 - /screencasts
 - /examples
+- /tutorials
 - /contributors
 - /roadmap
 - demo.towerjs.org
-- /events (todo)

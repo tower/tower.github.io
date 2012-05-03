@@ -28,8 +28,8 @@
   width: 280px;
   overflow: hidden;
   background: $black;
-  background: rgba(0,0,0,0.80);
-rgba(0,0,0,0.30)
+  background: rgba(0,0,0,0.8);
+rgba(0,0,0,0.3)
 }
 .popover-title {
   padding: 9px 15px;

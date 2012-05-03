@@ -3,7 +3,7 @@ module.exports =
   description:  ""
   keywords:     "Node.js, MVC, Ruby on Rails, JavaScript, CoffeeScript, MongoDB"
   author:       "Lance Pollard"
-  copyright:    "&copy; undefined Lance Pollard. All rights reserved."
+  copyright:    "&copy; 2011-2012 Lance Pollard. All rights reserved."
   robots:       "noodp,noydir,index,follow"
   github:       "viatropos"
   email:        "lancejpollard@gmail.com"

@@ -1,0 +1,32 @@
+<header class="header subhead" id="overview"><h1>Testing</h1>
+
+<p>Test Driven Development (TDD) is a quality of all great apps.  Once you master it you&#39;re able to not only develop a lot quicker, what you develop is also built on a much stronger foundation and will be more resilient in the face of change.</p>
+
+<p>The problem with TDD, or BDD (Behavior Driven Development) even, is it&#39;s hard to get started with.  You could spend weeks if not months setting up a solid workflow for building your app around tests.  That&#39;s why Tower aims to make testing easy and clear.</p>
+
+<h2>Build Testable Objects</h2>
+
+<p>If your system is at all complex, break out functionality into smaller objects that you can test independently.  This is why I broke down Tower &quot;chainable queries&quot; into a <code>Scope</code> and a <code>Criteria</code> object, rather than just having a <code>Scope</code> object.  And the reason why there&#39;s a distinction between the &quot;model&quot; and &quot;data&quot; (store/datastore) layers.</p>
+
+<p>By doing this, I was able to quickly build out most of the functionality for query generation using just the <code>Criteria</code> object.  Then I knew I could get back a hash of conditions and options to use in finding records from a data store.</p>
+
+<p>This makes the whole project more manageable and makes rapid development possible.  I found my mind spinning in circles trying to grasp the whole system at once otherwise.</p>
+
+<p>However, note this: there&#39;s a tradeoff between testability and performance.  If every single thing was built as nested objects like the above two examples, you&#39;d end up creating a ton of objects to do (often) pretty simple things, and this is bad from both a memory and performance standpoint.  In most cases it also increases the amount of code you have to write, which more than anything means the browser will have to load more code.  So, if something&#39;s easy to test without refactoring it into objects, just leave it that way.  It&#39;s less code for the browser to download, and will most likely use up less memory, which means a better user experience in the end.</p>
+<nav class="subnav"><ul class="nav nav-pills"><li><a href="#models">models</a></li></ul></nav></header><section class="section" id="models"><h1>Testing Models in Tower.js</h1>
+
+<h2>Example</h2>
+
+<pre><code class="coffeescript"># ./test/models/userTest.coffee
+describe &quot;App.User&quot;, -&gt;
+  user = null
+
+  describe &quot;#fields&quot;, -&gt;
+    beforeEach (done) -&gt;
+      App.User.destroy =&gt;
+        user = new App.User
+
+    test &quot;.email&quot;, -&gt;
+      assert.ok user.has(&quot;email&quot;)
+</code></pre>
+</section>

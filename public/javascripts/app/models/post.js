@@ -1,31 +1,21 @@
-var __hasProp = Object.prototype.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
 App.Post = (function(_super) {
 
   __extends(Post, _super);
 
+  Post.name = 'Post';
+
   function Post() {
-    Post.__super__.constructor.apply(this, arguments);
+    return Post.__super__.constructor.apply(this, arguments);
   }
 
-  Post.field("id", {
-    type: "Id"
-  });
+  Post.field("title");
 
-  Post.field("title", {
-    type: "String"
-  });
+  Post.field("body");
 
-  Post.field("body", {
-    type: "String"
-  });
-
-  Post.field("slug", {
-    type: "String"
-  });
-
-  Post.timestamps();
+  Post.field("slug");
 
   return Post;
 

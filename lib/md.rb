@@ -12,7 +12,8 @@ end
 
 STDOUT.sync = true
 io          = STDOUT
-json        = JSON.parse(STDIN.read)
+json        = STDIN.read
+json        = JSON.parse(json)
 input       = json.delete("input")
 markdown    = Redcarpet::Markdown.new(Redcarpet::Render::HTML,#HTMLwithAlbino,
   :autolink => true, 

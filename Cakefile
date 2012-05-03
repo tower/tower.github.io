@@ -37,11 +37,14 @@ task 'assets:stats', 'Table displaying uncompressed, minified, and gzipped asset
   Tower.Application.Assets.stats()
   
 task 'compile', ->
+  try fs.mkdirSync("public/docs")
+  try fs.mkdirSync("public/docs/guides")
+  
   class Post
     constructor: (options = {}) ->
       @[key] = value for key, value of options
       
-  wiki  = "/Users/viatropos/Documents/git/personal/plugins/tower.js/wiki/docs"
+  wiki  = "/Users/viatropos/Documents/git/personal/plugins/tower.js/wiki/en"
   posts = []
   
   template = ->
@@ -58,10 +61,12 @@ task 'compile', ->
         post.body
   
   compileFile = (path, next) ->
+    console.log path
     file = "#{wiki}/#{path}"
     slug = path.split("/")
     slug = slug[slug.length - 1].split(".")[0]
     fs.readFile file, "utf-8", (error, body) ->
+      return next(new Error("No content found in #{file}")) if body == undefined
       toMarkdown file, body, (error, body) ->
         post = new Post(
           file: file, 
@@ -92,93 +97,128 @@ task 'compile', ->
       console.log "error"
       console.log data
       callback(data)
+    
     command.stdin.write JSON.stringify(input: content)
     command.stdin.end()
     
   overview = [
-    "home.md"
+    "guides.md"
   ]
   
   models = [
-    "models.md",
-    "models/attributes.md",
-    "models/callbacks.md",
-    "models/changes.md",
-    "models/finders.md",
-    "models/querying.md",
-    "models/naming.md",
-    "models/persistence.md",
-    "models/validations.md"
+    "guides/models.md"
+    "guides/models/attributes.md"
+    "guides/models/callbacks.md"
+    "guides/models/changes.md"
+    "guides/models/finders.md"
+    "guides/models/querying.md"
+    "guides/models/naming.md"
+    "guides/models/persistence.md"
+    "guides/models/validations.md"
   ]
   
   controllers = [
-    "controllers.md",
-    "controllers/actions.md",
-    "controllers/events.md",
-    "controllers/params.md",
-    "controllers/rendering.md",
-    "controllers/resources.md",
-    "controllers/routes.md"
+    "guides/controllers.md",
+    "guides/controllers/actions.md",
+    "guides/controllers/events.md",
+    "guides/controllers/params.md",
+    "guides/controllers/rendering.md",
+    "guides/controllers/resources.md",
+    "guides/controllers/routes.md"
   ]
   
   views = [
-    "views.md",
-    "views/layouts.md",
-    "views/forms.md",
-    "views/tables.md",
-    "views/templates.md"
+    "guides/views.md",
+    "guides/views/layouts.md",
+    "guides/views/forms.md",
+    "guides/views/tables.md",
+    "guides/views/templates.md"
+  ]
+  
+  http = [
+    "guides/http.md",
+    "guides/http/cookies.md",
+    "guides/http/session.md",
+    "guides/http/caching.md",
+    "guides/http/cdn.md"
   ]
   
   assets = [
-    "assets.md",
-    "assets/pipeline.md",
-    "assets/helpers.md",
-    "assets/twitter-bootstrap.md"
+    "guides/assets.md",
+    "guides/assets/pipeline.md",
+    "guides/assets/helpers.md",
+    "guides/assets/twitter-bootstrap.md"
   ]
   
   generators = [
-    "generators.md",
-    "generators/application-generator.md",
-    "generators/scaffold-generator.md",
-    "generators/model-generator.md",
-    "generators/view-generator.md",
-    "generators/controller-generator.md"
+    "guides/generators.md",
+    "guides/generators/application-generator.md",
+    "guides/generators/scaffold-generator.md",
+    "guides/generators/model-generator.md",
+    "guides/generators/view-generator.md",
+    "guides/generators/controller-generator.md"
   ]
   
   application = [
-    "application.md",
-    "application/structure.md",
-    "application/package-json.md",
-    "application/configuration.md",
-    "application/server.md",
-    "application/client.md",
-    "application/environments.md",
-    "application/dotfiles.md",
-    "application/commands.md",
-    "application/helpers.md",
-    "application/i18n.md",
-    "application/watchfile.md"
+    "guides/application.md",
+    "guides/application/structure.md",
+    "guides/application/package-json.md",
+    "guides/application/configuration.md",
+    "guides/application/server.md",
+    "guides/application/client.md",
+    "guides/application/environments.md",
+    "guides/application/dotfiles.md",
+    "guides/application/commands.md",
+    "guides/application/helpers.md",
+    "guides/application/i18n.md",
+    "guides/application/watchfile.md"
   ]
   
   testing = [
-    "testing.md",
-    "testing/models.md",
-    "testing/browser.md",
-    "testing/factories.md"
+    "guides/testing.md",
+    "guides/testing/models.md",
+    "guides/testing/browser.md",
+    "guides/testing/factories.md"
   ]
   
   stores = [
-    "stores.md",
-    "stores/persistence.md",
-    "stores/querying.md",
-    "stores/memory.md",
-    "stores/mongodb.md"
+    "guides/stores.md",
+    "guides/stores/persistence.md",
+    "guides/stores/querying.md",
+    "guides/stores/memory.md",
+    "guides/stores/mongodb.md"
   ]
   
-  pages = [overview, models, controllers, views, stores, assets, generators, application, testing]
+  utils = [
+    "guides/utils.md",
+    "guides/utils/string.md"
+    "guides/utils/date.md"
+  ]
+  
+  deployment = [
+    "guides/deployment.md",
+    "guides/deployment/environment.md",
+    "guides/deployment/heroku.md"
+  ]
+  
+  development = [
+    "guides/development.md",
+    "guides/development/environment.md"
+    "guides/development/git-workflow.md"
+    "guides/development/style-guide.md"
+  ]
+  
+  contributing = [
+    "guides/contributing.md",
+    "guides/contributing/issues.md"
+    "guides/contributing/code.md"
+    "guides/contributing/documentation.md"
+    "guides/contributing/translations.md"
+  ]
+  
+  pages = [overview, models, controllers, views, http, stores, assets, generators, application, testing, utils, deployment, development, contributing]
   
   async.forEachSeries pages, compilePage, (error) ->
-    
     
 task 'copy-docs', ->
   wrench  = require 'wrench'

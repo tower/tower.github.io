@@ -1,0 +1,9 @@
+/* TEAM */
+  FullStack:   Lance Pollard
+  GitHub:     viatropos
+  Twitter:    viatropos
+  Location:   San Francisco
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: Tower, jQuery, Underscore.js

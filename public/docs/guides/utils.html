@@ -1,0 +1,112 @@
+<header class="header subhead" id="overview"><h1>Utils</h1>
+
+<p>Have CachedCommons.org let you load files with <code>require(&#39;socket.io&#39;)</code>:</p>
+
+<pre><code class="coffeescript"># coach/controllers/sockets
+require(&#39;socket.io&#39;)
+
+# essentially...
+require = (key) -&gt;
+  $.getScript(&quot;http://cachedcommons.org/javascripts/#{key}.min.js&quot;)
+</code></pre>
+
+<ul>
+<li>underscore.js</li>
+<li>underscore.string.js</li>
+<li>moment.js (date/time)</li>
+<li>mustache.js</li>
+<li>socket.io</li>
+<li>pluralization</li>
+<li>schema.org (<a href="https://github.com/indexzero/node-schema-org">https://github.com/indexzero/node-schema-org</a>)</li>
+<li>geo: <a href="https://github.com/manuelbieh/Geolib">https://github.com/manuelbieh/Geolib</a></li>
+<li>kibo for keyboard</li>
+<li>tiny-require.js (browser + node)
+
+<ul>
+<li>useragent (npm install useragent)</li>
+<li>shift.js (templating)</li>
+<li>async.js (callbacks)</li>
+<li>mimetypes</li>
+</ul></li>
+<li>unicode character lookup</li>
+</ul>
+
+<p>window.μ = new class Urban
+αστικός, == Urban</p>
+
+<h2>Geocoordinates</h2>
+
+<pre><code class="coffeescript">User.within(miles: 10)
+</code></pre>
+
+<h2>Array</h2>
+
+<ul>
+<li>extractArgs (args)</li>
+<li>extractOptions</li>
+<li>extractBlock</li>
+<li>sortBy</li>
+</ul>
+
+<h2>Number</h2>
+
+<ul>
+<li>isInt</li>
+<li>isFloat</li>
+</ul>
+
+<h2>Object</h2>
+
+<ul>
+<li>cloneHash</li>
+<li>cloneArray</li>
+<li>deepMerge</li>
+<li>deepMergeWithArray</li>
+<li>alias</li>
+<li>defineProperty</li>
+<li>accessor</li>
+<li>getter</li>
+<li>setter</li>
+<li>methods</li>
+<li>delegate</li>
+<li>isHash</li>
+<li>kind</li>
+<li>isPresent</li>
+<li>isBlank</li>
+<li>has</li>
+<li>isA</li>
+</ul>
+
+<h2>Function</h2>
+
+<ul>
+<li>functionName</li>
+</ul>
+
+<h2>String</h2>
+
+<ul>
+<li>parameterize</li>
+<li>constantize</li>
+<li>camelize</li>
+<li>underscore</li>
+<li>singularize</li>
+<li>pluralize</li>
+<li>capitalize</li>
+<li>interpolate</li>
+<li>trim</li>
+</ul>
+
+<h2>RegExp</h2>
+
+<ul>
+<li>regexpEscape</li>
+</ul>
+
+<h2>Date</h2>
+
+<ul>
+<li>now</li>
+<li>date</li>
+</ul>
+<nav class="subnav"><ul class="nav nav-pills"></ul></nav></header>

@@ -1,0 +1,463 @@
+<header class="header subhead" id="overview"><h1>Development</h1>
+<nav class="subnav"><ul class="nav nav-pills"><li><a href="#environment">environment</a></li><li><a href="#git-workflow">git-workflow</a></li><li><a href="#style-guide">style-guide</a></li></ul></nav></header><section class="section" id="environment"><h1>Setting up the Development Environment</h1>
+
+<p>To move on from submitting bugs to helping resolve existing issues or contributing your own code to Tower, you must be able to run its test suite. In this section of the guide you&#39;ll learn how to set up the tests on your own computer.</p>
+
+<h2>1. Install Homebrew</h2>
+
+<p>First, install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> by following the <a href="https://github.com/mxcl/homebrew/wiki/installation">Homebrew installation instructions</a> (or just paste this into the terminal)</p>
+
+<pre><code>/usr/bin/ruby -e &quot;$(/usr/bin/curl -fksSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)&quot;
+</code></pre>
+
+<h2>2.2 Install XCode</h2>
+
+<p>XCode 4 is required for git to work.</p>
+
+<ul>
+<li>Visit the <a href="http://itunes.apple.com/us/app/xcode/id497799835?ls=1&amp;mt=12">XCode page in the Mac App store</a></li>
+<li>Click the blue button &quot;View in Mac App store&quot;</li>
+<li>Click the dropdown that says &quot;Free&quot;</li>
+</ul>
+
+<p>It might require you to upgrade your operating system, so either find an older version of XCode or take the time to upgrade.  It&#39;s better to get the latest version of XCode.</p>
+
+<h2>2.2 Install Git</h2>
+
+<p>If you don&#39;t have git already, it&#39;s easy to install</p>
+
+<pre><code>brew install git
+</code></pre>
+
+<h2>2.3 Install Node and NPM</h2>
+
+<pre><code>brew install node
+curl http://npmjs.org/install.sh | sh
+</code></pre>
+
+<h2>2.3 Install MongoDB</h2>
+
+<pre><code>brew install mongodb
+</code></pre>
+
+<p>Then follow the instructions output in the terminal to start mongodb (<code>mongod start</code>).</p>
+
+<h2>2.4 Install Redis</h2>
+
+<pre><code>brew install redis
+</code></pre>
+
+<p>Not using Redis yet.</p>
+
+<h2>2.5 Download Tower</h2>
+
+<p>Fork Tower and clone your fork</p>
+
+<pre><code>git clone git://github.com/&lt;username&gt;/tower.git
+cd tower
+</code></pre>
+
+<h2>2.6 Install node modules</h2>
+
+<p>The npm command uses the [[package-json]] file to determine and install dependencies similar to the Gemfile for Bundler in Rails. If you stand in the Tower root dir and run <code>npm install</code> all development dependencies should be installed globally.</p>
+
+<pre><code>npm install -g
+</code></pre>
+
+<p>If for some reason that doesn&#39;t work, you can install them manually...</p>
+
+<pre><code>$ npm install mocha redis mongodb underscore underscore.logger underscore.string pathfinder async 
+$ npm install restler chai sinon moment coffeekup mime
+</code></pre>
+
+<h2>2.7. Run the Test Suite</h2>
+
+<p>Now that you have everything installed and running, time to run the Tower test suite.</p>
+
+<pre><code>npm test
+</code></pre>
+
+<p>Tower uses <a href="http://visionmedia.github.com/mocha/">Mocha</a> for writing tests.</p>
+</section><section class="section" id="git-workflow"><h1>Git Workflow</h1>
+
+<h2>Mac Terminal Workflow</h2>
+
+<ul>
+<li>Each project gets its own terminal &quot;window&quot;</li>
+<li>Each project should have at least these 5 tabs for optimal flow:
+
+<ol>
+<li>Tab for the local server, if it needs a server (<code>node server.js</code>)</li>
+<li>Tab to manage git commits, so the server can be running and you can still commit.</li>
+<li>Production log, if there is a production version</li>
+<li>For installing plugins/modules/gems, so you can be waiting for an installation to complete while still developing on your local server and pushing to git.</li>
+<li>Tab to git commit and push your project wiki, so it stays up to date.  Otherwise I&#39;ve found you end up rarely syncing it to GitHub.</li>
+</ol></li>
+</ul>
+
+<h2>Git Workflow</h2>
+
+<h3>Do all of your work on a <code>development</code> branch.</h3>
+
+<pre><code>git branch development
+git checkout development
+# make changes
+git add . ; git commit -a -m &#39;developed a new feature&#39;
+git push origin development
+</code></pre>
+
+<h3>Merge with other people&#39;s <code>development</code> branch into yours</h3>
+
+<pre><code># link to somebody else&#39;s fork, call it &quot;upstream&quot; or &quot;username-upstream&quot; or whatever
+git remote add upstream git://github.com/username/project-name.git
+git fetch upstream
+# when you want to pull their changes into your current branch
+git merge upstream/development
+</code></pre>
+
+<h3>Merge <code>development</code> to <code>master</code></h3>
+
+<pre><code>git branch # &quot;development&quot;
+git add . ; git commit -a -m &#39;finished feature in development branch&#39;
+git checkout master
+git merge development
+git push origin master
+</code></pre>
+
+<h3>If you want to hack, create <em>another</em> branch</h3>
+
+<p>You can have as many branches as you want.</p>
+
+<pre><code>git checkout development
+git branch hacks # create &quot;hacks&quot; branch
+git branch node5 # create &quot;node7&quot; branch, where you&#39;re upgrading code to work on node version 5.
+</code></pre>
+
+<h3>Use <code>remote</code> to push code to separate domains</h3>
+
+<p>Everybody calls GitHub their <code>origin</code>, so you do map the remote address to <code>origin</code> like this:</p>
+
+<pre><code>git remote add origin git://github.com/username/project-name.git
+</code></pre>
+
+<p>If you want to sync to somebody else&#39;s fork, you add another named remote:</p>
+
+<pre><code>git remote add lance git://github.com/viatropos/project-name.git
+</code></pre>
+
+<p>If you want to push your code to Heroku, you can add a heroku remote:</p>
+
+<pre><code># heroku gives you this git address
+git remote add heroku git@heroku.com:project-name.git
+</code></pre>
+
+<p>Ideally though, you have 3 branches of your project on heroku, and link remotes like this:</p>
+
+<pre><code>git remote add development git@heroku.com:project-name-development.git
+git remote add staging git@heroku.com:project-name-staging.git
+git remote add production git@heroku.com:project-name-production.git
+pwd
+# ~/documents/code/project-name
+git branch
+# development
+git push development development:master
+# pushes local &quot;development&quot; branch to remote &quot;development&quot; link&#39;s &quot;master&quot; branch
+</code></pre>
+
+<p><strong>That last line is the most important part of git</strong>.  To push a branch to a remote master, do this:</p>
+
+<pre><code>git push &lt;my-branch&gt; &lt;the-remote-name-i-gave-my-branch&gt;:master
+</code></pre>
+
+<h3>Other helpful git commands</h3>
+
+<pre><code># check current branch you&#39;re on
+git branch
+# list all remote branches you&#39;re connected to
+git remote -a
+</code></pre>
+
+<h2>Notes</h2>
+
+<p>The --no-ff flag causes the merge to always create a new commit object, even if the merge could be performed with a fast-forward. This avoids losing information about the historical existence of a feature branch and groups together all commits that together added the feature.</p>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href="http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html">http://reinh.com/blog/2009/03/02/a-git-workflow-for-agile-teams.html</a></li>
+<li><a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a></li>
+<li><a href="http://stackoverflow.com/questions/2850369/why-does-git-use-fast-forward-merging-by-default">http://stackoverflow.com/questions/2850369/why-does-git-use-fast-forward-merging-by-default</a></li>
+<li><p><a href="http://www.slideshare.net/can3p/uber-git-workflow-6813993">http://www.slideshare.net/can3p/uber-git-workflow-6813993</a></p></li>
+<li><p>npm install git://github.com/viatropos/inflection.git</p></li>
+</ul>
+</section><section class="section" id="style-guide"><h1>Design Principles</h1>
+
+<h2>Don&#39;t extend core objects</h2>
+
+<p>Add to underscore, not to the native object prototypes.</p>
+
+<h2>Use single quotes <code>&#39;</code> over double quotes <code>&quot;</code></h2>
+
+<p>Single quotes are the preferred convention for defining strings.  Only use double quotes when you&#39;re using interpolation:</p>
+
+<pre><code class="coffeescript"># do
+staticString  = &#39;a string&#39;
+dynamicString = &quot;url: #{window.location.url}&quot;
+
+# don&#39;t
+staticString  = &quot;a string&quot;
+
+# can&#39;t do b/c single quotes don&#39;t allow interpolation.
+dynamicString = &#39;url: #{window.location.url}&#39;
+</code></pre>
+
+<h2>Use interpolation <code>#{}</code> instead of addition <code>+</code></h2>
+
+<pre><code class="coffeescript"># this
+string = &quot;url: #{window.location.url}&quot;
+
+# not this
+string = &quot;url: &quot; + window.location.url
+</code></pre>
+
+<h2>Don&#39;t pollute the global namespace</h2>
+
+<h2>Avoid CoffeeScript Keywords</h2>
+
+<ul>
+<li>Don&#39;t use any &quot;JS_KEYWORDS&quot; words that CoffeeScript allows you to use, because even though you can do <code>user.delete()</code> in CoffeeScript, you&#39;d have to write <code>user[&quot;delete&quot;]()</code> in JavaScript.  These words are:</li>
+</ul>
+
+<pre><code class="coffeescript">true
+false
+null
+this
+new
+delete
+typeof
+in
+instanceof
+return
+throw
+break
+continue
+debugger
+if
+else
+switch
+for
+while
+do
+try
+catch
+finally
+class
+extends
+super
+</code></pre>
+
+<h2>Use <code>camelCase</code>, not <code>snake_case</code></h2>
+
+<h2>Keep consistent line breaks</h2>
+
+<ul>
+<li>Maximum of 1 blank line between chunks of code.</li>
+<li>First line of indented code should not have a blank line above it in most cases.</li>
+</ul>
+
+<p>Do this:</p>
+
+<pre><code class="coffeescript">class App.User extends Tower.Model
+  @field &quot;email&quot;
+
+  @hasMany &quot;posts&quot;
+  @hasMany &quot;comments&quot;
+
+  activate: (callback) -&gt;
+    @updateAttributes activatedAt: new Date, callback
+</code></pre>
+
+<p>Not this:</p>
+
+<pre><code class="coffeescript">class App.User extends Tower.Model
+
+  @field &quot;email&quot;
+
+  @hasMany &quot;posts&quot;
+
+  @hasMany &quot;comments&quot;
+
+
+
+  activate: (callback) -&gt;
+    @updateAttributes activatedAt: new Date, callback
+</code></pre>
+
+<h2>Don&#39;t abbreviate method names</h2>
+
+<ul>
+<li>Use the full word for the method name (<code>width</code> instead of <code>w</code>)</li>
+<li>Only use abbreviations if the abbreviation is the preferred way of expressing the term in the industry.  But even then, if the spelled out version is easier to read, use that.</li>
+</ul>
+
+<pre><code class="coffeescript">&quot;width&quot; &gt; &quot;w&quot;
+&quot;height&quot; &gt; &quot;h&quot;
+&quot;x&quot;
+&quot;y&quot;
+&quot;JSON&quot; &gt; &quot;JavaScriptObjectNotation&quot;
+&quot;src&quot; == &quot;source&quot;
+&quot;directory&quot; &gt; &quot;dir&quot;
+&quot;createDirectory&quot; &gt; &quot;mkdir&quot;
+&quot;background&quot; &gt; &quot;bg&quot;
+</code></pre>
+
+<h2>Remove trailing whitespace</h2>
+
+<h2>Use 2 soft spaces <code></code>, not 1 tab <code>\t</code></h2>
+
+<h2>Use coffeescript array assignments</h2>
+
+<p>Do this:</p>
+
+<pre><code class="coffeescript">[one, two] = [1, 2]
+</code></pre>
+
+<p>Over this:</p>
+
+<pre><code class="coffeescript">array = [1, 2]
+one   = array[0]
+two   = array[1]
+</code></pre>
+
+<h2>Use the <code>=&gt;</code> operator instead of <code>_this</code>, <code>_self</code>, etc.</h2>
+
+<h2>Group public/private methods</h2>
+
+<p>Put private methods at the bottom of the file, even if they&#39;re named after a public method.  Reason: it&#39;s easier to read the code, you get the API first, then the implementation.</p>
+
+<p>Correct:</p>
+
+<pre><code class="coffeescript">set: -&gt;
+
+get: -&gt;
+
+_set: -&gt;
+
+_get: -&gt;
+</code></pre>
+
+<p>Incorrect:</p>
+
+<pre><code class="coffeescript">set: -&gt;
+
+_set: -&gt;
+
+get: -&gt;
+
+_get: -&gt;
+</code></pre>
+
+<h2>Align <code>=</code> and <code>:</code></h2>
+
+<ul>
+<li>align semicolons on the left</li>
+<li>align equal signs on the right, 2n tabs in (falls on an even number of whitespaces)</li>
+</ul>
+
+<h3>Minimize the number of methods</h3>
+
+<ul>
+<li>less code to manage</li>
+<li>fewer methods to memorize</li>
+<li>smaller footprint (less code for the browser to download)</li>
+<li>differs from Rails</li>
+<li>opt-in helper method generation</li>
+</ul>
+
+<pre><code>model.buildRelation(&quot;user&quot;) # can opt into
+# vs.
+model.buildUser()
+</code></pre>
+
+<p>Convert <code>model.store()</code> to a <code>store()</code> method on the class ONLY IF the number of times you use the method is such that creating the &quot;wrapper&quot; method would save on the number of characters in the js/coffee file (so when it&#39;s minimized, it&#39;s maximally minimized).  That is, if you only call the long method once, don&#39;t wrap it, just deal with it.  Or, if the method is sufficiently complex and needs to be tested, and is still only used once, then make it a method and test it. Better to test than to not.</p>
+
+<h3>Use single underscore for Ruby-ish <code>bang!</code> methods: <code>create_()</code>.</h3>
+
+<h3>Organize the code so it can be compiled for the client</h3>
+
+<ul>
+<li>put <code>module.exports = X</code> at the bottom of each file so it can be stripped with a regular expression.</li>
+</ul>
+
+<h3>Create Underscore.js Compatible Helpers</h3>
+
+<ul>
+<li>write helpers so they are independent of underscore but can be swapped.</li>
+</ul>
+
+<h2>Tips</h2>
+
+<h4>Create a namespace for your app.</h4>
+
+<p>This makes it so you don&#39;t have to use <code>require</code> everywhere on the client, setting the same variable over and over again.</p>
+
+<pre><code class="coffeescript">class MyApp.User
+  @include Tower.Model
+</code></pre>
+
+<p>or</p>
+
+<pre><code class="coffeescript">class User
+  @include Tower.Model
+
+MyApp.User = User
+</code></pre>
+
+<p>Instead of</p>
+
+<pre><code class="coffeescript"># user.coffee
+class User
+  @include Tower.Model
+
+module.exports = User
+
+# somewhere else
+User = require(&#39;../app/models/user&#39;)
+</code></pre>
+
+<p>Because of the naming/folder conventions, you can get away with this without any worries.  It also decreases the final output code :)</p>
+
+<h2>CoffeeScript Cheat Sheet</h2>
+
+<h3><code>=&gt;</code> vs <code>-&gt;</code></h3>
+
+<h3><code>key in object</code></h3>
+
+<pre><code class="coffeescript">return true if key of object
+return true if object.hasOwnProperty(key)
+</code></pre>
+
+<h3><code>{key1, key2}</code></h3>
+
+<h3><code>{@key1}</code></h3>
+
+<pre><code class="coffeescript">@render &quot;action&quot;, locals: {post: @post}
+@render &quot;action&quot;, locals: {@post}
+</code></pre>
+
+<h2>OR=</h2>
+
+<pre><code class="coffeescript">a ?= true
+
+b ||= true
+
+c or= true
+</code></pre>
+
+<pre><code class="javascript">if (typeof a === &quot;undefined&quot; || a === null) a = true;
+
+b || (b = true);
+
+c || (c = true);
+</code></pre>
+</section>

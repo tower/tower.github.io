@@ -72,7 +72,7 @@ h4 {
   font-family: 'a', Adobe Garamond Pro, Times New Romans, serif;
   font-size: 18px;
   text-transform: uppercase;
-  color: rgba(56,56,56,0.90);
+  color: rgba(56,56,56,0.9);
   text-align: left;
   margin: 21px 0px 10px 0px;
 }
@@ -84,7 +84,7 @@ h4 code {
   text-align: left;
   letter-spacing: 0.05em;
   font-size: 34px;
-  color: rgba(56,56,56,0.90);
+  color: rgba(56,56,56,0.9);
   padding: 15px 0px 10px 0px;
 }
 p,
@@ -107,7 +107,7 @@ li {
   line-height: normal;
   font-family: Lucida Grande, Helvetica, sans-serif;
   text-transform: none;
-  color: rgba(10,10,10,0.70);
+  color: rgba(10,10,10,0.7);
   line-height: 1.5em;
   text-align: left;
   margin: 0 0 13px 0;
@@ -130,7 +130,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: rgba(164,66,61,0.70);
+  color: rgba(164,66,61,0.7);
 }
 ul,
 ol {

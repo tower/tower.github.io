@@ -33,10 +33,10 @@
   margin: -250px 0 0 -280px;
   background-color: $white;
   border: 1px solid #999;
-  border: 1px solid rgba(0,0,0,0.30);
+  border: 1px solid rgba(0,0,0,0.3);
   *border: 1px solid #999;
 /* IE6-7 */
-rgba(0,0,0,0.30)
+rgba(0,0,0,0.3)
 }
 .modal.fade {
   top: -25%;
