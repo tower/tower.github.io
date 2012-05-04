@@ -11,15 +11,16 @@ $font-color = hsl(0, 0%, 30%)//hsl(186, 46%, 20%)//#32373a
 $grey   = hsl(0, 0%, 60%)
 $code-color = hsl(240, 3%, 36%)
 $pre-color = hsl(0, 0%, 94%)//hsl(0, 0%, 90%)
+$header-font = 'Varela', sans-serif;
 
 .navbar-inner
-  display: none
+  //display: none
+  font-family: 'Forum', cursive;
   background: $grey !important// url(/images/noise.png) !important;
   a
     color: $white !important
     text-shadow: none !important
 body
-  //font-family: 'Forum', cursive;
   position: relative;
   background: $blue !important//url(/images/noise.png) !important;
   .header ul, .header li, .section li, .header p, .header ol, .section p, .section ul, .section ol, .section cite
@@ -87,20 +88,24 @@ h1, h2, h3, h4
   line-height: 1.2
   background: transparent
   //font-family: 'Josefin Sans', sans-serif; // ok
+  //font-family: 'Krona One', sans-serif;
+  font-family: $header-font;
   margin-bottom: 15px;
   padding-bottom: 0px;
   margin-top: 30px;
   padding-bottom: 5px//$baseLineHeight - 1
   margin: $baseLineHeight 0
-  font-weight: bold
+  font-weight: 700
   code
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+    //font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+    font-family: $header-font;
   
 .section
   h1
     border-top: 5px solid #e6e6e6
     padding-top: 15px
     margin-top: 0
+    color: hsl(0, 0, 40%) !important//hsl(0, 0%, 55%)
     text-shadow:  0 1px 0 hsl(0, 0%, 100%);
     code
       text-shadow:  0 1px 0 hsl(0, 0%, 100%);
@@ -266,7 +271,10 @@ h1, h2, h3, h4
 p, li
   font-size: 16px !important
   line-height: 1.5 !important
-  
+  // remove the next 3 lines to convert back to normal font
+  line-height: 1.4 !important
+  font-family: 'Forum', cursive !important;
+  font-size: 17px !important
 
 pre
   white-space: pre !important

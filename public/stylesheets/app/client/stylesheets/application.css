@@ -2,7 +2,7 @@
   border-left: 1px solid #fff !important;
 }
 .navbar-inner {
-  display: none;
+  font-family: 'Forum', cursive;
   background: #999 !important;
 }
 .navbar-inner a {
@@ -105,23 +105,25 @@ h3,
 h4 {
   line-height: 1.2;
   background: transparent;
+  font-family: 'Varela', sans-serif;
   margin-bottom: 15px;
   padding-bottom: 0px;
   margin-top: 30px;
   padding-bottom: 5px;
   margin: $baseLineHeight 0;
-  font-weight: bold;
+  font-weight: 700;
 }
 h1 code,
 h2 code,
 h3 code,
 h4 code {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Varela', sans-serif;
 }
 .section h1 {
   border-top: 5px solid #e6e6e6;
   padding-top: 15px;
   margin-top: 0;
+  color: #666 !important;
   text-shadow: 0 1px 0 #fff;
 }
 .section h1 code {
@@ -302,6 +304,9 @@ p,
 li {
   font-size: 16px !important;
   line-height: 1.5 !important;
+  line-height: 1.4 !important;
+  font-family: 'Forum', cursive !important;
+  font-size: 17px !important;
 }
 pre {
   white-space: pre !important;
