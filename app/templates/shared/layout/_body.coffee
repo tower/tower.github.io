@@ -1,3 +1,24 @@
+###
+  body role: "application", "data-spy":"scroll", "data-target": ".subnav", "data-offset": "50", ->
+    partial "shared/navigation"
+    
+    div id: "content", class: "container", ->
+      text @currentPage.body
+      footer role: "contentinfo", class: "footer", ->
+        cite class: "copyright", ->
+          text "&copy; "
+          a href: "http://twitter.com/viatropos", -> "Lance Pollard"
+          text "2012."
+        cite "Code licensed under the MIT License."
+    
+    coffeescript ->
+      $("code[class='coffeescript']").each ->
+        $(this).addClass("language-javascript").parent().addClass("prettyprint language-javascript")
+      $("code[class='html']").each ->
+        $(this).addClass("language-html").parent().addClass("prettyprint language-html")
+    javascriptTag "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"
+    coffeescript -> prettyPrint()
+###
 if hasContentFor 'templates'
   yields 'templates'
 

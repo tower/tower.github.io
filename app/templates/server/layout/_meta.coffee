@@ -1,9 +1,9 @@
 meta charset: 'utf-8'
 
-if hasContentFor 'title'
-  title @title
+if @currentPage.slug == "home"
+  title "#{t("title")} - Full Stack Web Framework for Node.js and the Browser"
 else
-  title t('title')
+  title "#{t("title")} - #{@currentPage.title}"
 
 meta name: 'description', content: t('description')
 meta name: 'keywords', content: t('keywords')
@@ -13,6 +13,12 @@ meta name: 'author', content: t('author')
 csrfMetaTag()
 
 appleViewportMetaTag width: 'device-width', max: 1, scalable: false
+
+stylesheetTag 'http://fonts.googleapis.com/css?family=Forum|Varela'
+stylesheetTag 'http://twitter.github.com/bootstrap/assets/css/bootstrap.css'
+stylesheetTag 'http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css'
+stylesheetTag 'http://twitter.github.com/bootstrap/assets/css/docs.css'
+stylesheetTag 'http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css'
 
 stylesheets 'lib', 'vendor', 'application', 'development'
 

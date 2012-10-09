@@ -2,6 +2,7 @@ doctype 5
 html ->
   head ->
     partial 'layout/meta'
+    partial 'shared/analytics'
   body role: 'application', ->
     # if browserIs 'ie'
     #   javascriptTag 'http://html5shiv.googlecode.com/svn/trunk/html5.js'
