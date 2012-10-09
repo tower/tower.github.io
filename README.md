@@ -2,6 +2,7 @@
 
 ## Sitemap
 
+- /docs
 - /guides
 - /api
 - /community
@@ -10,4 +11,3 @@
 - /tutorials
 - /contributors
 - /roadmap
-- demo.towerjs.org
