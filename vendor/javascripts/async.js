@@ -7,13 +7,6 @@
     var root = this,
         previous_async = root.async;
 
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = async;
-    }
-    else {
-        root.async = async;
-    }
-
     async.noConflict = function () {
         root.async = previous_async;
         return async;
@@ -64,18 +57,6 @@
         return keys;
     };
 
-    var _indexOf = function (arr, item) {
-        if (arr.indexOf) {
-            return arr.indexOf(item);
-        }
-        for (var i = 0; i < arr.length; i += 1) {
-            if (arr[i] === item) {
-                return i;
-            }
-        }
-        return -1;
-    };
-
     //// exported async module functions ////
 
     //// nextTick implementation with browser-compatible fallback ////
@@ -89,6 +70,7 @@
     }
 
     async.forEach = function (arr, iterator, callback) {
+        callback = callback || function () {};
         if (!arr.length) {
             return callback();
         }
@@ -102,7 +84,7 @@
                 else {
                     completed += 1;
                     if (completed === arr.length) {
-                        callback();
+                        callback(null);
                     }
                 }
             });
@@ -110,6 +92,7 @@
     };
 
     async.forEachSeries = function (arr, iterator, callback) {
+        callback = callback || function () {};
         if (!arr.length) {
             return callback();
         }
@@ -123,7 +106,7 @@
                 else {
                     completed += 1;
                     if (completed === arr.length) {
-                        callback();
+                        callback(null);
                     }
                     else {
                         iterate();
@@ -133,40 +116,41 @@
         };
         iterate();
     };
-    
+
     async.forEachLimit = function (arr, limit, iterator, callback) {
+        callback = callback || function () {};
         if (!arr.length || limit <= 0) {
-            return callback(); 
+            return callback();
         }
         var completed = 0;
         var started = 0;
         var running = 0;
-        
+
         (function replenish () {
-          if (completed === arr.length) {
-              return callback();
-          }
-          
-          while (running < limit && started < arr.length) {
-            iterator(arr[started], function (err) {
-              if (err) {
-                  callback(err);
-                  callback = function () {};
-              }
-              else {
-                  completed += 1;
-                  running -= 1;
-                  if (completed === arr.length) {
-                      callback();
-                  }
-                  else {
-                      replenish();
-                  }
-              }
-            });
-            started += 1;
-            running += 1;
-          }
+            if (completed === arr.length) {
+                return callback();
+            }
+
+            while (running < limit && started < arr.length) {
+                started += 1;
+                running += 1;
+                iterator(arr[started - 1], function (err) {
+                    if (err) {
+                        callback(err);
+                        callback = function () {};
+                    }
+                    else {
+                        completed += 1;
+                        running -= 1;
+                        if (completed === arr.length) {
+                            callback();
+                        }
+                        else {
+                            replenish();
+                        }
+                    }
+                });
+            }
         })();
     };
 
@@ -376,7 +360,7 @@
             }
         };
         var taskComplete = function () {
-            _forEach(listeners, function (fn) {
+            _forEach(listeners.slice(0), function (fn) {
                 fn();
             });
         };
@@ -384,6 +368,7 @@
         addListener(function () {
             if (_keys(results).length === keys.length) {
                 callback(null, results);
+                callback = function () {};
             }
         });
 
@@ -408,7 +393,7 @@
             var ready = function () {
                 return _reduce(requires, function (a, x) {
                     return (a && results.hasOwnProperty(x));
-                }, true);
+                }, true) && !results.hasOwnProperty(k);
             };
             if (ready()) {
                 task[task.length - 1](taskCallback, results);
@@ -426,10 +411,10 @@
     };
 
     async.waterfall = function (tasks, callback) {
+        callback = callback || function () {};
         if (!tasks.length) {
             return callback();
         }
-        callback = callback || function () {};
         var wrapIterator = function (iterator) {
             return function (err) {
                 if (err) {
@@ -594,9 +579,19 @@
             empty: null,
             drain: null,
             push: function (data, callback) {
-                q.tasks.push({data: data, callback: callback});
-                if(q.saturated && q.tasks.length == concurrency) q.saturated();
-                async.nextTick(q.process);
+                if(data.constructor !== Array) {
+                    data = [data];
+                }
+                _forEach(data, function(task) {
+                    q.tasks.push({
+                        data: task,
+                        callback: typeof callback === 'function' ? callback : null
+                    });
+                    if (q.saturated && q.tasks.length == concurrency) {
+                        q.saturated();
+                    }
+                    async.nextTick(q.process);
+                });
             },
             process: function () {
                 if (workers < q.concurrency && q.tasks.length) {
@@ -684,7 +679,22 @@
     async.unmemoize = function (fn) {
       return function () {
         return (fn.unmemoized || fn).apply(null, arguments);
-      }
+      };
     };
+
+    // AMD / RequireJS
+    if (typeof define !== 'undefined' && define.amd) {
+        define('async', [], function () {
+            return async;
+        });
+    }
+    // Node.js
+    else if (typeof module !== 'undefined' && module.exports) {
+        module.exports = async;
+    }
+    // included directly via <script> tag
+    else {
+        root.async = async;
+    }
 
 }());

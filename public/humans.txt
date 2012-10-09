@@ -1,8 +1,18 @@
 /* TEAM */
-  FullStack:   Lance Pollard
+  Frontend:   Lance Pollard
   GitHub:     viatropos
-  Twitter:    viatropos
-  Location:   San Francisco
+  Twitter:    -
+  Location:   -
+
+  Backend:    Lance Pollard
+  GitHub:     viatropos
+  Twitter:    -
+  Location:   -
+
+  Mobile:     Lance Pollard
+  GitHub:     viatropos
+  Twitter:    -
+  Location:   -
 
 /* SITE */
   Standards: HTML5, CSS3
