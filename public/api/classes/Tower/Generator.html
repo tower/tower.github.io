@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <title>CoffeeScript API Documentation</title>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
   <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
   <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
 </head>
   <body>
-    <div id='header'>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
   <div id='menu'>
     <a href='../../class_index.html' title='Index'>Index</a>
     &raquo;
@@ -15,21 +18,91 @@
     <span class='title'>Generator</span>
     <nav>
       <ul>
-        <li class='frames'>
-          (<a class='frames' href='../../frames.html'>frames</a>)
-        </li>
         <li class='noframes'>
           (<a class='noframes' href='#'>no frames</a>)
         </li>
       </ul>
     </nav>
     <div id='search'>
-      <a id='class_list_link' href='../../class_list.html'>Class List</a>
-      <a id='method_list_link' href='../../method_list.html'>Method List</a>
-      <a id='file_list_link' href='../../file_list.html'>File List</a>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
     </div>
   </div>
   <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
 </div>
     <div id='content'>
       <h1>
@@ -38,124 +111,42 @@
       </h1>
       <table class='box'>
         <tr>
-          <td>Inherits:</td>
-          <td>
-            <a href="../../classes/Tower/Class.html">Tower.Class</a>
-          </td>
+          <td>Defined in:</td>
+          <td>packages/tower-generator/server/generator.coffee</td>
         </tr>
         <tr>
-          <td>Defined in:</td>
-          <td>src/tower/server/generator.coffee</td>
+          <td>Inherits:</td>
+          <td>
+            <a href='../../classes/Tower/Class.html'>Tower.Class</a>
+          </td>
         </tr>
       </table>
       <h2>Direct Known Subclasses</h2>
       <p class='children'>
-                <a href="undefinedclasses/Tower/Generator/Jasmine/ControllerGenerator.html">Tower.Generator.Jasmine.ControllerGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/Jasmine/IntegrationGenerator.html">Tower.Generator.Jasmine.IntegrationGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/Jasmine/ModelGenerator.html">Tower.Generator.Jasmine.ModelGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/Mocha/ControllerGenerator.html">Tower.Generator.Mocha.ControllerGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/Mocha/ModelGenerator.html">Tower.Generator.Mocha.ModelGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/Mocha/ViewGenerator.html">Tower.Generator.Mocha.ViewGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/AppGenerator.html">Tower.Generator.AppGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/AssetsGenerator.html">Tower.Generator.AssetsGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/ControllerGenerator.html">Tower.Generator.ControllerGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/HelperGenerator.html">Tower.Generator.HelperGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/MailerGenerator.html">Tower.Generator.MailerGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/ModelGenerator.html">Tower.Generator.ModelGenerator</a>,
-                <a href="undefinedclasses/Tower/Generator/ScaffoldGenerator.html">Tower.Generator.ScaffoldGenerator</a>,
-        <a href="../../classes/Tower/Generator/ViewGenerator.html">Tower.Generator.ViewGenerator</a>
+                <a href='../../classes/Tower/GeneratorLibraryGenerator.html'>Tower.GeneratorLibraryGenerator</a>,
+                <a href='../../classes/Tower/GeneratorMochaControllerGenerator.html'>Tower.GeneratorMochaControllerGenerator</a>,
+                <a href='../../classes/Tower/GeneratorMochaModelGenerator.html'>Tower.GeneratorMochaModelGenerator</a>,
+                <a href='../../classes/Tower/GeneratorMochaViewGenerator.html'>Tower.GeneratorMochaViewGenerator</a>,
+                <a href='../../classes/Tower/GeneratorAppGenerator.html'>Tower.GeneratorAppGenerator</a>,
+                <a href='../../classes/Tower/GeneratorAssetsGenerator.html'>Tower.GeneratorAssetsGenerator</a>,
+                <a href='../../classes/Tower/GeneratorControllerGenerator.html'>Tower.GeneratorControllerGenerator</a>,
+                <a href='../../classes/Tower/GeneratorHelperGenerator.html'>Tower.GeneratorHelperGenerator</a>,
+                <a href='../../classes/Tower/GeneratorMailerGenerator.html'>Tower.GeneratorMailerGenerator</a>,
+                <a href='../../classes/Tower/GeneratorModelGenerator.html'>Tower.GeneratorModelGenerator</a>,
+                <a href='../../classes/Tower/GeneratorScaffoldGenerator.html'>Tower.GeneratorScaffoldGenerator</a>,
+                <a href='../../classes/Tower/GeneratorTemplateGenerator.html'>Tower.GeneratorTemplateGenerator</a>,
+        <a href='../../classes/Tower/GeneratorViewGenerator.html'>Tower.GeneratorViewGenerator</a>
       </p>
-      <h2>Constant Summary</h2>
-      <dl class='constants'>
-        <dt id='sourceRoot-constant'>
-          sourceRoot
-          =
-          <div class='tags'>
-</div>
-        </dt>
-        <dd>
-          <pre><code class='coffee'>__dirname</code></pre>
-        </dd>
-      </dl>
-      <h2>Class Method Summary</h2>
-      <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#run-class'>
-        + (void) <strong>run</strong>(type, options)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-</ul>
-      <h2>Instance Method Summary</h2>
-      <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#constructor-instance'>
-        - (void) <strong>constructor</strong>(options = {})
-      </a>
-    </span>
-    <span class='constructor note title'>Constructor</span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-</ul>
-      <h3 class='inherited'>
-        Methods inherited from
-        <a href="../../classes/Tower/Class.html">Tower.Class</a>
-      </h3>
-      <p class='inherited'>
-                <a href="undefinedclasses/Tower/Class.html#global-class">.global</a>,
-                <a href="undefinedclasses/Tower/Class.html#alias-class">.alias</a>,
-                <a href="undefinedclasses/Tower/Class.html#accessor-class">.accessor</a>,
-                <a href="undefinedclasses/Tower/Class.html#getter-class">.getter</a>,
-                <a href="undefinedclasses/Tower/Class.html#setter-class">.setter</a>,
-                <a href="undefinedclasses/Tower/Class.html#classAlias-class">.classAlias</a>,
-                <a href="undefinedclasses/Tower/Class.html#classAccessor-class">.classAccessor</a>,
-                <a href="undefinedclasses/Tower/Class.html#classGetter-class">.classGetter</a>,
-                <a href="undefinedclasses/Tower/Class.html#classSetter-class">.classSetter</a>,
-                <a href="undefinedclasses/Tower/Class.html#classEval-class">.classEval</a>,
-                <a href="undefinedclasses/Tower/Class.html#delegate-class">.delegate</a>,
-                <a href="undefinedclasses/Tower/Class.html#mixin-class">.mixin</a>,
-                <a href="undefinedclasses/Tower/Class.html#extend-class">.extend</a>,
-                <a href="undefinedclasses/Tower/Class.html#include-class">.include</a>,
-                <a href="undefinedclasses/Tower/Class.html#className-class">.className</a>,
-                <a href="undefinedclasses/Tower/Class.html#className-instance">#className</a>,
-                <a href="undefinedclasses/Tower/Class.html#constructor-instance">#constructor</a>,
-        <a href="../../classes/Tower/Class.html#initialize-instance">#initialize</a>
-      </p>
-      <h2>Class Method Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='run-class'>
-      + (void) <strong>run</strong>(type, options)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-</div>
-      <h2>Constructor Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='constructor-instance'>
-      - (void) <strong>constructor</strong>(options = {})
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-</div>
     </div>
     <div id='footer'>
   Generated on
-  Wed Mar 21 2012 12:38:28 GMT-0700 (PDT)
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
   by
-  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
-  v0.5.0
-  (Node.js v0.6.11).
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
   &#10034;
   <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
   &#10034;

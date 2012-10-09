@@ -10,13 +10,13 @@
   "keywords": [
     "node"
   ],
-  "maintainers": [{
-    "name": "Lance Pollard",
-    "email": "lancejpollard@gmail.com"
-  }],
-  "contributors": [
-
+  "maintainers": [
+    {
+      "name": "Lance Pollard",
+      "email": "lancejpollard@gmail.com"
+    }
   ],
+  "contributors": [],
   "licenses": [
     {
       "type": "MIT",
@@ -42,7 +42,8 @@
     "socket.io": ">= 0.8.7",
     "socket.io-client": ">= 0.9.5",
     "tower": ">= 0.4.2",
-    "which": ">= 1.0.5"
+    "which": ">= 1.0.5",
+    "github-flavored-markdown": "~1.0.1"
   },
   "optionalDependencies": {
     "nodemailer": ">= 0.3.28",

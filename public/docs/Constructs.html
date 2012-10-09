@@ -1,0 +1,31 @@
+<h2>The Object Model</h2>
+
+<p>Tower uses the core <a href="emberjs.com">Ember</a> Object Model, which is inspired a lot by Ruby and other dynamic programming languages.</p>
+
+<p>The following concepts are available for models. Due to this fact, some models can be quite "thick". Using the power of Javascript mixing however, it is easy to separate these concepts (or concerns) if the models become too thick.</p>
+
+<ul>
+<li>Classes</li>
+<li>Mixins</li>
+<li>Concerns</li>
+<li>Accessors</li>
+<li>Observers</li>
+<li>Events</li>
+<li>Binding</li>
+<li>StateMachines</li>
+<li>Run Loops</li>
+</ul>
+
+<p><a name="classes" href="#classes"></a></p>
+
+<h2>Classes</h2>
+
+<div class="highlight"><pre lang=" coffeescript">class SomeClass
+
+class App.User extends Tower.Model
+</pre></div>
+
+<div class="highlight"><pre lang=" coffeescript">SomeClass = ->
+
+App.User = Tower.Model.extend()
+</pre></div>

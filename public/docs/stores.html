@@ -1,133 +1,404 @@
-<header class="header subhead" id="overview"><h1>Stores</h1>
-<nav class="subnav"><ul class="nav nav-pills"><li><a href="#persistence">persistence</a></li><li><a href="#querying">querying</a></li><li><a href="#memory">memory</a></li><li><a href="#mongodb">mongodb</a></li></ul></nav></header><section class="section" id="persistence"><h1>Persistence</h1>
+<h2>Finders</h2>
 
-<p>Each <code>Tower.Store</code> method requires exact parameters (there&#39;s no argument overloading).</p>
+<ul>
+<li><code>Store#find</code></li>
+<li><code>Store#findOne</code></li>
+<li><code>Store#count</code></li>
+<li><code>Store#exists</code></li>
+</ul>
+
+<p><a name="store-find" href="#store-find"></a></p>
+
+<h3><code>Store#find</code></h3>
+
+<p>Returns an array of models.  The database is free to perform more fine-grained optimizations, such as making a <code>collection.findOne</code> call in mongodb if there's only one <code>id</code> we're searching by.</p>
+
+<div class="highlight"><pre lang=" coffeescript">store.find { "id" : { "$in": [1, 2, 3] } }
+store.find { "id" : { "$nin": [1, 2, 3] } }
+store.find { "tags" : { "$all": ["ruby", "javascript"] } }
+store.find { "tags" : { "$in": ["ruby", "javascript"] } }
+store.find { "$or": [ { "tags" : { "$in": ["ruby", "javascript"] } }, { "id" : { "$in": [1, 2, 3] } } ] }
+</pre></div>
+
+<p><a name="persistence" href="#persistence"></a></p>
+
+<h2>Persistence</h2>
+
+<p>Each <code>Tower.Store</code> method requires exact parameters (there's no argument overloading).</p>
 
 <p>The store is used by the <code>Tower.Model</code> internally.</p>
 
 <ul>
-<li><code>Store#find</code></li>
 <li><code>Store#create</code></li>
 <li><code>Store#update</code></li>
 <li><code>Store#destroy</code></li>
 </ul>
 
-<h2><code>Store#find</code></h2>
+<p><a name="store-create" href="#store-create"></a></p>
 
-<p>Returns an array of models.  The database is free to perform more fine-grained optimizations, such as making a <code>collection.findOne</code> call in mongodb if there&#39;s only one <code>id</code> we&#39;re searching by.</p>
-
-<pre><code class="coffeescript">store.find { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } }
-store.find { &quot;id&quot; : { &quot;$nin&quot;: [1, 2, 3] } }
-store.find { &quot;tags&quot; : { &quot;$all&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }
-store.find { &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }
-store.find { &quot;$or&quot;: [ { &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }, { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } } ] }
-</code></pre>
-
-<h2><code>Store#create</code></h2>
+<h3><code>Store#create</code></h3>
 
 <p>Creates one model.</p>
 
-<pre><code class="coffeescript">store.create { &quot;tags&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">store.create { "tags" : ["ruby", "javascript"] }
+</pre></div>
 
-<h2><code>Store#update</code></h2>
+<p><a name="store-update" href="#store-update"></a></p>
+
+<h3><code>Store#update</code></h3>
 
 <p>Updates any models matching the query.</p>
 
-<pre><code class="coffeescript">store.update { &quot;$set&quot;: { &quot;tags&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] } }, { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } }
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">store.update { "$set": { "tags" : ["ruby", "javascript"] } }, { "id" : { "$in": [1, 2, 3] } }
+</pre></div>
 
-<h2><code>Store#destroy</code></h2>
+<p><a name="store-destroy" href="#store-destroy"></a></p>
+
+<h3><code>Store#destroy</code></h3>
 
 <p>Deletes any models matching the query.</p>
 
-<pre><code class="coffeescript">store.destroy { &quot;id&quot; : { &quot;$in&quot;: [1, 2, 3] } }
-</code></pre>
-</section><section class="section" id="querying"><h1>Querying</h1>
+<div class="highlight"><pre lang=" coffeescript">store.destroy { "id" : { "$in": [1, 2, 3] } }
+</pre></div>
 
-<h2>Operators</h2>
+<p><a name="querying" href="#querying"></a></p>
 
-<h3><code>$eq</code></h3>
+<h2>Querying</h2>
 
-<pre><code class="coffeescript">store.find { &quot;status&quot; : &quot;active&quot; }
-store.find { &quot;status&quot; : &quot;$eq&quot; : &quot;active&quot; }
-</code></pre>
+<p><a name="operators" href="#operators"></a></p>
 
-<h3><code>$ne</code></h3>
+<h3>Operators</h3>
 
-<pre><code class="coffeescript">store.find { &quot;status&quot; : &quot;$ne&quot; : &quot;inactive&quot; }
-</code></pre>
+<p><a name="eq" href="#eq"></a></p>
 
-<h3><code>&lt;, &lt;=, &gt;, &gt;=</code></h3>
+<h4><code>$eq</code></h4>
 
-<pre><code class="coffeescript">store.find { &quot;likeCount&quot; : &quot;&gt;=&quot; : 10 }
-store.find { &quot;likeCount&quot; : &quot;$gte&quot; : 10 }
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">store.find { "status" : "active" }
+store.find { "status" : "$eq" : "active" }
+</pre></div>
 
-<h3><code>$all</code></h3>
+<p><a name="ne" href="#ne"></a></p>
 
-<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$all&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] } }
-</code></pre>
+<h4><code>$ne</code></h4>
 
-<h3><code>$in</code></h3>
+<div class="highlight"><pre lang=" coffeescript">store.find { "status" : "$ne" : "inactive" }
+</pre></div>
 
-<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] } }
-</code></pre>
+<p><a name="" href="#"></a></p>
 
-<h3><code>$nin</code></h3>
+<h4><code>&lt;, &lt;=, &gt;, &gt;=</code></h4>
 
-<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$nin&quot; : [&quot;java&quot;, &quot;asp&quot;] } }
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">store.find { "likeCount" : ">=" : 10 }
+store.find { "likeCount" : "$gte" : 10 }
+</pre></div>
 
-<h3><code>$match</code></h3>
+<p><a name="all" href="#all"></a></p>
 
-<pre><code class="coffeescript">store.find { &quot;name&quot; : /acme.*corp/i }
-</code></pre>
+<h4><code>$all</code></h4>
 
-<h3><code>$notMatch</code></h3>
+<div class="highlight"><pre lang=" coffeescript">store.find { "tags" : { "$all" : ["ruby", "javascript"] } }
+</pre></div>
 
-<pre><code class="coffeescript">store.find { &quot;name&quot; : /acme.*corp/i }
-</code></pre>
+<p><a name="in" href="#in"></a></p>
 
-<h3><code>$or</code></h3>
+<h4><code>$in</code></h4>
 
-<pre><code class="coffeescript">store.find { &quot;$or&quot;: [ { &quot;likeCount&quot; : 1000 }, { &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } } ] }
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">store.find { "tags" : { "$in" : ["ruby", "javascript"] } }
+</pre></div>
 
-<h3><code>$nor</code></h3>
+<p><a name="nin" href="#nin"></a></p>
 
-<pre><code class="coffeescript">store.find { &quot;$nor&quot;: [ { &quot;likeCount&quot; : 1000 }, { &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } } ] }
-</code></pre>
+<h4><code>$nin</code></h4>
 
-<h3><code>$and</code></h3>
+<div class="highlight"><pre lang=" coffeescript">store.find { "tags" : { "$nin" : ["java", "asp"] } }
+</pre></div>
 
-<pre><code class="coffeescript">store.find { &quot;$and&quot; : [ { &quot;a&quot; : 1 }, { &quot;a&quot; : { $gt: 5 } } ] }
-</code></pre>
+<p><a name="match" href="#match"></a></p>
 
-<h2>Sorting</h2>
+<h4><code>$match</code></h4>
 
-<h3><code>sort</code></h3>
+<div class="highlight"><pre lang=" coffeescript">store.find { "name" : /acme.*corp/i }
+</pre></div>
 
-<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }, &quot;sort&quot;: [[&quot;title&quot;, &quot;asc&quot;]] }
-</code></pre>
+<p><a name="not-match" href="#not-match"></a></p>
+
+<h4><code>$notMatch</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">store.find { "name" : /acme.*corp/i }
+</pre></div>
+
+<p><a name="or" href="#or"></a></p>
+
+<h4><code>$or</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">store.find { "$or": [ { "likeCount" : 1000 }, { "likeCount" : { "$gte": 1, "$lte": 100 } } ] }
+</pre></div>
+
+<p><a name="nor" href="#nor"></a></p>
+
+<h4><code>$nor</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">store.find { "$nor": [ { "likeCount" : 1000 }, { "likeCount" : { "$gte": 1, "$lte": 100 } } ] }
+</pre></div>
+
+<p><a name="and" href="#and"></a></p>
+
+<h4><code>$and</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">store.find { "$and" : [ { "a" : 1 }, { "a" : { $gt: 5 } } ] }
+</pre></div>
+
+<p><a name="sorting" href="#sorting"></a></p>
+
+<h3>Sorting</h3>
+
+<p><a name="sort" href="#sort"></a></p>
+
+<h4><code>sort</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">store.find { "tags" : { "$in" : ["ruby", "javascript"] }, "sort": [["title", "asc"]] }
+</pre></div>
+
+<p><a name="paginating" href="#paginating"></a></p>
 
 <h2>Paginating</h2>
 
-<h3><code>limit</code></h3>
+<p><a name="limit" href="#limit"></a></p>
 
-<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }, &quot;limit&quot;: 20 }
-</code></pre>
+<h4><code>limit</code></h4>
 
-<h3><code>offset</code></h3>
+<div class="highlight"><pre lang=" coffeescript">store.find { "tags" : { "$in" : ["ruby", "javascript"] }, "limit": 20 }
+</pre></div>
 
-<pre><code class="coffeescript">store.find { &quot;tags&quot; : { &quot;$in&quot; : [&quot;ruby&quot;, &quot;javascript&quot;] }, &quot;offset&quot;: 10 }
-</code></pre>
+<p><a name="offset" href="#offset"></a></p>
 
-<h2>Selecting Specific Fields</h2>
+<h4><code>offset</code></h4>
 
-<h3><code>fields</code></h3>
-</section><section class="section" id="memory"><h1>Memory Store</h1>
+<div class="highlight"><pre lang=" coffeescript">store.find { "tags" : { "$in" : ["ruby", "javascript"] }, "offset": 10 }
+</pre></div>
+
+<p><a name="selecting-specific-fields" href="#selecting-specific-fields"></a></p>
+
+<h3>Selecting Specific Fields</h3>
+
+<p><a name="fields" href="#fields"></a></p>
+
+<h4><code>fields</code></h4>
+
+<p><a name="memory-store" href="#memory-store"></a></p>
+
+<h2>Memory Store</h2>
 
 <p>The memory story stores all the records in a JavaScript object.  It can perform all the same advanced queries as <code>Tower.Store.MongoDB</code>, making it really easy to reuse server-side model code on the client.</p>
-</section><section class="section" id="mongodb"><h1>MongoDB Store</h1>
-</section>
+
+<p><a name="mongo-db-store" href="#mongo-db-store"></a></p>
+
+<h2>MongoDB Store</h2>
+
+<ul>
+<li><a href='http://mongodb.github.com/node-mongodb-native/'>http://mongodb.github.com/node-mongodb-native/</a></li>
+<li><a href='http://mobile.eweek.com/c/a/Application-Development/MongoDB-Native-Driver-for-Nodejs-Speeds-Up-Results-176150/'>http://mobile.eweek.com/c/a/Application-Development/MongoDB-Native-Driver-for-Nodejs-Speeds-Up-Results-176150/</a></li>
+</ul>
+
+<p><a name="todo-neo4j-store" href="#todo-neo4j-store"></a></p>
+
+<h2>(todo) Neo4j Store</h2>
+
+<p>This is the Tower adapter to Neo4j, an awesome graph database.  Neo4j has several features that the other databases don't have.</p>
+
+<p><a name="database-transactions" href="#database-transactions"></a></p>
+
+<h2>Database Transactions</h2>
+
+<p>Tower models have something like database transactions.</p>
+
+<p>On the client, there is one global transaction.  By default, this transaction commits every time you create/save/update/destroy a record.  You can set <code>Tower.Store.Transaction.commitInterval = n</code> to some <code>n</code> millisecond value, and it will make sure the transaction is committed every <code>n</code> milliseconds.  If it's <code>0</code>, it will commit automatically.  You can also set it to <code>null</code> and it will never commit, you have to manually call <code>Tower.Store.instance().commit()</code>.</p>
+
+<p>On the server, there is no global transaction; that would create a huge memory management problem.  Instead, every create/save/update/destroy creates its own transaction and automatically commits.  If you want group multiple operations into a single transaction, you can do that like this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.TransactionsController extends Tower.Controller
+  create: ->
+    Tower.Store.transaction (transaction) =>
+      user = App.User.with(transaction).create()
+      post = App.Post.with(transaction).create()
+      transaction.commit (error) =>
+        if error
+          @render json: success: "All operations saved"
+        else
+          @render json: failure: error.message
+</pre></div>
+
+<p>The model instances themselves will always show their new/updated attribute values, but they won't necessarily get their <code>id</code> immediately due to the async database operations.</p>
+
+<p><a name="creating-records" href="#creating-records"></a></p>
+
+<h3>Creating Records</h3>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.where(firstName: "Lance").create()
+  cursor.create() # pass in transaction if cursor had transaction
+    record.save()
+      transaction.create()
+        if transaction.autocommit
+          store.create()
+
+user = new App.User
+
+user.save()
+  transaction.create()
+    store.create()
+
+App.User.create({}, {}, {})
+  cursor.create()
+    for record in records
+      record.save()
+        transaction.create()
+          store.create()
+
+App.User.transaction().create({}, {}, {})
+  cursor.create()
+    for record in records
+      record.save()
+        transaction.create()
+    transaction.commit()
+      store.create()
+</pre></div>
+
+<p><a name="finding-records-bindable-scopes" href="#finding-records-bindable-scopes"></a></p>
+
+<h3>Finding Records (bindable scopes)</h3>
+
+<p><code>scope.all</code> returns a cursor, so if you want the records you have to add a callback <code>scope.all (error, records)</code>.  This makes it so you can do both/or: get the records or set up a binding to that record set.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>this returns a cursor that acts like an array of records.</h1>
+
+App.usersByFirstName = App.User.asc("firstName").limit(20).all()
+
+
+<h1>this returns a cursor that acts as an individual record.</h1>
+
+
+
+<h1>this way you can have something like a "featured post"</h1>
+
+
+
+<h1>that will automatically update. Maybe we don't want to do this.</h1>
+
+App.topPost = App.Post.desc("likes").first()
+</pre></div>
+
+<div class="highlight"><pre lang="html">
+<ul>
+{{#each App.usersByFirstName}}
+  <li>{{fullName}}</li>
+{{/each}}
+</ul>
+
+</pre></div>
+
+<p>Ideally you'd be able to not have to call <code>all</code>, so you could do this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field "firstName"
+
+  @scope "byFirstName", @asc("firstName").limit(20)
+</pre></div>
+
+<div class="highlight"><pre lang=" coffeescript">
+<ul>
+{{#each App.User.byFirstName}}
+  <li>{{fullName}}</li>
+{{/each}}
+</ul>
+
+</pre></div>
+
+<p><a name="list-of-checkins-within-the-last-minute" href="#list-of-checkins-within-the-last-minute"></a></p>
+
+<h3>List of "checkins within the last minute"</h3>
+
+<p>Since the <code>&gt;=</code> is a <code>Date</code>, Tower will generate a callback which will update the query with the latest records.  By default it will update it every 5 seconds, but you can change this.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.latestCheckins = App.Checkin.where(createdAt: ">=": _(1).minute().ago()).all()
+
+App.Checkin.create()
+
+
+<h1>wait 0:50</h1>
+
+App.Checkin.create()
+
+
+<h1>wait 0:11, 1 checkin disappears.</h1>
+
+</pre></div>
+
+<div class="highlight"><pre lang="html">
+<ul>
+{{#each App.lastCheckins}}
+  <li>{{user.name}} checked into {{place.name}} at {{createdAtAgo}}</li>
+{{/each}}
+</ul>
+
+</pre></div>
+
+<ul>
+<li>If <code>Date</code>, refresh every x interval.</li>
+</ul>
+
+<p><a name="list-of-closest" href="#list-of-closest"></a></p>
+
+<h3>List of "closest"</h3>
+
+<div class="highlight"><pre lang=" coffeescript">currentLocation   = [40.741404,  -73.988135]
+App.closestDeals  = App.Deal.near(currentLocation).within(1, "mile").all()
+</pre></div>
+
+<div class="highlight"><pre lang="html">
+<ul>
+{{#each App.closestDeals}}
+  <li>{{description}}</li>
+{{/each}}
+</ul>
+
+</pre></div>
+
+<p>That <code>currentLocation</code> will be a bindable array, which when updated will update the scope, so the deals always reflect the ones closest the current location!</p>
+
+<ul>
+<li>If location, refresh if location changes</li>
+<li>If array, refresh if array changes.</li>
+</ul>
+
+<p><a name="coffee-kup-to-generate-handlebar-templates" href="#coffee-kup-to-generate-handlebar-templates"></a></p>
+
+<h3>CoffeeKup to generate handlebar templates</h3>
+
+<p>Potential idea!</p>
+
+<div class="highlight"><pre lang=" coffeescript">ul ->
+  each "App.closestDeals", ->
+    li "{{description}}"
+</pre></div>
+
+<p><a name="transports" href="#transports"></a></p>
+
+<h2>"Transports"</h2>
+
+<p><a name="ajax-transport" href="#ajax-transport"></a></p>
+
+<h3>Ajax Transport</h3>
+
+<p><a name="client-side-res-tful-batch-processing" href="#client-side-res-tful-batch-processing"></a></p>
+
+<h2>Client-side RESTful Batch-Processing</h2>
+
+<p><a name="resources" href="#resources"></a></p>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href='http://www.slideshare.net/jrosoff/scalable-event-analytics-with-mongodb-ruby-on-rails'>http://www.slideshare.net/jrosoff/scalable-event-analytics-with-mongodb-ruby-on-rails</a></li>
+</ul>

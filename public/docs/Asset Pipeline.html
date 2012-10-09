@@ -1,0 +1,182 @@
+<h2>Pipeline</h2>
+
+<p>Tower has a built-in asset compilation and deployment pipeline.  The <code>config/assets.coffee</code> manifest defines how assets are bundled.</p>
+
+<ul>
+<li>Asset Manifest</li>
+<li>Watchfile</li>
+</ul>
+
+<p><a name="asset-tasks" href="#asset-tasks"></a></p>
+
+<h2>Asset Tasks</h2>
+
+<div class="highlight"><pre lang="">cake assets:bundle
+cake assets:upload # cake assets:upload:s3
+cake assets:stats
+</pre></div>
+
+<p><a name="asset-compression" href="#asset-compression"></a></p>
+
+<h3>Asset Compression</h3>
+
+<p>Bundles all the assets</p>
+
+<p><a name="upload-assets-to-s3" href="#upload-assets-to-s3"></a></p>
+
+<h3>Upload Assets to S3</h3>
+
+<p><a name="print-asset-sizes" href="#print-asset-sizes"></a></p>
+
+<h3>Print Asset Sizes</h3>
+
+<p><a name="asset-manifest" href="#asset-manifest"></a></p>
+
+<h2>Asset Manifest</h2>
+
+<div class="highlight"><pre lang=" coffeescript">module.exports =
+  javascripts:
+    application: [
+      '/app/models/user'
+      '/app/models/post'
+    ]
+    bottom: [
+      '/vendor/assets/javascripts/jmd/showdown'
+      '/vendor/assets/javascripts/jmd/jquery.markedit'
+    ]
+    vendor: [
+      '/vendor/assets/javascripts/tower'
+      '/vendor/assets/javascripts/underscore'
+    ]
+    development: [
+      '/vendor/assets/javascripts/jasmine'
+      '/vendor/assets/javascripts/faker'
+      '/vendor/assets/javascripts/coffeekup'
+    ]
+
+  stylesheets:
+    base: [
+      '/app/assets/stylesheets/reset'
+      '/app/assets/stylesheets/typography'
+    ]
+    application: [
+      '/app/assets/stylesheets/application'
+    ]
+</pre></div>
+
+<p><a name="notes" href="#notes"></a></p>
+
+<h2>Notes</h2>
+
+<p>Node 0.6.0 has a stable zlib in its core now: <a href='http://nodejs.org/docs/v0.6.7/api/zlib.html#zlib'>http://nodejs.org/docs/v0.6.7/api/zlib.html#zlib</a>.  The alternative was to use gzippo.</p>
+
+<p><a name="css-sprites" href="#css-sprites"></a></p>
+
+<h2>CSS Sprites</h2>
+
+<p><a name="grunt" href="#grunt"></a></p>
+
+<h2>Grunt</h2>
+
+<div class="highlight"><pre lang=" coffeescript">watch ///test/cases///
+  update: (path, callback) ->
+
+  client:
+    update: (data) ->
+</pre></div>
+
+<p><a name="asset-uploading" href="#asset-uploading"></a></p>
+
+<h2>Asset Uploading</h2>
+
+<p>There is some problem where it looks like the file may not be fully written to the filesystem locally, and when you upload it to s3 everything looks fine but when you visit the url such as:</p>
+
+<div class="highlight"><pre lang=""><a href='http://cloud.example.com/javascripts/lib-47ea7d6d770095d68325d0a928874301.js'>http://cloud.example.com/javascripts/lib-47ea7d6d770095d68325d0a928874301.js</a>
+</pre></div>
+
+<p>it says the file doesn't exist, even though you can see it if you FTP into the S3 server! It seems to be random, but it may depend on the filesize (> 500kb, which doesn't make sense), but it probably is because it's somehow not written properly to S3. Still figuring out...  The crazy thing is, it's happening when the files are in this order (in <code>config/assets.coffee</code>):</p>
+
+<div class="highlight"><pre lang=" coffeescript">vendor: [
+  '/vendor/javascripts/underscore'
+  '/vendor/javascripts/underscore.string'
+  '/vendor/javascripts/moment'
+  '/vendor/javascripts/geolib'
+  '/vendor/javascripts/validator'
+  '/vendor/javascripts/accounting'
+  '/vendor/javascripts/inflection'
+  '/vendor/javascripts/coffeekup'
+  '/vendor/javascripts/prettify'
+  '/vendor/javascripts/async'
+  '/vendor/javascripts/socket.io'
+  '/vendor/javascripts/handlebars'
+  '/vendor/javascripts/ember'
+  '/vendor/javascripts/tower'
+  '/vendor/twitter-bootstrap/js/bootstrap-twipsy'
+  '/vendor/twitter-bootstrap/js/bootstrap-popover'
+]
+</pre></div>
+
+<p>but when the last two are switched, it works fine???</p>
+
+<div class="highlight"><pre lang=" coffeescript">vendor: [
+  '/vendor/javascripts/underscore'
+  '/vendor/javascripts/underscore.string'
+  '/vendor/javascripts/moment'
+  '/vendor/javascripts/geolib'
+  '/vendor/javascripts/validator'
+  '/vendor/javascripts/accounting'
+  '/vendor/javascripts/inflection'
+  '/vendor/javascripts/coffeekup'
+  '/vendor/javascripts/prettify'
+  '/vendor/javascripts/async'
+  '/vendor/javascripts/socket.io'
+  '/vendor/javascripts/handlebars'
+  '/vendor/javascripts/ember'
+  '/vendor/javascripts/tower'
+  # switched these
+  '/vendor/twitter-bootstrap/js/bootstrap-popover'
+  '/vendor/twitter-bootstrap/js/bootstrap-twipsy'
+]
+</pre></div>
+
+<p>Here is an example request</p>
+
+<div class="highlight"><pre lang="">Request URL:<a href='http://cloud.example.com.s3.amazonaws.com/stylesheets/application-bae0e0f7bcec9cba84950ead5e5907c4.css'>http://cloud.example.com.s3.amazonaws.com/stylesheets/application-bae0e0f7bcec9cba84950ead5e5907c4.css</a>
+Request Method:GET
+Status Code:206 Partial Content
+Request Headersview source
+Accept:text/css,*/*;q=0.1
+Accept-Charset:ISO-8859-1,utf-8;q=0.7,*;q=0.3
+Accept-Encoding:gzip,deflate,sdch
+Accept-Language:en-US,en;q=0.8
+Cache-Control:max-age=0
+Connection:keep-alive
+Host:cloud.example.com.s3.amazonaws.com
+If-Range:"9be806c9b5a78f3ff7061176bace764c"
+Range:bytes=1027-1027
+Referer:<a href='http://rituwall-development.herokuapp.com/'>http://rituwall-development.herokuapp.com/</a>
+User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_7) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.43 Safari/536.11
+Response Headersview source
+Accept-Ranges:bytes
+Cache-Control:public
+Content-Length:1
+Content-Range:bytes 1027-1027/119790
+Content-Type:text/css
+Date:Thu, 28 Jun 2012 00:56:09 GMT
+ETag:"9be806c9b5a78f3ff7061176bace764c"
+Expires:Fri, 28 Jun 2013 00:39:02 GMT
+Last-Modified:Thu, 28 Jun 2012 00:39:04 GMT
+Server:AmazonS3
+x-amz-id-2:SA8cjneb7VHRYk2Ly0Q1ky1I39E5QKIPGKS8sl1hXvfzLXxo1h1aNz1jrqLC6MiC
+x-amz-request-id:3DE75DC923D7E01E
+</pre></div>
+
+<p><a name="resources" href="#resources"></a></p>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href="https://github.com/joyent/node/issues/2062" title="fs.watch fails to detect changes to file replaced by rename event"><a href='https://github.com/joyent/node/issues/2062'>https://github.com/joyent/node/issues/2062</a></a></li>
+<li><a href="https://github.com/joyent/node/issues/2023" title="Introduce FSEvents support for directory watcher on mac"><a href='https://github.com/joyent/node/issues/2023'>https://github.com/joyent/node/issues/2023</a></a></li>
+<li><a href='https://github.com/phidelta/NodeJS-FSEvents'>https://github.com/phidelta/NodeJS-FSEvents</a></li>
+</ul>

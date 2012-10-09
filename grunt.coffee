@@ -12,6 +12,22 @@ module.exports = (grunt) ->
   # @todo grunt.loadNpmTasks('tower-tasks')
   require(require('path').join(Tower.srcRoot, 'lib/tower-tasks/tasks'))(grunt)
 
+  grunt.registerMultiTask 'wiki', 'Compile wiki for towerjs.org', ->
+    markdown = require('github-flavored-markdown')
+
+    wikiRoot = Tower.join(Tower.srcRoot, 'wiki')
+    docs = file.expand(Tower.join(wikiRoot, 'en/docs/**/*.md'))
+    guides = file.expand(Tower.join(wikiRoot, 'en/guides/**/*.md'))
+    cheatSheets = file.expand(Tower.join(wikiRoot, 'en/cheat-sheets/**/*.md'))
+
+    renderMarkdown = (doc) ->
+      filePath = Tower.join(Tower.root, 'public/docs', Tower.basename(doc, '.md') + '.html')
+      Tower.writeFileSync(filePath, markdown.parse(Tower.readFileSync(doc, 'utf-8')))
+
+    docs.forEach(renderMarkdown)
+    guides.forEach(renderMarkdown)
+    cheatSheets.forEach(renderMarkdown)
+
   # script files
   scriptPaths = file.expand([
     'app/!(templates)/**/*.coffee'
@@ -48,14 +64,23 @@ module.exports = (grunt) ->
         files: ['app/stylesheets/client/application.styl']
         tasks: ['stylus']
     copy:
-      js:
+      javascripts:
         src: ['vendor/**/*.js']
         dest: 'public/javascripts'
-      css:
+      stylesheets:
         src: ['vendor/**/*.css']
         dest: 'public/stylesheets'
+      images:
+        src: ['vendor/**/*.{png,gif,jpg}']
+        dest: 'public/images'
+      api:
+        src: [Tower.join(Tower.srcRoot, 'doc/**/*')]
+        strip: "#{Tower.srcRoot}/doc#{Tower.pathSeparator}"
+        dest: 'public/api'
+    wiki:
+      compile: {}
     templates:
-      all: {}
+      compile: {}
     stylus:
       compile:
         options:
@@ -87,5 +112,6 @@ module.exports = (grunt) ->
 
   grunt.initConfig(config)
 
-  grunt.registerTask 'default', 'copy:js copy:css coffee:all less stylus templates'
+  grunt.registerTask 'copy:assets', 'copy:api copy:stylesheets copy:javascripts copy:images'
+  grunt.registerTask 'default', 'copy:assets wiki coffee:all less stylus templates'
   grunt.registerTask 'start', 'default watch'

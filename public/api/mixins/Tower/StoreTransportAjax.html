@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <span class='title'>StoreTransportAjax</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Mixin:
+        Tower.StoreTransportAjax
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>packages/tower-store/client/transport/ajax.coffee</td>
+        </tr>
+      </table>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#ajax-mixin'>
+        ? (void) <strong>ajax</strong>(params, defaults)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeParams-mixin'>
+        ? (void) <strong>serializeParams</strong>(params, defaults)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_adjustParamsForJSONP-mixin'>
+        ? (void) <strong>_adjustParamsForJSONP</strong>(params)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toJSON-mixin'>
+        ? (void) <strong>toJSON</strong>(record, method, format)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#disable-mixin'>
+        ? (void) <strong>disable</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#requestNext-mixin'>
+        ? (void) <strong>requestNext</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#request-mixin'>
+        ? (void) <strong>request</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#queue-mixin'>
+        ? (void) <strong>queue</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#success-mixin'>
+        ? (void) <strong>success</strong>(record, options = {})
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#failure-mixin'>
+        ? (void) <strong>failure</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#create-mixin'>
+        ? (void) <strong>create</strong>(records, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      This is called from {Tower.NetConnection#clientDidCreate}.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#urlForCreate-mixin'>
+        ? (void) <strong>urlForCreate</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#createSuccess-mixin'>
+        ? (void) <strong>createSuccess</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Called if a record was successfully created on the server.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#createFailure-mixin'>
+        ? (void) <strong>createFailure</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#update-mixin'>
+        ? (void) <strong>update</strong>(records, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#urlForUpdate-mixin'>
+        ? (void) <strong>urlForUpdate</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#updateSuccess-mixin'>
+        ? (void) <strong>updateSuccess</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#updateFailure-mixin'>
+        ? (void) <strong>updateFailure</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroy-mixin'>
+        ? (void) <strong>destroy</strong>(records, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#urlForDestroy-mixin'>
+        ? (void) <strong>urlForDestroy</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroySuccess-mixin'>
+        ? (void) <strong>destroySuccess</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      @todo
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroyFailure-mixin'>
+        ? (void) <strong>destroyFailure</strong>(record, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findSuccess-mixin'>
+        ? (void) <strong>findSuccess</strong>(cursor, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findFailure-mixin'>
+        ? (void) <strong>findFailure</strong>(cursor, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#find-mixin'>
+        ? (void) <strong>find</strong>(cursor, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Makes a request with JSON like this: { &quot;sort&quot;: [&quot;firstName&quot;, &quot;asc&quot;], &quot;page&quot;: 2, &quot;limit&quot;: 20, &quot;conditions&quot;: [{&quot;firstName&quot;: {&quot;=~&quot;: &quot;/^[az]/i&quot;}}] } And you get a response back like this: { &quot;sort&quot;: [&quot;firstName&quot;, &quot;asc&quot;], &quot;page&quot;: 2, &quot;limit&quot;: 20, &quot;conditions&quot;: [{&quot;firstName&quot;: {&quot;=~&quot;: &quot;/^[az]/i&quot;}}], &quot;count&quot;: 337, &quot;data&quot;: [{&quot;firstName&quot;: &quot;Andy&quot;}, {&quot;firstName&quot;: &quot;Zach&quot;}, ...] } If you want to just <code>count</code> the records, or test if they exist, you can add a boolean key to the JSON request: {&quot;count&quot;: true} Say you first search for all users with <code>firstName</code> starting with the letter &quot;a&quot;, then you search for all users with <code>firstName</code> starting with either letter &quot;a&quot; or &quot;b&quot;.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeParamsForFind-mixin'>
+        ? (void) <strong>serializeParamsForFind</strong>(cursor)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#urlForIndex-mixin'>
+        ? (void) <strong>urlForIndex</strong>(model)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findOne-mixin'>
+        ? (void) <strong>findOne</strong>(cursor, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Going to merge this during refactoring period.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeParamsForFindOne-mixin'>
+        ? (void) <strong>serializeParamsForFindOne</strong>(cursor)
+      </a>
+    </span>
+    <span class='desc'>
+      This is hardcoded at the moment, getting late.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#urlForShow-mixin'>
+        ? (void) <strong>urlForShow</strong>(model, id)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='ajax-mixin'>
+      ? (void) <strong>ajax</strong>(params, defaults)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeParams-mixin'>
+      ? (void) <strong>serializeParams</strong>(params, defaults)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_adjustParamsForJSONP-mixin'>
+      ? (void) <strong>_adjustParamsForJSONP</strong>(params)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='toJSON-mixin'>
+      ? (void) <strong>toJSON</strong>(record, method, format)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='disable-mixin'>
+      ? (void) <strong>disable</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='requestNext-mixin'>
+      ? (void) <strong>requestNext</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='request-mixin'>
+      ? (void) <strong>request</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='queue-mixin'>
+      ? (void) <strong>queue</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='success-mixin'>
+      ? (void) <strong>success</strong>(record, options = {})
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='failure-mixin'>
+      ? (void) <strong>failure</strong>(record, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='create-mixin'>
+      ? (void) <strong>create</strong>(records, callback)
+    </p>
+    <div class='docstring'>
+  <p>This is called from {Tower.NetConnection#clientDidCreate}.</p><p>It will iterate through an array of records and create 1<br />Ajax request for each. This will soon be optimized to be single<br />batch request, but it&#39;s all about iterative development.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='urlForCreate-mixin'>
+      ? (void) <strong>urlForCreate</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='createSuccess-mixin'>
+      ? (void) <strong>createSuccess</strong>(record, callback)
+    </p>
+    <div class='docstring'>
+  <p>Called if a record was successfully created on the server.</p><p>The server sends back JSON of the attributes for the single record<br />(will potentially return an array once we get batch requests going).<br />We then have to replace the temporary &quot;client id&quot; with the permanent<br />&quot;server id&quot;, and update the record&#39;s attributes. To update attributes on a<br />record <em>without</em> saving, use {Tower.Model#setProperties} instead of<br />{Tower.Model#updateAttributes}.</p><p>Before it even makes the request, the browser pretends the record has been &#39;created&#39;.<br />This means it&#39;s in the <code>isSaved</code> state.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='createFailure-mixin'>
+      ? (void) <strong>createFailure</strong>(record, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='update-mixin'>
+      ? (void) <strong>update</strong>(records, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='urlForUpdate-mixin'>
+      ? (void) <strong>urlForUpdate</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='updateSuccess-mixin'>
+      ? (void) <strong>updateSuccess</strong>(record, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='updateFailure-mixin'>
+      ? (void) <strong>updateFailure</strong>(record, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroy-mixin'>
+      ? (void) <strong>destroy</strong>(records, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='urlForDestroy-mixin'>
+      ? (void) <strong>urlForDestroy</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroySuccess-mixin'>
+      ? (void) <strong>destroySuccess</strong>(record, callback)
+    </p>
+    <div class='docstring'>
+  <p>@todo</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroyFailure-mixin'>
+      ? (void) <strong>destroyFailure</strong>(record, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findSuccess-mixin'>
+      ? (void) <strong>findSuccess</strong>(cursor, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findFailure-mixin'>
+      ? (void) <strong>findFailure</strong>(cursor, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='find-mixin'>
+      ? (void) <strong>find</strong>(cursor, callback)
+    </p>
+    <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Once you reach the end of your paginated collection, it should no longer make requests.
+  </div>
+  <p>Makes a request with JSON like this:<br />    {<br />      &quot;sort&quot;: [&quot;firstName&quot;, &quot;asc&quot;],<br />      &quot;page&quot;: 2,<br />      &quot;limit&quot;: 20,<br />      &quot;conditions&quot;: [{&quot;firstName&quot;: {&quot;=~&quot;: &quot;/^[az]/i&quot;}}]<br />    }</p><p>And you get a response back like this:<br />    {<br />      &quot;sort&quot;: [&quot;firstName&quot;, &quot;asc&quot;],<br />      &quot;page&quot;: 2,<br />      &quot;limit&quot;: 20,<br />      &quot;conditions&quot;: [{&quot;firstName&quot;: {&quot;=~&quot;: &quot;/^[az]/i&quot;}}],<br />      &quot;count&quot;: 337,<br />      &quot;data&quot;: [{&quot;firstName&quot;: &quot;Andy&quot;}, {&quot;firstName&quot;: &quot;Zach&quot;}, ...]<br />    }</p><p>If you want to just <code>count</code> the records, or test if they exist,<br />you can add a boolean key to the JSON request:<br />    {&quot;count&quot;: true}</p><p>Say you first search for all users with <code>firstName</code> starting with the letter &quot;a&quot;,<br />then you search for all users with <code>firstName</code> starting with either letter &quot;a&quot; or &quot;b&quot;.<br />When you do the first search, say it returns the first page of 20 records.<br />Then when you do the next search, what should happen?  It&#39;s not smart enough<br />to know it&#39;s already fetched those records, so it will return them again.<br />There is the possibility that we test all the records currently on the client against the<br />fetching cursor, and append the ids of the matching records to the <code>conditions</code> field.<br />This way that &quot;a&quot; or &quot;b&quot; request might look like this:<br />    {<br />      &quot;page&quot;: 1,<br />      &quot;limit&quot;: 20,<br />      &quot;conditions&quot;: [{&quot;firstName&quot;: {&quot;=~&quot;: &quot;/^[ab]/i&quot;}, &quot;id&quot;: {&quot;$notIn&quot;: [1, 2, 3...]}}]<br />    }</p><p>... we&#39;ll have to run performance tests to see if this kind of optimization actually helps.<br />It would be preventing the serialization of, in this case, 20 records we already have on the client, <br />which decreases the amount of data we have to send over the wire.  But the extra complexity of<br />that <code>$notIn</code> query might slow the query down enough to nullify benefit you&#39;d get from decreasing<br />the size of the data sent over the wire.</p><p>Ooh, this just made me think.  One way to be able to do real-time pub/sub from client to server<br />is to have the server TCP request a list of ids or <code>updatedAt</code> values from the client to do the diff...</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeParamsForFind-mixin'>
+      ? (void) <strong>serializeParamsForFind</strong>(cursor)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='urlForIndex-mixin'>
+      ? (void) <strong>urlForIndex</strong>(model)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findOne-mixin'>
+      ? (void) <strong>findOne</strong>(cursor, callback)
+    </p>
+    <div class='docstring'>
+  <p>Going to merge this during refactoring period.<br />One big copy paste for now :)</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeParamsForFindOne-mixin'>
+      ? (void) <strong>serializeParamsForFindOne</strong>(cursor)
+    </p>
+    <div class='docstring'>
+  <p>This is hardcoded at the moment, getting late.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='urlForShow-mixin'>
+      ? (void) <strong>urlForShow</strong>(model, id)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

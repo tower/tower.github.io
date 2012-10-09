@@ -1,0 +1,240 @@
+<h1>Deploying Tower Apps</h1>
+
+<p>The following hosting solutions can be used for Node.js apps:</p>
+
+<p><a name="deployment-platforms" href="#deployment-platforms"></a></p>
+
+<h2>Deployment Platforms</h2>
+
+<p><a name="paid-deployment-platforms" href="#paid-deployment-platforms"></a></p>
+
+<h3>Paid Deployment Platforms</h3>
+
+<ul>
+<li><a href='https://no.de/'>https://no.de/</a> (paid)</li>
+<li><a href='http://www.webbynode.com/'>http://www.webbynode.com/</a> (paid)</li>
+</ul>
+
+<p><a name="free-deployment-platforms" href="#free-deployment-platforms"></a></p>
+
+<h3>Free Deployment Platforms</h3>
+
+<ul>
+<li><a href='http://nodejitsu.com'>http://nodejitsu.com</a> (private)</li>
+<li><a href='http://nodester.com'>http://nodester.com</a> (free)</li>
+<li><a href='http://heroku.com'>http://heroku.com</a> (free)</li>
+<li><a href='http://docs.dotcloud.com/services/nodejs/'>http://docs.dotcloud.com/services/nodejs/</a> (free)</li>
+</ul>
+
+<p><a name="deployment-environments" href="#deployment-environments"></a></p>
+
+<h2>Deployment Environments</h2>
+
+<ul>
+<li>staging</li>
+<li>production</li>
+<li>demo</li>
+</ul>
+
+<p><a name="deploying-to-heroku" href="#deploying-to-heroku"></a></p>
+
+<h2>Deploying to Heroku</h2>
+
+<p>In the simple case, just deploy straight to production.  For "real" or live apps, a staging environment is important.  It mimics your production environment.  Push there first to make sure the latest code doesn't break anything.  Modify code if things do break, try again.  Then push to production.  Also, have a live "development" environment, where you can push your daily hacks even before staging to see how things are going. For demoing the app, have a dedicated "demo" deployment that's as close to possible to staging but isn't volatile.</p>
+
+<p><a name="setup-for-heroku" href="#setup-for-heroku"></a></p>
+
+<h3>Setup (for Heroku)</h3>
+
+<p>First, <a href="https://devcenter.heroku.com/articles/nodejs">create apps on the Cedar stack</a>:</p>
+
+<div class="highlight"><pre lang="">heroku create <%= app.name %> --stack cedar # production
+heroku create <%= app.name %>-development --stack cedar
+heroku create <%= app.name %>-staging --stack cedar
+heroku create <%= app.name %>-demo --stack cedar
+</pre></div>
+
+<p>Then link to them:</p>
+
+<div class="highlight"><pre lang="">git remote add production <a href='mailto:git@heroku.com'>git@heroku.com</a>:<%= app.name %>.git
+git remote add development <a href='mailto:git@heroku.com'>git@heroku.com</a>:<%= app.name %>-development.git
+git remote add staging <a href='mailto:git@heroku.com'>git@heroku.com</a>:<%= app.name %>-staging.git
+git remote add demo <a href='mailto:git@heroku.com'>git@heroku.com</a>:<%= app.name %>-demo.git
+</pre></div>
+
+<p><a name="create-branches" href="#create-branches"></a></p>
+
+<h3>Create Branches</h3>
+
+<p>Develop using the same branching structure.  First, create the branches:</p>
+
+<div class="highlight"><pre lang="">git branch development
+git branch staging
+git branch demo
+</pre></div>
+
+<p>Then checkout a branch and develop:</p>
+
+<div class="highlight"><pre lang="">git checkout development
+</pre></div>
+
+<p>Change some code and commit the changes:</p>
+
+<div class="highlight"><pre lang="">git add . ; git commit -a -m 'added code to dev branch'
+</pre></div>
+
+<p><a name="pushing-to-heroku" href="#pushing-to-heroku"></a></p>
+
+<h3>Pushing to Heroku</h3>
+
+<p>Push to Heroku using the robustness of <code>git push</code>:</p>
+
+<div class="highlight"><pre lang="">git push <remote> <local-branch>:master
+</pre></div>
+
+<p>Where <code>remote</code> is the name given to app (<code>development</code> for <code>&lt;%= app.name %&gt;-development</code>), and <code>local-branch</code> is the branch you're working on (<code>development</code>).</p>
+
+<div class="highlight"><pre lang="">git push development development:master
+</pre></div>
+
+<p><a name="merging-branches" href="#merging-branches"></a></p>
+
+<h3>Merging branches</h3>
+
+<p>To merge committed development changes to the other three branches and push all of the code to the respective remotes (I know it sounds like a lot, but it's definitely worth it), do this:</p>
+
+<div class="highlight"><pre lang="">git checkout staging
+git merge development
+git push staging staging:master
+
+
+<h1>if no errors, nice! push to production</h1>
+
+git checkout master
+git merge staging
+git push production master
+
+
+<h1>for the demo site</h1>
+
+git checkout demo
+git merge master
+git push demo demo:master
+</pre></div>
+
+<p><a name="logging" href="#logging"></a></p>
+
+<h3>Logging</h3>
+
+<div class="highlight"><pre lang="">heroku logs --app <%= app.name %>-development -n 500 --tail
+</pre></div>
+
+<p><a name="notes" href="#notes"></a></p>
+
+<h3>Notes</h3>
+
+<p>Heroku defaults to Node 0.4.0.  To use your own version of node, check this out:</p>
+
+<ul>
+<li><a href='http://blog.superpat.com/2011/11/15/running-your-own-node-js-version-on-heroku/'>http://blog.superpat.com/2011/11/15/running-your-own-node-js-version-on-heroku/</a></li>
+<li><a href='http://heroku-buildpack-nodejs.s3.amazonaws.com/manifest.nodejs'>http://heroku-buildpack-nodejs.s3.amazonaws.com/manifest.nodejs</a></li>
+</ul>
+
+<p><a name="deploying-to-nodejitsu" href="#deploying-to-nodejitsu"></a></p>
+
+<h2>Deploying to Nodejitsu</h2>
+
+<p>Delete design.io in devDependencies as it will cause an issue. This issue has been flagged by nodejitsu.</p>
+
+<p>Put this at the top of config/application.coffee:</p>
+
+<div class="highlight"><pre lang=" coffeescript">if process.env.NODE_ENV == 'production'
+  Tower.Application::watch = ->
+  Tower.env = 'production'
+</pre></div>
+
+<p><a name="deploying-tower-apps-to-amazon-ec2" href="#deploying-tower-apps-to-amazon-ec2"></a></p>
+
+<h2>Deploying to Amazon EC2</h2>
+
+<ul>
+<li>web sockets</li>
+<li>mongodb</li>
+<li>redis</li>
+<li>email</li>
+</ul>
+
+<h2>Deploying to Windows Azure</h2>
+
+<p>You can deploy to Windows Azure from Windows, Mac, or Linux:</p>
+
+<ul>
+<li><a href='http://www.windowsazure.com/en-us/develop/nodejs/how-to-guides/command-line-tools/'>http://www.windowsazure.com/en-us/develop/nodejs/how-to-guides/command-line-tools/</a></li>
+<li><a href='http://www.windowsazure.com/en-us/develop/nodejs/tutorials/create-a-website-(mac)/'>http://www.windowsazure.com/en-us/develop/nodejs/tutorials/create-a-website-(mac)/</a></li>
+<li><a href='http://tomasz.janczuk.org/2011/11/debug-nodejs-applications-on-windows.html'>http://tomasz.janczuk.org/2011/11/debug-nodejs-applications-on-windows.html</a></li>
+<li><a href='http://tomasz.janczuk.org/2011/09/using-event-tracing-for-windows-to.html'>http://tomasz.janczuk.org/2011/09/using-event-tracing-for-windows-to.html</a></li>
+<li><a href='https://www.windowsazure.com/en-us/develop/nodejs/how-to-guides/powershell-cmdlets/'>https://www.windowsazure.com/en-us/develop/nodejs/how-to-guides/powershell-cmdlets/</a></li>
+<li><a href='https://www.windowsazure.com/en-us/develop/nodejs/common-tasks/enable-remote-desktop/'>https://www.windowsazure.com/en-us/develop/nodejs/common-tasks/enable-remote-desktop/</a></li>
+<li><a href='https://www.windowsazure.com/en-us/develop/nodejs/best-practices/troubleshooting/'>https://www.windowsazure.com/en-us/develop/nodejs/best-practices/troubleshooting/</a></li>
+<li><a href='https://www.windowsazure.com/en-us/develop/nodejs/tutorials/app-using-socketio/'>https://www.windowsazure.com/en-us/develop/nodejs/tutorials/app-using-socketio/</a></li>
+<li><a href='http://tomasz.janczuk.org/2012/09/selecting-nodejs-version-in-windows.html'>http://tomasz.janczuk.org/2012/09/selecting-nodejs-version-in-windows.html</a></li>
+<li><a href='http://codebetter.com/glennblock/2012/06/29/getting-your-azure-web-site-to-use-node-v0-8-1-now/'>http://codebetter.com/glennblock/2012/06/29/getting-your-azure-web-site-to-use-node-v0-8-1-now/</a></li>
+<li><a href='https://github.com/tjanczuk/iisnode'>https://github.com/tjanczuk/iisnode</a></li>
+<li><a href='https://github.com/WindowsAzure/iisnode/blob/master/src/samples/configuration/web.config'>https://github.com/WindowsAzure/iisnode/blob/master/src/samples/configuration/web.config</a></li>
+<li><a href='http://blog.syntaxc4.net/post/2012/07/26/accessing-app-settings-configured-in-windows-azure-web-sites-using-php-and-node-js.aspx'>http://blog.syntaxc4.net/post/2012/07/26/accessing-app-settings-configured-in-windows-azure-web-sites-using-php-and-node-js.aspx</a></li>
+<li><a href='http://stackoverflow.com/questions/12483782/cannot-get-azure-node-js-logging-enabled'>http://stackoverflow.com/questions/12483782/cannot-get-azure-node-js-logging-enabled</a></li>
+</ul>
+
+<div class="highlight"><pre lang="">azure site --help
+azure site portal
+azure site log download <app-name>
+</pre></div>
+
+<p>On your azure dashboard, set <code>app settings</code> variable <code>NODE_ENV</code> to <code>production</code>.</p>
+
+<p>There's also some way to create a custom <code>web.config</code> file at the root, for iisnode, if you figure it out please post!</p>
+
+<h2>Deploying to DotCloud</h2>
+
+<ul>
+<li><a href='http://docs.dotcloud.com/0.4/firststeps/install/'>http://docs.dotcloud.com/0.4/firststeps/install/</a></li>
+<li><a href='https://www.dotcloud.com/settings/'>https://www.dotcloud.com/settings/</a></li>
+</ul>
+
+<div class="highlight"><pre lang="">$ dotcloud create towertest
+Created application "towertest" using the flavor "sandbox" (Use for development, free and unlimited apps. DO NOT use for production.).
+This flavor cannot be changed.
+
+** YOU HAVE CREATED A SANDBOX APPLICATION **
+SANDBOX applications may not be scaled, may not use custom domains,
+and do not have the same performance guarantees as "live" applications.
+SANDBOX applications cannot be upgraded.
+
+Information about the different flavors offered can be found here:
+<a href='http://docs.dotcloud.com/guides/flavors/'>http://docs.dotcloud.com/guides/flavors/</a>
+</pre></div>
+
+<h2>Deploying to OpenShift</h2>
+
+<ul>
+<li><a href='https://openshift.redhat.com/app/'>https://openshift.redhat.com/app/</a></li>
+<li><a href='https://openshift.redhat.com/app/console/application_types/nodejs-0.6'>https://openshift.redhat.com/app/console/application_types/nodejs-0.6</a></li>
+<li><a href='http://towertest-viatropos.rhcloud.com/'>http://towertest-viatropos.rhcloud.com/</a></li>
+</ul>
+
+<h2>Deploying to No.de</h2>
+
+<ul>
+<li><a href='http://wiki.joyent.com/display/node/Installing+Node.js+on+a+Joyent+SmartOS+SmartMachine'>http://wiki.joyent.com/display/node/Installing+Node.js+on+a+Joyent+SmartOS+SmartMachine</a></li>
+</ul>
+
+<p><a name="monitoring-tower-apps" href="#monitoring-tower-apps"></a></p>
+
+<h2>Monitoring Tower Apps</h2>
+
+<ul>
+<li>logging</li>
+<li>exception handling</li>
+<li><p>system performance</p></li>
+<li><p><a href='http://blog.scoutapp.com/articles/2008/09/09/rails-monitoring-pillars'>http://blog.scoutapp.com/articles/2008/09/09/rails-monitoring-pillars</a></p></li>
+</ul>

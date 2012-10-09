@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <title>CoffeeScript API Documentation</title>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
   <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
   <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
 </head>
   <body>
-    <div id='header'>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
   <div id='menu'>
     <a href='../../class_index.html' title='Index'>Index</a>
     &raquo;
@@ -15,21 +18,91 @@
     <span class='title'>Store</span>
     <nav>
       <ul>
-        <li class='frames'>
-          (<a class='frames' href='../../frames.html'>frames</a>)
-        </li>
         <li class='noframes'>
           (<a class='noframes' href='#'>no frames</a>)
         </li>
       </ul>
     </nav>
     <div id='search'>
-      <a id='class_list_link' href='../../class_list.html'>Class List</a>
-      <a id='method_list_link' href='../../method_list.html'>Method List</a>
-      <a id='file_list_link' href='../../file_list.html'>File List</a>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
     </div>
   </div>
   <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
 </div>
     <div id='content'>
       <h1>
@@ -38,347 +111,42 @@
       </h1>
       <table class='box'>
         <tr>
-          <td>Inherits:</td>
-          <td>
-            <a href="../../classes/Tower/Class.html">Tower.Class</a>
-          </td>
+          <td>Defined in:</td>
+          <td>packages/tower-store/shared/store.coffee</td>
         </tr>
         <tr>
-          <td>Defined in:</td>
-          <td>src/tower/store.coffee</td>
+          <td>Inherits:</td>
+          <td>
+            <a href='../../classes/Tower/Class.html'>Tower.Class</a>
+          </td>
         </tr>
       </table>
       <h2>Direct Known Subclasses</h2>
       <p class='children'>
-                <a href="undefinedclasses/Tower/Store/Memory.html">Tower.Store.Memory</a>,
-                <a href="undefinedclasses/Tower/Store/Neo4j.html">Tower.Store.Neo4j</a>,
-                <a href="undefinedclasses/Tower/Store/Cassandra.html">Tower.Store.Cassandra</a>,
-                <a href="undefinedclasses/Tower/Store/CouchDB.html">Tower.Store.CouchDB</a>,
-                <a href="undefinedclasses/Tower/Store/FileSystem.html">Tower.Store.FileSystem</a>,
-                <a href="undefinedclasses/Tower/Store/MongoDB.html">Tower.Store.MongoDB</a>,
-                <a href="undefinedclasses/Tower/Store/MySQL.html">Tower.Store.MySQL</a>,
-                <a href="undefinedclasses/Tower/Store/PostgreSQL.html">Tower.Store.PostgreSQL</a>,
-                <a href="undefinedclasses/Tower/Store/Redis.html">Tower.Store.Redis</a>,
-                <a href="undefinedclasses/Tower/Store/Riak.html">Tower.Store.Riak</a>,
-        <a href="../../classes/Tower/Store/SQLite3.html">Tower.Store.SQLite3</a>
+                <a href='../../classes/Tower/GithubDownloadStore.html'>Tower.GithubDownloadStore</a>,
+                <a href='../../classes/Tower/StoreCassandra.html'>Tower.StoreCassandra</a>,
+                <a href='../../classes/Tower/StoreCouchDB.html'>Tower.StoreCouchDB</a>,
+                <a href='../../classes/Tower/StoreFileSystem.html'>Tower.StoreFileSystem</a>,
+                <a href='../../classes/Tower/StoreMongodb.html'>Tower.StoreMongodb</a>,
+                <a href='../../classes/Tower/StoreMySQL.html'>Tower.StoreMySQL</a>,
+                <a href='../../classes/Tower/StorePostgreSQL.html'>Tower.StorePostgreSQL</a>,
+                <a href='../../classes/Tower/StoreRedis.html'>Tower.StoreRedis</a>,
+                <a href='../../classes/Tower/StoreRiak.html'>Tower.StoreRiak</a>,
+                <a href='../../classes/Tower/StoreS3.html'>Tower.StoreS3</a>,
+                <a href='../../classes/Tower/StoreSQLite3.html'>Tower.StoreSQLite3</a>,
+                <a href='../../classes/Tower/StoreMemory.html'>Tower.StoreMemory</a>,
+        <a href='../../classes/Tower/StoreNeo4j.html'>Tower.StoreNeo4j</a>
       </p>
-      <h2>Constant Summary</h2>
-      <dl class='constants'>
-        <dt id='defaultLimit-constant'>
-          defaultLimit
-          =
-          <div class='tags'>
-</div>
-        </dt>
-        <dd>
-          <pre><code class='coffee'>100</code></pre>
-        </dd>
-        <dt id='atomicModifiers-constant'>
-          atomicModifiers
-          =
-          <div class='tags'>
-</div>
-        </dt>
-        <dd>
-          <pre><code class='coffee'>{
-  "$set": "$set",
-  "$unset": "$unset",
-  "$push": "$push",
-  "$pushAll": "$pushAll",
-  "$pull": "$pull",
-  "$pullAll": "$pullAll",
-  "$inc": "$inc",
-  "$pop": "$pop"
-}</code></pre>
-        </dd>
-        <dt id='queryOperators-constant'>
-          queryOperators
-          =
-          <div class='tags'>
-</div>
-        </dt>
-        <dd>
-          <pre><code class='coffee'>{
-  ">=": "$gte",
-  "$gte": "$gte",
-  ">": "$gt",
-  "$gt": "$gt",
-  "<=": "$lte",
-  "$lte": "$lte",
-  "<": "$lt",
-  "$lt": "$lt",
-  "$in": "$in",
-  "$any": "$in",
-  "$nin": "$nin",
-  "$all": "$all",
-  "=~": "$regex",
-  "$m": "$regex",
-  "$regex": "$regex",
-  "$match": "$regex",
-  "$notMatch": "$notMatch",
-  "!~": "$nm",
-  "$nm": "$nm",
-  "=": "$eq",
-  "$eq": "$eq",
-  "!=": "$neq",
-  "$neq": "$neq",
-  "$null": "$null",
-  "$notNull": "$notNull"
-}</code></pre>
-        </dd>
-      </dl>
-      <h2>Class Method Summary</h2>
-      <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#isKeyword-class'>
-        + (void) <strong>isKeyword</strong>(key)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#hasKeyword-class'>
-        + (void) <strong>hasKeyword</strong>(object)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-</ul>
-      <h2>Instance Method Summary</h2>
-      <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#serialize-instance'>
-        - (void) <strong>serialize</strong>(data)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#deserialize-instance'>
-        - (void) <strong>deserialize</strong>(models)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#serializeModel-instance'>
-        - (void) <strong>serializeModel</strong>(attributes)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#deserializeModel-instance'>
-        - (void) <strong>deserializeModel</strong>(data)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#constructor-instance'>
-        - (void) <strong>constructor</strong>(options = {})
-      </a>
-    </span>
-    <span class='constructor note title'>Constructor</span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#_defaultOptions-instance'>
-        - (void) <strong>_defaultOptions</strong>(options)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#load-instance'>
-        - (void) <strong>load</strong>(records)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#fetch-instance'>
-        - (void) <strong>fetch</strong>()
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#schema-instance'>
-        - (void) <strong>schema</strong>()
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#supports-instance'>
-        - (void) <strong>supports</strong>(key)
-      </a>
-    </span>
-    <span class='desc'>
-      
-    </span>
-  </li>
-</ul>
-      <h3 class='inherited'>
-        Methods inherited from
-        <a href="../../classes/Tower/Class.html">Tower.Class</a>
-      </h3>
-      <p class='inherited'>
-                <a href="undefinedclasses/Tower/Class.html#global-class">.global</a>,
-                <a href="undefinedclasses/Tower/Class.html#alias-class">.alias</a>,
-                <a href="undefinedclasses/Tower/Class.html#accessor-class">.accessor</a>,
-                <a href="undefinedclasses/Tower/Class.html#getter-class">.getter</a>,
-                <a href="undefinedclasses/Tower/Class.html#setter-class">.setter</a>,
-                <a href="undefinedclasses/Tower/Class.html#classAlias-class">.classAlias</a>,
-                <a href="undefinedclasses/Tower/Class.html#classAccessor-class">.classAccessor</a>,
-                <a href="undefinedclasses/Tower/Class.html#classGetter-class">.classGetter</a>,
-                <a href="undefinedclasses/Tower/Class.html#classSetter-class">.classSetter</a>,
-                <a href="undefinedclasses/Tower/Class.html#classEval-class">.classEval</a>,
-                <a href="undefinedclasses/Tower/Class.html#delegate-class">.delegate</a>,
-                <a href="undefinedclasses/Tower/Class.html#mixin-class">.mixin</a>,
-                <a href="undefinedclasses/Tower/Class.html#extend-class">.extend</a>,
-                <a href="undefinedclasses/Tower/Class.html#include-class">.include</a>,
-                <a href="undefinedclasses/Tower/Class.html#className-class">.className</a>,
-                <a href="undefinedclasses/Tower/Class.html#className-instance">#className</a>,
-                <a href="undefinedclasses/Tower/Class.html#constructor-instance">#constructor</a>,
-        <a href="../../classes/Tower/Class.html#initialize-instance">#initialize</a>
-      </p>
-      <h2>Class Method Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='isKeyword-class'>
-      + (void) <strong>isKeyword</strong>(key)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='hasKeyword-class'>
-      + (void) <strong>hasKeyword</strong>(object)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-</div>
-      <h2>Constructor Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='constructor-instance'>
-      - (void) <strong>constructor</strong>(options = {})
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-</div>
-      <h2>Instance Method Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='serialize-instance'>
-      - (void) <strong>serialize</strong>(data)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='deserialize-instance'>
-      - (void) <strong>deserialize</strong>(models)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='serializeModel-instance'>
-      - (void) <strong>serializeModel</strong>(attributes)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='deserializeModel-instance'>
-      - (void) <strong>deserializeModel</strong>(data)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='_defaultOptions-instance'>
-      - (void) <strong>_defaultOptions</strong>(options)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='load-instance'>
-      - (void) <strong>load</strong>(records)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='fetch-instance'>
-      - (void) <strong>fetch</strong>()
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='schema-instance'>
-      - (void) <strong>schema</strong>()
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='supports-instance'>
-      - (void) <strong>supports</strong>(key)
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-</div>
     </div>
     <div id='footer'>
   Generated on
-  Wed Mar 21 2012 12:38:28 GMT-0700 (PDT)
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
   by
-  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>codo</a>
-  v0.5.0
-  (Node.js v0.6.11).
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
   &#10034;
   <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
   &#10034;

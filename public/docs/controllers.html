@@ -1,5 +1,262 @@
-<header class="header subhead" id="overview"><h1>Controllers</h1>
-<nav class="subnav"><ul class="nav nav-pills"><li><a href="#actions">actions</a></li><li><a href="#events">events</a></li><li><a href="#params">params</a></li><li><a href="#rendering">rendering</a></li><li><a href="#resources">resources</a></li><li><a href="#routes">routes</a></li></ul></nav></header><section class="section" id="actions"><h1>Actions</h1>
+<p>Tower.js Controller Docs.</p>
+
+<h2>Controller <code>request</code> Object (on the Server)</h2>
+
+<p>On the server, the <code>request</code> object is straight from Express. <a href="http://expressjs.com/api.html">Here is the api</a>:</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>get raw header value</h1>
+
+request.get('content-type')
+
+
+<h1>set raw header value</h1>
+
+request.set('content-type', 'application/json; charset=utf-8')
+
+
+<h1>get content types accepted by client</h1>
+
+request.accepted
+
+
+<h1>get character encodings accepted by client</h1>
+
+request.acceptedCharsets
+
+
+<h1>get languages accepted by client</h1>
+
+request.acceptedLanguages
+
+
+<h1>check if a specific content type is accepted by the requesting client</h1>
+
+request.accepts('html')
+
+
+<h1>check if charset is accepted by client</h1>
+
+request.acceptsCharset('utf-8')
+
+
+<h1>check if connected client accepts a specific language</h1>
+
+request.acceptsLanguage()
+
+
+<h1>get param value (or default if missing)</h1>
+
+request.param('createdAt', _(2).days().ago())
+
+
+<h1>check if request is of a specific content-type</h1>
+
+
+
+<h1>note, technically the <code>content-type</code> header is only valid</h1>
+
+
+
+<h1>for PUT and POST, not GET (and not sure about DELETE).</h1>
+
+request.is('html')
+
+
+<h1>get protocol ("http" or "https")</h1>
+
+request.protocol
+
+
+<h1>check if request is "https"</h1>
+
+request.secure #=> true|false
+
+
+<h1>get remote ip address</h1>
+
+request.ip
+
+
+<h1>get auth credentials from the "Authorization" header</h1>
+
+
+
+<h1>"<a href='http://tobi:<a href='mailto:hello@example.com'>hello@example.com</a>'>http://tobi:<a href='mailto:hello@example.com'>hello@example.com</a></a>"</h1>
+
+request.auth #=> { username: 'tobi', password: 'hello' }
+
+
+<h1>get array of subdomains</h1>
+
+request.subdomains
+
+
+<h1>get host from "Host" header</h1>
+
+request.host
+
+
+<h1>Check if the request is fresh, aka</h1>
+
+
+
+<h1>- Last-Modified and/or the ETag</h1>
+
+
+
+<h1>- still match.</h1>
+
+request.fresh
+request.stale #=> !request.fresh
+
+
+<h1>Check if it's an Ajax request via the 'X-Requested-With' header</h1>
+
+request.xhr
+
+
+<h1>csrf</h1>
+
+request.session._csrf
+
+
+<h1>In the middleware:</h1>
+
+app.use express.csrf(value: (request) -> request.body._csrf || request.query._csrf)
+
+
+<h1><a href='https://developers.google.com/blogger/docs/2.0/json/performance'>https://developers.google.com/blogger/docs/2.0/json/performance</a></h1>
+
+app.use express.compress filter: (request, response) ->
+  /json|text|javascript/.test(response.get('content-type'))
+
+
+<h1>Limit request bodies to the given size in <code>bytes</code>.</h1>
+
+app.use express.limit('5.5mb')
+</pre></div>
+
+<p>If the requesting client does not accept one of your encodings or languages, then respond with:</p>
+
+<div class="highlight"><pre lang="">406 "Not Acceptable"
+</pre></div>
+
+<h3>Rate Limiting</h3>
+
+<ul>
+<li><a href='https://github.com/jhurliman/node-rate-limiter'>https://github.com/jhurliman/node-rate-limiter</a></li>
+<li><a href='https://github.com/cloudkick/rate-limiter'>https://github.com/cloudkick/rate-limiter</a></li>
+<li><a href='http://chris6f.com/rate-limiting-with-redis'>http://chris6f.com/rate-limiting-with-redis</a></li>
+<li><a href='http://www.joshdevins.net/2010/11/22/rate-limiting-http-proxy-in-node-js-and-redis/'>http://www.joshdevins.net/2010/11/22/rate-limiting-http-proxy-in-node-js-and-redis/</a></li>
+</ul>
+
+<h2>Controller <code>response</code> Object (on the Server)</h2>
+
+<div class="highlight"><pre lang=" coffeescript">response.status(200)
+
+
+<h1>Set Link header field with the given <code>links</code>.</h1>
+
+response.links
+  next: '<a href='http://api.example.com/users?page=2'>http://api.example.com/users?page=2</a>'
+  last: '<a href='http://api.example.com/users?page=5'>http://api.example.com/users?page=5</a>'
+
+
+<h1>Write to the response body,</h1>
+
+
+
+<h1>which is taken care of in the <code>render</code> method already.</h1>
+
+response.send(new Buffer('wahoo'))
+response.send(some: 'json')
+response.send('<p>some html</p>')
+response.send(404, 'Sorry, cant find that')
+response.send(404)
+
+
+<h1>JSON</h1>
+
+response.json(some: 'json')
+
+
+<h1>JSONP</h1>
+
+response.jsonp(some: 'json')
+
+
+<h1>Send file for download, options are:</h1>
+
+
+
+<h1>- <code>maxAge</code> defaulting to 0</h1>
+
+
+
+<h1>- <code>root</code>   root directory for relative filenames</h1>
+
+response.sendfile(path, options)
+
+
+<h1>Send file as attachment (wraps <code>sendFile</code>, sets "Content-Disposition" header)</h1>
+
+response.download(path, options)
+
+
+<h1>Set "Content-Type" header through mime-lookup</h1>
+
+response.type('html') # or `response.contentType = 'html'`
+
+
+<h1>Set response header</h1>
+
+response.set('Content-Type', 'application/json; charset=utf-8')
+
+
+<h1>Get response header</h1>
+
+response.get('Content-Type')
+
+
+<h1>Some attachment thing?</h1>
+
+response.attachment(filename)
+
+
+<h1>Remove cookie</h1>
+
+response.clearCookie(name)
+
+
+<h1>Save cookie</h1>
+
+
+
+<h1>"Remember Me" for 15 minutes</h1>
+
+response.cookie('rememberme', '1', expires: new Date(Date.now() + 900000), httpOnly: true)
+
+
+<h1>save as above</h1>
+
+response.cookie('rememberme', '1', maxAge: 900000, httpOnly: true)
+
+
+<h1>redirect</h1>
+
+response.redirect(url)
+
+
+<h1>render template</h1>
+
+response.render(fn)
+</pre></div>
+
+<p><a name="controller-actions" href="#controller-actions"></a></p>
+
+<h2>Controller Actions</h2>
 
 <p>By convention there are 7 RESTful actions for a controller:</p>
 
@@ -15,159 +272,313 @@
 
 <p>If you wanted to manually write out simple controller actions, this is how you might do it:</p>
 
-<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
-  index: -&gt;
-    App.Post.all (error, posts) =&gt;
-      @render &quot;index&quot;, locals: posts: posts
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  index: ->
+    App.Post.all (error, posts) =>
+      @render "index", locals: {posts}
 
-  new: -&gt;
+  new: ->
     post = new App.Post
-    @render &quot;new&quot;, locals: post: post
+    @render "new", locals: {post}
 
-  create: -&gt;
-    App.Post.create @params.post, (error, post) =&gt;
+  create: ->
+    App.Post.create @params.post, (error, post) =>
       @redirectTo post
 
-  show: -&gt;
-    App.Post.find @params.id (error, post) =&gt;
-      @render &quot;show&quot;, locals: post: post
+  show: ->
+    App.Post.find @params.id, (error, post) =>
+      @render "show", locals: {post}
 
-  edit: -&gt;
-    App.Post.find @params.id (error, post) =&gt;
-      @render &quot;edit&quot;, locals: post: post
+  edit: ->
+    App.Post.find @params.id, (error, post) =>
+      @render "edit", locals: {post}
 
-  update: -&gt;
-    App.Post.find @params.id (error, post) =&gt;
-      post.updateAttributes @params.post, (error) =&gt;
+  update: ->
+    App.Post.find @params.id, (error, post) =>
+      post.updateAttributes @params.post, (error) =>
         if error
-          @render &quot;edit&quot;, locals: post: post
+          @render "edit", locals: {post}
         else
           @redirectTo post
 
-  destroy: -&gt;
-    App.Post.find @params.id (error, post) =&gt;
-      post.destroy (error) =&gt;
-        @redirectTo &quot;index&quot;
-</code></pre>
+  destroy: ->
+    App.Post.find @params.id, (error, post) =>
+      post.destroy (error) =>
+        @redirectTo "index"
+</pre></div>
 
-<p><strong>Note</strong>: The above actions won&#39;t respond to different content types differently (i.e. for json, give me a json string, for html give me some rendered html).  But for some cases that&#39;s all you need.</p>
+<p><strong>Note</strong>: The above actions won't respond to different content types differently (i.e. for JSON, give me a JSON string, for HTML give me some rendered HTML).  But for some cases that's all you need.</p>
 
 <p>In order for those actions to be accessible, routes must be defined.  Routes to all 7 RESTful actions are generated with the following declaration in <code>config/routes.coffee</code>:</p>
 
-<pre><code class="coffeescript">Tower.Route.draw -&gt;
-  @resources &quot;posts&quot;
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">Tower.Route.draw ->
+  @resources "posts"
+</pre></div>
 
 <p>More on routes in the <a href="/docs/routes">routes section</a>.</p>
 
+<p><a name="custom-actions" href="#custom-actions"></a></p>
+
 <h2>Custom Actions</h2>
 
-<p>Sometimes RESTful actions aren&#39;t enough.  To add custom actions, just add a route mapping to the method name for the controller.</p>
+<p>Sometimes RESTful actions aren't enough.  To add custom actions, just add a route mapping to the method name for the controller.</p>
 
-<pre><code class="coffeescript">Tower.Route.draw -&gt;
-  @resources &quot;posts&quot;, -&gt;
-    @get &quot;dashboard&quot;
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">Tower.Route.draw ->
+  @resources "posts", ->
+    @get "dashboard"
+</pre></div>
 
-<p><strong>Note</strong>: If you start thinking you need to add a custom action to your controller, I personally recommend asking the community (stack overflow, twitter, github, etc.) if there&#39;s a way to fit it into the paradigm.  Several times I thought &quot;this is the one time I need a custom action&quot;, but 99% of the time I found a way to fit it in.  This always simplified the system.</p>
-</section><section class="section" id="events"><h1>Events</h1>
+<p><strong>Note</strong>: If you start thinking you need to add a custom action to your controller, I personally recommend asking the community (stack overflow, twitter, github, etc.) if there's a way to fit it into the paradigm.  Several times I thought "this is the one time I need a custom action", but 99% of the time I found a way to fit it in.  This always simplified the system.</p>
 
-<p>All controller actions are just events.  This means then that controllers handle events:</p>
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>on the client it has to deserialize <code>page: 10</code> back into a hash from a string.</h1>
+
+Tower.goTo(Tower.urlFor(App.Post, page: 10))
+
+
+<h1>keeps the params as a hash, and appends them to the hash, a more optimized way to do it.</h1>
+
+Tower.goTo(Tower.urlFor(App.Post), page: 10)
+</pre></div>
+
+<p>On the client there is no middleware (at least yet).  It just complicates things.  Should probably get rid of the idea of <code>Tower.HTTP.Request</code> and <code>Tower.HTTP.Response</code>.</p>
+
+<p><a name="single-page-app-flow" href="#single-page-app-flow"></a></p>
+
+<h2>Single Page App Flow</h2>
+
+<p><a name="the-server" href="#the-server"></a></p>
+
+<h3>The Server</h3>
+
+<p>When a user first comes to your site they can come from any url, such as:</p>
+
+<div class="highlight"><pre lang="">/
+/posts
+/posts/10
+</pre></div>
+
+<p>The server tells us the request is coming from a specific user agent and that the desired format is HTML.</p>
+
+<p>But, since your app works through primarily a JSON API, it should return the same base HTML layout no matter what the request is. And ideally, it should return a base set of data <em>in addition</em> to the data for the specific url they're accessing.</p>
+
+<p>Say you're imagining if they go to the root <code>/</code> path, it will bootstrap the current user and the recent posts into the HTML response. That means youre root route, which by default points to <code>application#welcome</code> should bootstrap that data.</p>
+
+<p>Now the thing is, conceptually, you're probably going to build out your single page client app <em>assuming you'll always have that bootstrapped data available</em>. That means we need to always render that bootstrap data when a user first enters your site, no matter what the path.</p>
+
+<p>To do this, all you need is to have your bootstrap data function be run before any action.</p>
+
+<p>This introduces another complexity though. What if you want to render a path, such as <code>/faq</code>, and want it to just to render static HTML like you would in Rails? All you need to do is say <code>@skipBeforeFilter 'boostrap', only: 'faq'</code>. This is assuming you use the default controller action implementation, too. If you write your own controller action, you just respond to <code>html</code> only.</p>
+
+<p><a name="the-client" href="#the-client"></a></p>
+
+<h3>The Client</h3>
+
+<p>Once you get to the client, you have your bootstrap data that's the same for any path, and the data that's specific to the path.</p>
+
+<p>What happens now is the <code>App.stateManager</code> traverses it's states based on the routes, culminating in a call to a controller action on the client. The controller action will, by default, render the Ember view for that action.</p>
+
+<p><a name="controller-callbacks" href="#controller-callbacks"></a></p>
+
+<h2>Controller Callbacks</h2>
+
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends App.ApplicationController
+  @beforeAction 'check'
+</pre></div>
+
+<p><a name="client-side-controllers" href="#client-side-controllers"></a></p>
+
+<h2>Client-side Controllers</h2>
+
+<p>[todo, just notes so far / partial implementation in <a href="http://github.com/viatropos/tower/tree/development">development</a> branch]</p>
+
+<p><a name="overview" href="#overview"></a></p>
+
+<h2>Overview</h2>
+
+<p>Client-side controllers will, like server-side controllers, have a default implementation that <em>just works</em> for the 7 common actions.</p>
+
+<p><a name="differences-between-client-and-server-controllers" href="#differences-between-client-and-server-controllers"></a></p>
+
+<h2>Differences between client and server controllers</h2>
 
 <ul>
-<li>DOM events</li>
-<li>socket messages</li>
-<li>url requests</li>
+<li>server-side controllers have to respond to different formats (json, html, xml, etc.), client-controllers don't.</li>
+<li>client-side controllers can handle DOM events, keyboard events, socket messages, and urls (using history pushstate), server-controllers only handle urls and socket messages.</li>
 </ul>
 
-<p>Instead of having to create a controller for each type of message, why not just establish some conventions:</p>
+<p><a name="the-index-action" href="#the-index-action"></a></p>
 
-<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
-  # socket.io handler
-  @on &quot;create&quot;, &quot;syncCreate&quot; # created by default... knows because it&#39;s named after an action
-  @on &quot;notification&quot;, &quot;flashMessage&quot; # knows it&#39;s socket because &#39;notification&#39; isn&#39;t an action or dom event keyword
-  @on &quot;mousemove&quot;, &quot;updateHeatMap&quot;, type: &#39;socket&#39; # if you name a socket event after a keyword then pass the `type: &#39;socket&#39;` option.
+<h2>The <code>index</code> action.</h2>
 
-  # dom event handler
-  @on &quot;click&quot;, &quot;click&quot;
-  @on &quot;click .item a&quot;, &quot;clickItem&quot;
-  # or as an object
-  @on &quot;click .itemA a&quot;: &quot;clickItemA&quot;,
-    &quot;click .itemB a&quot;: &quot;clickItemB&quot;,
-    &quot;click .itemC a&quot;: &quot;clickItemC&quot;
+<p>On the server, the <code>index</code> usually fetches a collection of models matching a set of criteria from the database, and renders them into JSON or HTML.  Pretend our server-side index action looks like this:</p>
 
-  @on &quot;change #user-first-name-input&quot;, &quot;enable&quot;, dependent: &quot;#user-last-name-input&quot;
-  @on &quot;change #user-first-name-input&quot;, &quot;enable #user-last-name-input&quot; # enable: (selector)
-  @on &quot;change #user-first-name-input&quot;, &quot;validate&quot;
-  @on &quot;change #user-first-name-input&quot;, bind: &quot;firstName&quot;
-  @bind &quot;change #user-first-name-input&quot;, &quot;firstName&quot;
-  @on &quot;click #add-user-address&quot;, &quot;addAddress&quot;
-  @on &quot;click #add-user-address&quot;, &quot;add&quot;, object: &quot;address&quot;
-  @on &quot;click #remove-user-address&quot;, &quot;removeAddress&quot;
-  # $(window).on(&#39;click&#39;, &#39;#user-details&#39;, &quot;toggleDetails&quot;);
-  @on &quot;click #user-details&quot;, &quot;toggleDetails&quot;
+<div class="highlight"><pre lang=" coffeescript">
 
-  # show or hide
-  toggleShowHide: -&gt;
+<h1>server-side controller</h1>
 
-  show: -&gt;
+class App.UsersController extends App.ApplicationController
+  index: ->
+    App.User.where(createdAt: '>=': _(2).days().ago()).all (error, users) =>
+      @render "users/index", locals: {users: users}
+</pre></div>
 
-  hide: -&gt;
+<p>On the client, when using Ember.js, we want to somehow cache that collection that was returned from <code>App.User.where...</code>.</p>
 
-  toggleSelectDeselect: -&gt;
+<p>You could do that by refactoring it to a separate method:</p>
 
-  select: -&gt;
+<div class="highlight"><pre lang=" coffeescript">
 
-  deselect: -&gt;
+<h1>client-side controller</h1>
 
-  toggleAddRemove: -&gt;
+class App.UsersController extends App.ApplicationController
+  users: ->
+    @_users ||= App.User.where(createdAt: '>=': _(2).days().ago()).all
 
-  add: -&gt;
+  index: ->
+    @render "users/index", locals: {users: @users}
+</pre></div>
 
-  remove: -&gt;
+<p>Assuming the above example was on the client, and assuming <code>App.User...all</code> returned a users array, then our <code>index</code> action on the client would always render the initial set of users in our client-side store.  If we added users to the client store, we wouldn't see those updates.  (Granted, you could use the first example server-side controller on the client, and you would get the updated users collection, because you're making the query every time, but that's not what we're focusing on).</p>
 
-  toggleEnableDisable: -&gt;  
-    if _.blank(value)
-      @disable()
+<p>This is where you start using Ember.js.  One example is to use computed properties, which allows you to define basically a getter/setter:</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>client-side controller</h1>
+
+class App.UsersController extends App.ApplicationController
+  users: Ember.computed(->
+    App.User.where(createdAt: '>=': _(2).days().ago()).all
+  ).cacheable()
+
+  index: ->
+    @render "users/index", locals: {users: @get('users')}
+</pre></div>
+
+<p>This really doesn't change anything (because Tower's chainable scopes are already <code>Ember.ArrayProxy</code> instances, so they're bindable by default).  Also, this client-side controller is starting to look a lot different than the server-side controller:</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>server-side controller</h1>
+
+class App.UsersController extends App.ApplicationController
+  index: ->
+    App.User.where(createdAt: '>=': _(2).days().ago()).all (error, users) =>
+      @render "users/index", locals: {users: users}
+</pre></div>
+
+<p>What if you could make them the same?  You can, like this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>client-side controller</h1>
+
+class App.UsersController extends App.ApplicationController
+  # don't even need to define it, just showing you
+  users: null
+
+  index: ->
+    @getUsers (error, users) =>
+      @render "users/index"
+
+  getUsers: (callback) ->
+    users = @get('users')
+    return callback.call(@, null, users) if users
+    App.User.where(createdAt: '>=': _(2).days().ago()).all (error, users) =>
+      @set('users', users) # THIS IS KEY
+      callback.call(@, error, users)
+</pre></div>
+
+<p>You could use that on both the client and the server.</p>
+
+<p>That simple call to <code>@set('users', users)</code> will tell ember to begin watching that collection.  And we only initialize it once - on the server, since every controller is a new instance, this will always be null, but on the client, it will only be null once.</p>
+
+<p>Then, <code>@render 'users/index'</code> will, on the client, create a new <code>Ember.View</code> if one hasn't been instantiated yet, otherwise it will use a new one.  And on the server, it will just render the HTML string.</p>
+
+<p>Look at this a little closer, you can define scopes to use in your Ember/Handlebars templates!</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>client-side controller</h1>
+
+class App.UsersController extends App.ApplicationController
+  # don't even need to define it, just showing you
+  users:        null
+  recentUsers:  null
+
+  index: ->
+    if @params.recent == true
+      @getRecentUsers (error, users) =>
+        @render "users/index"
     else
-      @enable()
+      @getUsers (error, users) =>
+        @render "users/index"
 
-  # enable or disable
-  enable: -&gt;
-    $(options.dependent).attr(&quot;disabled&quot;, false)
+  getRecentUsers: (callback) ->
+    users = @get('recentUsers')
+    return callback.call(@, null, users) if users
+    App.User.where(createdAt: '>=': _(2).days().ago()).all (error, users) =>
+      @set('recentUsers', users) # THIS IS KEY
+      callback.call(@, error, users)
 
-  disable: -&gt;
-    $(options.dependent).attr(&quot;disabled&quot;, true)
+  getUsers: (callback) ->
+    users = @get('users')
+    return callback.call(@, null, users) if users
+    App.User.all (error, users) =>
+      @set('users', users) # THIS IS KEY
+      callback.call(@, error, users)
+</pre></div>
 
-  validate: (element) -&gt;
-    element
+<div class="highlight"><pre lang=" html">{{#each App.usersController.recentUsers}}
+...
+{{/each}}
+</pre></div>
 
-  invalidate: -&gt;
+<p>But because you have the <code>@cursor()</code> object in the controllers, which is passed to the scope, you can just customize that to scope any list of users.</p>
 
-  bind: -&gt;
+<p>Just so you know, this is all implemented internally, in a very dynamic way, making it so you don't have to write any code in your controllers and you get this by default.</p>
 
-  next: -&gt;
+<p>Now the question pops up, what if you want more for your client-side controllers?  No problem, you are totally free to create a controller specific to the client and one specific to the server, or add stuff specific to the client to the main controller, and just never use that code on the server, it's up to you.  So you could do this:</p>
 
-  prev: -&gt;
-</code></pre>
-</section><section class="section" id="params"><h1>Params</h1>
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>client-side controller</h1>
+
+class App.UsersController extends App.ApplicationController
+  # don't even need to define it, just showing you
+  users:        App.User.all
+  recentUsers:  App.User.where(createdAt: '>=': _(2).days().ago()).all
+</pre></div>
+
+<div class="highlight"><pre lang=" html">{{#each App.usersController.recentUsers}}
+...
+{{/each}}
+</pre></div>
+
+<p>Boom, you set them by default, and they never need to be set again on the client.  Just some ideas.</p>
+
+<p><a name="query-parameter-api" href="#query-parameter-api"></a></p>
+
+<h2>Query Parameter API</h2>
 
 <p>You can define parameters which should be parsed into a <code>Tower.Model.Criteria</code>.  This allows you to build a very robust query api with minimal effort.</p>
 
 <p>Tower uses a set of pseudo-ruby conventions for defining ranges and sets of values to query by.  They are defined with the <code>@param</code> class method on a controller.  Tower looks for the attribute definition on the model class associated with the controller, unless you have specified the <code>type</code> option.</p>
 
-<pre><code class="coffeescript">class App.EventsController extends Tower.Controller
-  @param &quot;title&quot;
-  @param &quot;createdAt&quot;
-  @param &quot;memberCount&quot;
-  @param &quot;tags&quot;, type: &quot;Array&quot;
-  @param &quot;coordinates&quot;
-  @param &quot;admin&quot;, source: &quot;admin.firstName&quot;
+<div class="highlight"><pre lang=" coffeescript">class App.EventsController extends Tower.Controller
+  @param "title"
+  @param "createdAt"
+  @param "memberCount"
+  @param "tags", type: "Array"
+  @param "coordinates"
+  @param "admin", source: "admin.firstName"
 
-  index: -&gt;
-    App.Event.where(@criteria()).all (error, events) =&gt;
+  index: ->
+    App.Event.where(@criteria()).all (error, events) =>
       @render json: events
-</code></pre>
+</pre></div>
 
 <ul>
 <li><code>String</code></li>
@@ -178,47 +589,63 @@
 <li><code>Coordinates</code></li>
 </ul>
 
-<h2><code>String</code></h2>
+<p><a name="string" href="#string"></a></p>
 
-<h3>Query</h3>
+<h3><code>String</code></h3>
 
-<pre><code class="coffeescript">title=Hello+World
+<p><a name="query" href="#query"></a></p>
+
+<h4>Query</h4>
+
+<div class="highlight"><pre lang=" coffeescript">title=Hello+World
 title=Hello+-World
-title=&#39;Hello+World&#39;
-</code></pre>
+title='Hello+World'
+</pre></div>
 
-<h3>Criteria</h3>
+<p><a name="criteria" href="#criteria"></a></p>
 
-<pre><code class="coffeescript">{ &quot;title&quot; : { &quot;$match&quot; : [&quot;Hello&quot;, &quot;World&quot;] } }
-{ &quot;title&quot; : { &quot;$match&quot; : [&quot;Hello&quot;], &quot;$notMatch&quot; : [&quot;World&quot;] } }
-{ &quot;title&quot; : { &quot;$match&quot; : [&quot;Hello World&quot;] } }
-</code></pre>
+<h4>Criteria</h4>
 
-<h2><code>Date</code></h2>
+<div class="highlight"><pre lang=" coffeescript">{ "title" : { "$match" : ["Hello", "World"] } }
+{ "title" : { "$match" : ["Hello"], "$notMatch" : ["World"] } }
+{ "title" : { "$match" : ["Hello World"] } }
+</pre></div>
 
-<h3>Query</h3>
+<p><a name="date" href="#date"></a></p>
 
-<pre><code class="coffeescript">createdAt=12-31-2011
+<h3><code>Date</code></h3>
+
+<p><a name="query-1" href="#query-1"></a></p>
+
+<h4>Query</h4>
+
+<div class="highlight"><pre lang=" coffeescript">createdAt=12-31-2011
 createdAt=12-31-2011..t
 createdAt=t..12-31-2011
 createdAt=12-21-2011..12-31-2011
 createdAt=12-21-2011..12-31-2011,01-04-2012
-</code></pre>
+</pre></div>
 
-<h3>Criteria</h3>
+<p><a name="criteria-1" href="#criteria-1"></a></p>
 
-<pre><code class="coffeescript">{ &quot;createdAt&quot; : Date(12-31-2011) }
-{ &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-31-2011) } }
-{ &quot;createdAt&quot; : { &quot;$lte&quot;: Date(12-31-2011) } }
-{ &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-21-2011), &quot;$lte&quot;: Date(12-31-2011) } }
-{ &quot;$or&quot;: [ { &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-21-2011), &quot;$lte&quot;: Date(12-31-2011) } }, { &quot;createdAt&quot; : Date(01-04-2012) } ] }
-</code></pre>
+<h4>Criteria</h4>
 
-<h2><code>Number</code></h2>
+<div class="highlight"><pre lang=" coffeescript">{ "createdAt" : Date(12-31-2011) }
+{ "createdAt" : { "$gte": Date(12-31-2011) } }
+{ "createdAt" : { "$lte": Date(12-31-2011) } }
+{ "createdAt" : { "$gte": Date(12-21-2011), "$lte": Date(12-31-2011) } }
+{ "$or": [ { "createdAt" : { "$gte": Date(12-21-2011), "$lte": Date(12-31-2011) } }, { "createdAt" : Date(01-04-2012) } ] }
+</pre></div>
 
-<h3>Query</h3>
+<p><a name="number" href="#number"></a></p>
 
-<pre><code class="coffeescript">likeCount=1
+<h3><code>Number</code></h3>
+
+<p><a name="query-2" href="#query-2"></a></p>
+
+<h4>Query</h4>
+
+<div class="highlight"><pre lang=" coffeescript">likeCount=1
 likeCount=1..n
 likeCount=n..100
 likeCount=1..100
@@ -228,109 +655,284 @@ likeCount=^10
 likeCount=^10,1000
 likeCount=^10..1000
 likeCount=^-1000
-</code></pre>
+</pre></div>
 
-<h3>Criteria</h3>
+<p><a name="criteria-2" href="#criteria-2"></a></p>
 
-<pre><code class="coffeescript">{ &quot;likeCount&quot; : 1 }
-{ &quot;likeCount&quot; : { &quot;$gte&quot;: 1 } }
-{ &quot;likeCount&quot; : { &quot;$lte&quot;: 1 } }
-{ &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } }
-{ &quot;$or&quot;: [{ &quot;likeCount&quot; : { &quot;$gte&quot;: 1, &quot;$lte&quot;: 100 } }, { &quot;likeCount&quot; : 1000 }] }
-{ &quot;likeCount&quot;: -10 }
-{ &quot;likeCount&quot;: { &quot;$neq&quot;: -10 } }
-{ &quot;likeCount&quot;: { &quot;$neq&quot;: 10, &quot;$in&quot;: [1000] } }
-{ &quot;nor&quot;: [ { &quot;likeCount&quot; : { &quot;$gte&quot;: 10, &quot;$lte&quot;: 1000 } } ] }
-{ &quot;likeCount&quot;: { &quot;$neq&quot;: -1000 } }
-</code></pre>
+<h4>Criteria</h4>
 
-<h2><code>Array</code></h2>
+<div class="highlight"><pre lang=" coffeescript">{ "likeCount" : 1 }
+{ "likeCount" : { "$gte": 1 } }
+{ "likeCount" : { "$lte": 1 } }
+{ "likeCount" : { "$gte": 1, "$lte": 100 } }
+{ "$or": [{ "likeCount" : { "$gte": 1, "$lte": 100 } }, { "likeCount" : 1000 }] }
+{ "likeCount": -10 }
+{ "likeCount": { "$neq": -10 } }
+{ "likeCount": { "$neq": 10, "$in": [1000] } }
+{ "nor": [ { "likeCount" : { "$gte": 10, "$lte": 1000 } } ] }
+{ "likeCount": { "$neq": -1000 } }
+</pre></div>
 
-<h3>Query</h3>
+<p><a name="array" href="#array"></a></p>
 
-<pre><code class="coffeescript">tags=javascript
+<h3><code>Array</code></h3>
+
+<p><a name="query-3" href="#query-3"></a></p>
+
+<h4>Query</h4>
+
+<div class="highlight"><pre lang=" coffeescript">tags=javascript
 tags=^java
 tags=ruby,^java
 tags=[ruby,javascript]
-</code></pre>
+</pre></div>
 
-<h3>Criteria</h3>
+<p><a name="criteria-3" href="#criteria-3"></a></p>
 
-<pre><code class="coffeescript">{ &quot;tags&quot; : { &quot;$in&quot;: [&quot;javascript&quot;] } }
-{ &quot;tags&quot; : { &quot;$nin&quot;: [&quot;java&quot;] } }
-{ &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;], &quot;$nin&quot;: [&quot;java&quot;] } }
-{ &quot;tags&quot; : { &quot;$all&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] } }
-</code></pre>
+<h4>Criteria</h4>
 
-<h2><code>Coordinates</code></h2>
+<div class="highlight"><pre lang=" coffeescript">{ "tags" : { "$in": ["javascript"] } }
+{ "tags" : { "$nin": ["java"] } }
+{ "tags" : { "$in": ["ruby"], "$nin": ["java"] } }
+{ "tags" : { "$all": ["ruby", "javascript"] } }
+</pre></div>
 
-<h3>Query</h3>
+<p><a name="coordinates" href="#coordinates"></a></p>
 
-<pre><code class="coffeescript">coordinates=51.509981,-0.074704
+<h3><code>Coordinates</code></h3>
+
+<p><a name="query-4" href="#query-4"></a></p>
+
+<h4>Query</h4>
+
+<div class="highlight"><pre lang=" coffeescript">coordinates=51.509981,-0.074704
 coordinates=51.509981,-0.074704,10
-</code></pre>
+</pre></div>
 
-<h3>Criteria</h3>
+<p><a name="criteria-4" href="#criteria-4"></a></p>
 
-<pre><code class="coffeescript">{ &quot;coordinates&quot; : { &quot;$near&quot;: [51.509981, -0.074704] } }
-{ &quot;coordinates&quot; : { &quot;$near&quot;: [51.509981, -0.074704] , &quot;$maxDistance&quot; : 10 } }
-</code></pre>
+<h4>Criteria</h4>
 
-<h2><code>Order</code></h2>
+<div class="highlight"><pre lang=" coffeescript">{ "coordinates" : { "$near": [51.509981, -0.074704] } }
+{ "coordinates" : { "$near": [51.509981, -0.074704] , "$maxDistance" : 10 } }
+</pre></div>
 
-<h3>Query</h3>
+<p><a name="order" href="#order"></a></p>
 
-<pre><code class="coffeescript">sort=title
+<h3><code>Order</code></h3>
+
+<p><a name="query-5" href="#query-5"></a></p>
+
+<h4>Query</h4>
+
+<div class="highlight"><pre lang=" coffeescript">sort=title
 sort=title+
 sort=title-
 sort=createdAt-,title
 sort=createdAt+,title+
-</code></pre>
+</pre></div>
 
-<h3>Criteria</h3>
+<p><a name="criteria-5" href="#criteria-5"></a></p>
 
-<pre><code class="coffeescript">{ &quot;sort&quot; : [[&quot;title&quot;, &quot;asc&quot;]] }
-{ &quot;sort&quot; : [[&quot;title&quot;, &quot;asc&quot;]] }
-{ &quot;sort&quot; : [[&quot;title&quot;, &quot;desc&quot;]] }
-{ &quot;sort&quot; : [[&quot;createdAt&quot;, &quot;desc&quot;], [&quot;title&quot;, &quot;asc&quot;]] }
-{ &quot;sort&quot; : [[&quot;createdAt&quot;, &quot;asc&quot;], [&quot;title&quot;, &quot;asc&quot;]] }
-</code></pre>
+<h4>Criteria</h4>
 
-<h2>Examples</h2>
+<div class="highlight"><pre lang=" coffeescript">{ "sort" : [["title", "asc"]] }
+{ "sort" : [["title", "asc"]] }
+{ "sort" : [["title", "desc"]] }
+{ "sort" : [["createdAt", "desc"], ["title", "asc"]] }
+{ "sort" : [["createdAt", "asc"], ["title", "asc"]] }
+</pre></div>
 
-<pre><code class="coffeescript">http://events.towerjs.org/?createdAt=12-25-2011
-http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011
-http://events.towerjs.org/?tags=javascript,ruby
-http://events.towerjs.org/?memberCount=10..n
-http://events.towerjs.org/?sort=createdAt-,title+
-http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby
-http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby&amp;sort=createdAt-,title+
-http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby&amp;memberCount=10..n&amp;sort=createdAt-,title+
-http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&amp;tags=javascript,ruby&amp;memberCount=10..n&amp;coordinates=51.509981,-0.074704,10&amp;sort=createdAt-,title+
-</code></pre>
+<p><a name="complete-url-query-examples" href="#complete-url-query-examples"></a></p>
+
+<h3>Complete URL Query Examples</h3>
+
+<div class="highlight"><pre lang=" coffeescript"><a href='http://events.towerjs.org/?createdAt=12-25-2011'>http://events.towerjs.org/?createdAt=12-25-2011</a>
+<a href='http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011'>http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011</a>
+<a href='http://events.towerjs.org/?tags=javascript,ruby'>http://events.towerjs.org/?tags=javascript,ruby</a>
+<a href='http://events.towerjs.org/?memberCount=10..n'>http://events.towerjs.org/?memberCount=10..n</a>
+<a href='http://events.towerjs.org/?sort=createdAt-,title+'>http://events.towerjs.org/?sort=createdAt-,title+</a>
+<a href='http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby'>http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby</a>
+<a href='http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby&sort=createdAt-,title+'>http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby&sort=createdAt-,title+</a>
+<a href='http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby&memberCount=10..n&sort=createdAt-,title+'>http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby&memberCount=10..n&sort=createdAt-,title+</a>
+<a href='http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby&memberCount=10..n&coordinates=51.509981,-0.074704,10&sort=createdAt-,title+'>http://events.towerjs.org/?createdAt=12-25-2011..12-31-2011&tags=javascript,ruby&memberCount=10..n&coordinates=51.509981,-0.074704,10&sort=createdAt-,title+</a>
+</pre></div>
 
 <p>The last url above would generate the criteria:</p>
 
-<pre><code class="coffeescript">{ 
-  &quot;coordinates&quot; : { &quot;$near&quot;: [51.509981, -0.074704] , &quot;$maxDistance&quot; : 10 },
-  &quot;createdAt&quot; : { &quot;$gte&quot;: Date(12-21-2011), &quot;$lte&quot;: Date(12-31-2011) },
-  &quot;memberCount&quot; : { &quot;$gte&quot;: 10 },
-  &quot;sort&quot; : [[&quot;createdAt&quot;, &quot;desc&quot;], [&quot;title&quot;, &quot;asc&quot;]], 
-  &quot;tags&quot; : { &quot;$in&quot;: [&quot;ruby&quot;, &quot;javascript&quot;] }
+<div class="highlight"><pre lang=" coffeescript">{ 
+  "coordinates" : { "$near": [51.509981, -0.074704] , "$maxDistance" : 10 },
+  "createdAt" : { "$gte": Date(12-21-2011), "$lte": Date(12-31-2011) },
+  "memberCount" : { "$gte": 10 },
+  "sort" : [["createdAt", "desc"], ["title", "asc"]], 
+  "tags" : { "$in": ["ruby", "javascript"] }
 }
-</code></pre>
+</pre></div>
 
-<h3><code>OR</code> Queries Over Several Attributes</h3>
+<p><a name="todo-or-queries-over-several-attributes" href="#todo-or-queries-over-several-attributes"></a></p>
 
-<p>You can do <code>OR</code> searches over several attributes, i.e. &quot;find all posts in the past 2 days OR those tagged with &#39;javascript&#39;&quot;.  Just prepend each <code>OR</code> block with an array index:</p>
+<h4>(todo) <code>OR</code> Queries Over Several Attributes</h4>
 
-<pre><code class="coffeescript"># find all posts between christmas and new years eve, or those tagged with &quot;javascript&quot; and &quot;ruby&quot;, then sort by date and title
-[0]createdAt=12-25-2011..12-31-2011&amp;[1]tags=javascript,ruby&amp;sort=createdAt-,title+
-createdAt[0]=12-25-2011..12-31-2011&amp;tags[1]=javascript,ruby&amp;sort=createdAt-,title+
-</code></pre>
+<p>You can do <code>OR</code> searches over several attributes, i.e. "find all posts in the past 2 days OR those tagged with 'javascript'".  Just prepend each <code>OR</code> block with an array index:</p>
 
-<h2>Nested</h2>
-</section><section class="section" id="rendering"><h1>Rendering</h1>
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>find all posts between christmas and new years eve, or those tagged with "javascript" and "ruby", then sort by date and title</h1>
+
+[0]createdAt=12-25-2011..12-31-2011&[1]tags=javascript,ruby&sort=createdAt-,title+
+createdAt[0]=12-25-2011..12-31-2011&tags[1]=javascript,ruby&sort=createdAt-,title+
+</pre></div>
+
+<p><a name="flash-messages" href="#flash-messages"></a></p>
+
+<h2>Flash Messages</h2>
+
+<p>The flash is a way to pass messages to your user that will appear on screen only once, then disappear when they change or refresh the page -- unless they do something to cause the message to be added back to the flash, like repeating the same error. This feature is modeled on a similar feature that appears in both Rails and Express. The code was modeled closely on Express's, but they function more closely to how they function in Rails --the developer can just <em>use</em> them, without needing to add dynamic helpers or create additional templates. </p>
+
+<p><a name="usage" href="#usage"></a></p>
+
+<h3>Usage</h3>
+
+<p>Using the flash is simple, just call @flash from your controller, and pass it one of three types "error", "success", or "info" followed by the message you want it to flash to your user. For instance:</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.UsersController extends App.ApplicationController
+  index: ->
+    App.User.all (error, @users) =>
+      @flash 'info', 'Hello!'
+      @flash 'error', 'Danger Will Robinson!'
+      @flash 'success', 'You Did It!!!!!'
+      @render "index"
+</pre></div>
+
+<p>will produce the following:</p>
+
+<p><img src="https://github.com/edubkendo/flashMessages/raw/master/screenshots/flash_messages_demo.png" alt="Three Flash Messages" title="Three Flash Messages" /></p>
+
+<p>(Note the X's in the corner of each flash message. These come from twitter-bootstrap and allow the user to easily dismiss the messages if they don't want to continue looking at them.)</p>
+
+<p><a name="dynamic-usage" href="#dynamic-usage"></a></p>
+
+<h3>Dynamic Usage</h3>
+
+<p>The flash message can also be generated dynamically, by allowing your program to determine when to call the @flash method based on conditional statements.</p>
+
+<p><a name="simple-case" href="#simple-case"></a></p>
+
+<h4>Simple Case</h4>
+
+<p>For instance, in the simple case, let's assume a posts model with a simple validation for presence on the title field:</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.Post extends Tower.Model
+  @field "title", type: "String"
+  @field "body", type: "String"
+  @field "userId", type: "Integer"
+
+  @belongsTo "user"
+
+  @validates 'title', presence: true
+
+  @timestamps()
+</pre></div>
+
+<p>Currently, if the user forgets to fill in the title field, the app will simply fail silently. This could be quite frustrating to a user, who doesn't understand why his post refuses to save. We can solve that with a simple addition to the controller. In the "create" action of the posts controller, do this:</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.PostsController extends App.ApplicationController
+  create: ->
+    App.Post.create @params.post, (error, @post) =>
+      if (k for own k, message of @post.errors).length isnt 0
+        @flash 'error', message
+        @render "new"
+      else
+        @render "show"
+</pre></div>
+
+<p>Now the user gets returned to the form, with what they have filled in so far left intact, and an easy to spot error message letting them know what they need to do to correct it.</p>
+
+<p><img src="https://github.com/edubkendo/flashMessages/raw/master/screenshots/flash_message_with_single_error.png" alt="Flash Messages: Single Error" title="Flash Message with single error" /></p>
+
+<p>Note that we can't just do a simple check on @posts.errors, because of a quirk in Javascript in which </p>
+
+<div class="highlight"><pre lang=" javascript">{} === {} // false
+</pre></div>
+
+<p>returns false. This would cause the form to need to be submitted twice each time, <em>regardless of whether there was an error or not.</em></p>
+
+<p><a name="more-complex-message-generation" href="#more-complex-message-generation"></a></p>
+
+<h4>More Complex Message Generation</h4>
+
+<p>What if there is more than one validation on the model. Let's assume a user model like this:</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.User extends Tower.Model
+  @field "email", type: "String"
+  @field "firstName", type: "String"
+  @field "lastName", type: "String"
+
+  @hasMany "posts"
+
+  @validates 'lastName', 'email', presence: true
+
+  @timestamps()
+</pre></div>
+
+<p>Still pretty simple, but this time, the validations check that two fields are completed. In our controller we need to set up something like this:</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.UsersController extends App.ApplicationController
+  create: ->
+    App.User.create @params.user, (error, @user) =>
+      if (k for own k of @user.errors).length isnt 0
+        console.log @user.errors
+        errString = ""
+        num = 0
+        for key, value of @user.errors
+          num++
+          errString = "#{errString} #{num}. #{value}"
+        @flash 'error', errString
+        @render "new"
+      else
+        @render 'show'
+</pre></div>
+
+<p>Now, if the user were to leave both the email and the last name fields blank, they would see something like:</p>
+
+<p><img src="https://github.com/edubkendo/flashMessages/raw/master/screenshots/flash_messages_errors.png" alt="Flash Messages: Multiple Errors" title="Flash Message with two errors" /></p>
+
+<p>While you can add one message to each of the flash types "error", "success", and "info", as well as create as many additional types as you desire (simply add them to the template in app/views/shared/_flash.coffee), any given type can only hold one message at a time, given the current instantiation. So, we need to build up the message we want to pass to it with some simple string concatenation. This allows all of the error messages to be passed to the flash and shown in the browser when the user is returned to his form.</p>
+
+<p>A note about the above, we could have saved a few lines, and had slightly cleaner looking code, by using the line:</p>
+
+<div class="highlight"><pre lang=" coffeescript">errString = "#{errString} <br /> #{value}"
+</pre></div>
+
+<p>Which would have placed a new line between each message, instead of numbering them on the same line. (Unfortunately, "\n" won't work here). However, I felt like for the wiki it would be best to use the safest example possible.</p>
+
+<p><a name="about-the-messages" href="#about-the-messages"></a></p>
+
+<h3>About the Messages</h3>
+
+<p>The flash messages are styled with Twitter-Bootstrap, in keeping with the styling of the rest of Towerjs apps. The template for the messages is stored in app/views/shared/_flash.coffee which is rendered from app/views/layouts/application.coffee. Developers are, of course, free to alter the styling or templates, or remove them completely, as suits the needs of their particular projects.</p>
+
+<p><a name="pagination-via-the-controller" href="#pagination-via-the-controller"></a></p>
+
+<h2>Pagination via the Controller</h2>
+
+<p>[todo] Each cursor has the properties <code>currentPage</code>, <code>pageCount</code>, <code>totalCount</code>, <code>hasNextPage</code>, <code>hasPreviousPage</code>, <code>hasNext</code>, <code>hasPrevious</code>.  This is then bound to your current model cursor:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  all: App.Post.all()
+
+  next: ->
+    @get('all').nextPage().find()
+
+  prev: ->
+    @get('all').previousPage().find()
+</pre></div>
+
+<p>A cursor.find()</p>
+
+<p><a name="rendering" href="#rendering"></a></p>
+
+<h2>Rendering</h2>
 
 <ul>
 <li>Templates</li>
@@ -338,516 +940,403 @@ createdAt[0]=12-25-2011..12-31-2011&amp;tags[1]=javascript,ruby&amp;sort=created
 <li>The Rendering Process</li>
 </ul>
 
-<h2>Templates</h2>
+<p><a name="rendering-templates" href="#rendering-templates"></a></p>
 
-<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
-  index: -&gt;
-    @render &quot;index&quot;
-</code></pre>
+<h3>Rendering Templates</h3>
 
-<h2>JSON</h2>
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  index: ->
+    @render "index"
+</pre></div>
 
-<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
-  show: -&gt;
-    App.Post.find @params.id, (error, post) =&gt;
+<p><a name="rendering-json" href="#rendering-json"></a></p>
+
+<h3>Rendering JSON</h3>
+
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  show: ->
+    App.Post.find @params.id, (error, post) =>
       @render json: post
-</code></pre>
+</pre></div>
 
-<h2>The Rendering Process</h2>
+<p><a name="the-rendering-process" href="#the-rendering-process"></a></p>
 
-<h3><code>respondWith</code></h3>
+<h3>The Rendering Process</h3>
 
-<pre><code class="coffeescript">show: -&gt;
-  App.Post.find @params.id, (error, post) =&gt;
-    @respondWith post, (format) =&gt;
-      format.html =&gt; @render &quot;show&quot;
-</code></pre>
+<p><a name="respond-with" href="#respond-with"></a></p>
+
+<h4><code>respondWith</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">show: ->
+  App.Post.find @params.id, (error, post) =>
+    @respondWith post, (format) =>
+      format.html => @render "show"
+</pre></div>
 
 <p>This will perform <em>content negotiation</em>, i.e. it will figure out what the mime type the browser prefers and run the corresponding responder method (for html, json, csv, etc.).  Those methods then call the <code>render</code> method.</p>
 
-<h3><code>render</code></h3>
+<p><a name="render" href="#render"></a></p>
 
-<pre><code class="coffeescript">show: -&gt;
-  App.Post.find @params.id, (error, post) =&gt;
-    @render &quot;show&quot;
-</code></pre>
+<h4><code>render</code></h4>
+
+<div class="highlight"><pre lang=" coffeescript">show: ->
+  App.Post.find @params.id, (error, post) =>
+    @render "show"
+</pre></div>
 
 <p>Calling the render method directly forces a specific content type to be rendered.  Here is the method signature:</p>
 
-<pre><code class="coffeescript">render json: {hello: &quot;world&quot;}
-render &quot;show&quot;                 # render action: &quot;show&quot;
-render &quot;posts/show&quot;           # render file: &quot;posts/show&quot;
-render -&gt; h1 &quot;Hello World&quot;
-render text: &quot;success&quot;, status: 200
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">render json: {hello: "world"}
+render "show"                 # render action: "show"
+render "posts/show"           # render file: "posts/show"
+render -> h1 "Hello World"
+render text: "success", status: 200
+</pre></div>
 
-<h3><code>_normalizeRender</code></h3>
+<p><a name="normalize-render" href="#normalize-render"></a></p>
+
+<h4><code>_normalizeRender</code></h4>
 
 <p>This converts the render arguments into a normalized options hash.</p>
 
-<h3><code>_renderToBody</code></h3>
+<p><a name="render-to-body" href="#render-to-body"></a></p>
 
-<h3><code>_renderOption</code></h3>
+<h4><code>_renderToBody</code></h4>
 
-<h3><code>_renderTemplate</code></h3>
-</section><section class="section" id="resources"><h1>Resources</h1>
+<p><a name="render-option" href="#render-option"></a></p>
+
+<h4><code>_renderOption</code></h4>
+
+<p><a name="render-template" href="#render-template"></a></p>
+
+<h4><code>_renderTemplate</code></h4>
+
+<p><a name="requests" href="#requests"></a></p>
+
+<h2>Requests</h2>
+
+<p>On the server Tower uses <code>superagent</code>.</p>
+
+<ul>
+<li>Location</li>
+<li>Cookies</li>
+<li>User Agent</li>
+</ul>
+
+<p><a name="url" href="#url"></a></p>
+
+<h2>URL</h2>
+
+<div class="highlight"><pre lang=" coffeescript">
+</pre></div>
+
+<p><a name="user-agent" href="#user-agent"></a></p>
+
+<h2>User Agent</h2>
+
+<p><a name="subdomains" href="#subdomains"></a></p>
+
+<h2>Subdomains</h2>
+
+<p><a name="cookies" href="#cookies"></a></p>
+
+<h2>Cookies</h2>
+
+<p><a name="session" href="#session"></a></p>
+
+<h2>Session</h2>
+
+<h1><code>Tower.Controller.Resources</code></h1>
 
 <p>Tower goes by the convention that every controller represents one resource, one model.</p>
 
-<p>A controller doesn&#39;t <em>need</em> to follow these conventions, for example with a <code>DashboardController</code> or <code>SearchController</code>.  In those cases, overriding the methods starts you with a clean slate.  However, you&#39;ll quickly see how powerful this is.</p>
+<p>A controller doesn't <em>need</em> to follow these conventions, for example with a <code>DashboardController</code> or <code>SearchController</code>.  In those cases, overriding the methods starts you with a clean slate.  However, you'll quickly see how powerful this is.</p>
+
+<p><a name="redirecting" href="#redirecting"></a></p>
+
+<h2>Redirecting</h2>
+
+<p><a name="the-resource" href="#the-resource"></a></p>
 
 <h2>The Resource</h2>
 
 <p>You can customize the variable names and resource type:</p>
 
-<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
-  @resource type: &quot;Article&quot;, collection: &quot;articles&quot;, resource: &quot;article&quot;, key: &quot;data&quot;, id: &quot;dataId&quot;
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  @resource type: "Article", collection: "articles", resource: "article", key: "data", id: "dataId"
+</pre></div>
+
+<p><a name="internals" href="#internals"></a></p>
 
 <h2>Internals</h2>
 
 <p>The default implementation for a <code>Tower.Controller</code> looks like this:</p>
 
-<pre><code class="coffeescript">class App.PostsController extends Tower.Controller
-  index: -&gt;
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  index: ->
 
-  new: -&gt;
+  new: ->
 
-  create: -&gt;
+  create: ->
 
-  show: -&gt;
+  show: ->
 
-  edit: -&gt;
+  edit: ->
 
-  update: -&gt;
+  update: ->
 
-  destroy: -&gt;
-</code></pre>
-</section><section class="section" id="routes"><h1>Routes</h1>
+  destroy: ->
+</pre></div>
 
-<p>Tower routes are modeled after Rails&#39; routes.  Here&#39;s how you might write a few for a blogging app:</p>
+<p><a name="pub-sub" href="#pub-sub"></a></p>
 
-<pre><code class="coffeescript">Tower.Route.draw -&gt;
-  @match &quot;/login&quot;, to: &quot;sessions#new&quot;, via: &quot;get&quot;, as: &quot;login&quot;
+<h2>Pub/Sub</h2>
 
-  @resources &quot;posts&quot;, -&gt;
-    @resources &quot;comments&quot;
+<p>This section describes how to setup pub/sub in your application.</p>
 
-  @namespace &quot;admin&quot;, -&gt;
-    @resources &quot;posts&quot;, -&gt;
-      @resources &quot;comments&quot;, only: &quot;index&quot;
+<p><a name="towercontroller-subscriptions" href="#towercontroller-subscriptions"></a></p>
 
-    @resources &quot;users&quot;, -&gt;
-      @resources &quot;comments&quot;, only: &quot;index&quot;
+<h2><code>Tower.Controller.subscriptions</code></h2>
 
-  @namespace &quot;mobile&quot;, constraints: {subdomain: /^mobile$/}, -&gt;
-    @root &quot;/&quot;, to: &quot;mobile#index&quot;
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends App.ApplicationController
+  @subscriptions 'all', 'recent', 'archived'
+</pre></div>
 
-  @match &quot;(/*path)&quot;, to: &quot;application#index&quot;
-</code></pre>
+<p>You can also use the <code>publish</code> method, which is just an alias to <code>subscriptions</code>:</p>
 
-<h2>Resourceful Routes</h2>
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends App.ApplicationController
+  @publish 'all', 'recent', 'archived'
+</pre></div>
 
-<pre><code class="coffeescript">Tower.Route.draw -&gt;
-  # this...
-  @resources &quot;posts&quot;
+<p>The keys passed to <code>subscriptions</code> point to methods in the controller that return a <code>Tower.Model.Cursor</code>.  The <em>cursor</em> is an <code>Ember.ArrayProxy</code> that acts as a collection of models matching specific criteria.</p>
 
-  # is equivalent to this...
-  @match &quot;/posts&quot;,          to: &quot;posts#index&quot;,    via: &quot;get&quot;
-  @match &quot;/posts/new&quot;,      to: &quot;posts#new&quot;,      via: &quot;get&quot;
-  @match &quot;/posts&quot;,          to: &quot;posts#create&quot;,   via: &quot;post&quot;
-  @match &quot;/posts/:id&quot;,      to: &quot;posts#show&quot;,     via: &quot;get&quot;
-  @match &quot;/posts/:id/edit&quot;, to: &quot;posts#edit&quot;,     via: &quot;get&quot;
-  @match &quot;/posts/:id&quot;,      to: &quot;posts#update&quot;,   via: &quot;put&quot;
-  @match &quot;/posts/:id&quot;,      to: &quot;posts#destroy&quot;,  via: &quot;delete&quot;
-</code></pre>
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends App.ApplicationController
+  @subscriptions 'all', 'recent', 'archived'
 
-<h2>Nesting Routes</h2>
+  all: App.Post.all()
 
-<pre><code class="coffeescript">
-</code></pre>
+  recent: App.Post.recent()
 
-<h2>Hardcore Routing Example</h2>
+  archived: ->
+    App.Post.where(authorId: @currentUser.get('id')).archived()
+</pre></div>
 
-<p>Here is a complete example straight from the Rails 3.2 test suite, soon to be in the Tower test suite.</p>
+<p>You can set the subscription to 1 of 3 things:</p>
 
-<pre><code class="coffeescript">Tower.Route.draw -&gt;
-  @defaultUrlOptions host: &quot;towerjs.org&quot;
-  @resourcesPathNames correlationIndexes: &quot;infoAboutCorrelationIndexes&quot;
+<ol>
+<li>A <code>Tower.Model.Cursor</code> object, which you'll get from <code>.all()</code> (see <code>Tower.Model.Scope</code> for details).</li>
+<li>A <code>Tower.Model.Scope</code> object, which is everything before you call <code>.all()</code>.  This will be converted to a criteria when first called, just makes it so you have to write less code.</li>
+<li>A <code>Function</code>.  This allows you to integrate things like the current user <code>id</code> for authentication for example.  However, there will be better ways to grab <code>currentUser.id</code> without using a <code>Function</code> soon.</li>
+</ol>
 
-  @controller &quot;sessions&quot;, -&gt;
-    @get  &quot;login&quot;: &quot;new&quot;
-    @post &quot;login&quot;: &quot;create&quot;
-    @destroy &quot;logout&quot;: &quot;destroy&quot;
+<p><a name="error-handling-in-the-controller" href="#error-handling-in-the-controller"></a></p>
 
-  @resource &quot;session&quot;, -&gt;
-    @get &quot;create&quot;
-    @post &quot;reset&quot;
+<h2>Error Handling in the Controller</h2>
 
-    @resource &quot;info&quot;
+<p><a name="authentication-in-the-controller" href="#authentication-in-the-controller"></a></p>
 
-    @member, -&gt;
-      @get &quot;crush&quot;
+<h2>Authentication in the Controller</h2>
 
-  @scope &quot;bookmark&quot;, controller: &quot;bookmarks&quot;, as: &quot;bookmark&quot;, -&gt;
-    @get  &quot;new&quot;, path: &quot;build&quot;
-    @post &quot;create&quot;, path: &quot;create&quot;, as: &quot;&quot;
-    @put  &quot;update&quot;
-    @get  &quot;remove&quot;, action: &quot;destroy&quot;, as: &quot;remove&quot;
+<p><a name="authorization-in-the-controller" href="#authorization-in-the-controller"></a></p>
 
-  @scope &quot;pagemark&quot;, controller: &quot;pagemarks&quot;, as: &quot;pagemark&quot;, -&gt;
-    @get  &quot;new&quot;, path: &quot;build&quot;
-    @post &quot;create&quot;, as: &quot;&quot;
-    @put  &quot;update&quot;
-    @get  &quot;remove&quot;, action: &quot;destroy&quot;, as: &quot;remove&quot;
+<h2>Authorization in the Controller</h2>
 
-  @match &quot;account/logout&quot;: redirect(&quot;/logout&quot;), as: &quot;logoutRedirect&quot;
-  @match &quot;account/login&quot;, to: redirect(&quot;/login&quot;)
-  @match &quot;secure&quot;, to: redirect(&quot;/secure/login&quot;)
+<p><a name="caching-in-the-controller" href="#caching-in-the-controller"></a></p>
 
-  @match &quot;mobile&quot;, to: redirect(subdomain: &quot;mobile&quot;)
-  @match &quot;superNewDocumentation&quot;, to: redirect(host: &quot;super-docs.com&quot;)
+<h2>Caching in the Controller</h2>
 
-  @match &quot;youtubeFavorites/&quot;youtubeId&quot;/&quot;name&quot;&quot;, to: redirect(YoutubeFavoritesRedirector)
+<p><a name="http-caching" href="#http-caching"></a></p>
 
-  @constraints ((request) -&gt; true), -&gt;
-    @match &quot;account/overview&quot;
+<h3>HTTP Caching</h3>
 
-  @match &quot;/account/nested/overview&quot;
-  @match signIn: &quot;sessions#new&quot;
+<p><a name="1-expiration-headers" href="#1-expiration-headers"></a></p>
 
-  @match &quot;account/modulo/:name&quot;, to: @redirect(&quot;/%{name}s&quot;)
-  @match &quot;account/proc/:name&quot;, to: @redirect((params, request) -&gt; &quot;/#{params.name.pluralize}&quot;)
-  @match &quot;account/procReq&quot;: @redirect((params, request) &quot;/#{req.method}&quot;)
+<h4>1. Expiration Headers</h4>
 
-  @match &quot;account/google&quot;: @redirect(&quot;http://www.google.com/&quot;, status: 302)
+<ul>
+<li>Back-end sets Cache-Control: public, max-age: 60</li>
+<li>Gets cached in gateway cache an browser cache.</li>
+<li>Public says it is good for many clients.</li>
+<li>Cached for 60s.</li>
+</ul>
 
-  @match &quot;openid/login&quot;, via: [&quot;get&quot;, &quot;post&quot;], to: &quot;openid#login&quot;
+<div class="highlight"><pre lang=" coffeescript">show: ->
+  @expiresIn 60.seconds, public: true
+  # stuff
+  @render
+</pre></div>
 
-  @controller &quot;global&quot;, -&gt;
-    @get   &quot;global/hideNotice&quot;
-    @match &quot;global/export&quot;,      to: &quot;export&quot;, as: &quot;exportRequest&quot;
-    @match &quot;/export/&quot;id&quot;/&quot;file&quot;&quot;,  to: &quot;export&quot;, as: &quot;exportDownload&quot;, constraints: { file: /.*/ }
-    @match &quot;global/&quot;action&quot;&quot;
-
-  @match &quot;/local/&quot;action&quot;&quot;, controller: &quot;local&quot;
-
-  @match &quot;/projects/status(.&quot;format&quot;)&quot;
-  @match &quot;/404&quot;, to: lambda { |env| [404, {&quot;Content-Type&quot;: &quot;text/plain&quot;}, [&quot;NOT FOUND&quot;]] }
-
-  @constraints(ip: /192\.168\.1\.\d\d\d/), -&gt;
-    @get &quot;admin&quot;: &quot;queenbee#index&quot;
-
-  @constraints :&quot;TestRoutingMapper&quot;:&quot;IpRestrictor&quot;, -&gt;
-    @get &quot;admin/accounts&quot;: &quot;queenbee#accounts&quot;
-
-  @get &quot;admin/passwords&quot;: &quot;queenbee#passwords&quot;, constraints: :&quot;TestRoutingMapper&quot;:&quot;IpRestrictor&quot;
-
-  @scope &quot;pt&quot;, as: &quot;pt&quot;, -&gt;
-    @resources &quot;projects&quot;, pathNames: { edit: &quot;editar&quot;, new: &quot;novo&quot; }, path: &quot;projetos&quot;, -&gt;
-      @post &quot;preview&quot;, on: &quot;new&quot;
-      @put &quot;close&quot;, on: &quot;member&quot;, path: &quot;fechar&quot;
-      @get &quot;open&quot;, on: &quot;new&quot;, path: &quot;abrir&quot;
-    @resource  &quot;admin&quot;, pathNames: { new: &quot;novo&quot;, activate: &quot;ativar&quot; }, path: &quot;administrador&quot;, -&gt;
-      @post &quot;preview&quot;, on: &quot;new&quot;
-      @put &quot;activate&quot;, on: &quot;member&quot;
-    @resources &quot;products&quot;, pathNames: { new: &quot;novo&quot; }, -&gt;
-      @new, -&gt;
-        @post &quot;preview&quot;
-
-  @resources &quot;projects&quot;, controller: &quot;project&quot;, -&gt;
-    @resources &quot;involvements&quot;, &quot;attachments&quot;
-    @get &quot;correlationIndexes&quot;, on: &quot;collection&quot;
-
-    @resources &quot;participants&quot;, -&gt;
-      @put &quot;updateAll&quot;, on: &quot;collection&quot;
-
-    @resources &quot;companies&quot;, -&gt;
-      @resources &quot;people&quot;
-      @resource  &quot;avatar&quot;, controller: &quot;avatar&quot;
-
-    @resources &quot;images&quot;, as: &quot;funnyImages&quot;, -&gt;
-      @post &quot;revise&quot;, on: &quot;member&quot;
-
-    @resource &quot;manager&quot;, as: &quot;superManager&quot;, -&gt;
-      @post &quot;fire&quot;
-
-    @resources &quot;people&quot;, -&gt;
-      @nested, -&gt;
-        @scope &quot;/&quot;accessToken&quot;&quot;, -&gt;
-          @resource &quot;avatar&quot;
-
-      @member, -&gt;
-        @get  &quot;somePathWithName&quot;
-        @put  &quot;accessibleProjects&quot;
-        @post &quot;resend&quot;, &quot;generateNewPassword&quot;
-
-    @resources &quot;posts&quot;, -&gt;
-      @get  &quot;archive&quot;, &quot;toggleView&quot;, on: &quot;collection&quot;
-      @post &quot;preview&quot;, on: &quot;member&quot;
-
-      @resource &quot;subscription&quot;
-
-      @resources &quot;comments&quot;, -&gt;
-        @post &quot;preview&quot;, on: &quot;collection&quot;
-
-  @resources &quot;replies&quot;, -&gt;
-    @collection, -&gt;
-      @get &quot;page/&quot;page&quot;&quot;: &quot;replies#index&quot;, page: %r{\d+}
-      @get &quot;&quot;page&quot;&quot;: &quot;replies#index&quot;, page: %r{\d+}
-
-    @new, -&gt;
-      @post &quot;preview&quot;
-
-    @member, -&gt;
-      @put &quot;answer&quot;, to: &quot;markAsAnswer&quot;
-      @delete &quot;answer&quot;, to: &quot;unmarkAsAnswer&quot;
-
-  @resources &quot;posts&quot;, only: [&quot;index&quot;, &quot;show&quot;], -&gt;
-    @namespace &quot;admin&quot;, -&gt;
-      @root to: &quot;index#index&quot;
-    @resources &quot;comments&quot;, except: &quot;destroy&quot;, -&gt;
-      @get &quot;views&quot;: &quot;comments#views&quot;, as: &quot;views&quot;
-
-  @resource  &quot;past&quot;, only: &quot;destroy&quot;
-  @resource  &quot;present&quot;, only: &quot;update&quot;
-  @resource  &quot;future&quot;, only: &quot;create&quot;
-  @resources &quot;relationships&quot;, only: [&quot;create&quot;, &quot;destroy&quot;]
-  @resources &quot;friendships&quot;,   only: [&quot;update&quot;]
-
-  @shallow, -&gt;
-    @namespace &quot;api&quot;, -&gt;
-      @resources &quot;teams&quot;, -&gt;
-        @resources &quot;players&quot;
-        @resource &quot;captain&quot;
-
-  @scope &quot;/hello&quot;, -&gt;
-    @shallow, -&gt;
-      @resources &quot;notes&quot;, -&gt;
-        @resources &quot;trackbacks&quot;
-
-  @resources &quot;threads&quot;, shallow: true, -&gt;
-    @resource &quot;owner&quot;
-    @resources &quot;messages&quot;, -&gt;
-      @resources &quot;comments&quot;, -&gt;
-        @member, -&gt;
-          @post &quot;preview&quot;
-
-  @resources &quot;sheep&quot;, -&gt;
-    @get &quot;_it&quot;, on: &quot;member&quot;
-
-  @resources &quot;clients&quot;, -&gt;
-    @namespace &quot;google&quot;, -&gt;
-      @resource &quot;account&quot;, -&gt;
-        @namespace &quot;secret&quot;, -&gt;
-          @resource &quot;info&quot;
-
-  @resources &quot;customers&quot;, -&gt;
-    @get &quot;recent&quot;, on: &quot;collection&quot;
-    @get &quot;profile&quot;, on: &quot;member&quot;
-    @get &quot;secret/profile&quot;: &quot;customers#secret&quot;, on: &quot;member&quot;
-    @post &quot;preview&quot;: &quot;customers#preview&quot;, as: &quot;anotherPreview&quot;, on: &quot;new&quot;
-    @resource &quot;avatar&quot;, -&gt;
-      @get &quot;thumbnail&quot;: &quot;avatars#thumbnail&quot;, as: &quot;thumbnail&quot;, on: &quot;member&quot;
-    @resources &quot;invoices&quot;, -&gt;
-      @get &quot;outstanding&quot;: &quot;invoices#outstanding&quot;, on: &quot;collection&quot;
-      @get &quot;overdue&quot;, to: &quot;overdue&quot;, on: &quot;collection&quot;
-      @get &quot;print&quot;: &quot;invoices#print&quot;, as: &quot;print&quot;, on: &quot;member&quot;
-      @post &quot;preview&quot;: &quot;invoices#preview&quot;, as: &quot;preview&quot;, on: &quot;new&quot;
-      @get &quot;aged/&quot;months&quot;&quot;, on: &quot;collection&quot;, action: &quot;aged&quot;, as: &quot;aged&quot;
-    @resources &quot;notes&quot;, shallow: true, -&gt;
-      @get &quot;preview&quot;: &quot;notes#preview&quot;, as: &quot;preview&quot;, on: &quot;new&quot;
-      @get &quot;print&quot;: &quot;notes#print&quot;, as: &quot;print&quot;, on: &quot;member&quot;
-    @get &quot;inactive&quot;, on: &quot;collection&quot;
-    @post &quot;deactivate&quot;, on: &quot;member&quot;
-    @get &quot;old&quot;, on: &quot;collection&quot;, as: &quot;stale&quot;
-    @get &quot;export&quot;
-
-  @namespace &quot;api&quot;, -&gt;
-    @resources &quot;customers&quot;, -&gt;
-      @get &quot;recent&quot;: &quot;customers#recent&quot;, as: &quot;recent&quot;, on: &quot;collection&quot;
-      @get &quot;profile&quot;: &quot;customers#profile&quot;, as: &quot;profile&quot;, on: &quot;member&quot;
-      @post &quot;preview&quot;: &quot;customers#preview&quot;, as: &quot;preview&quot;, on: &quot;new&quot;
-    @scope(&quot;&quot;version&quot;&quot;, version: /.+/), -&gt;
-      @resources &quot;users&quot;, id: /.+?/, format: /json|xml/
-
-  @match &quot;sprockets.js&quot;: :&quot;TestRoutingMapper&quot;:&quot;SprocketsApp&quot;
-
-  @match &quot;people/&quot;id&quot;/update&quot;, to: &quot;people#update&quot;, as: &quot;updatePerson&quot;
-  @match &quot;/projects/&quot;projectId&quot;/people/&quot;id&quot;/update&quot;, to: &quot;people#update&quot;, as: &quot;updateProjectPerson&quot;
-
-  # misc
-  @match &quot;articles/&quot;year&quot;/&quot;month&quot;/&quot;day&quot;/&quot;title&quot;&quot;, to: &quot;articles#show&quot;, as: &quot;article&quot;
-
-  # default params
-  @match &quot;inlinePages/(&quot;id&quot;)&quot;, to: &quot;pages#show&quot;, id: &quot;home&quot;
-  @match &quot;defaultPages/(&quot;id&quot;)&quot;, to: &quot;pages#show&quot;, defaults: { id: &quot;home&quot; }
-  @defaults id: &quot;home&quot;, -&gt;
-    @match &quot;scopedPages/(&quot;id&quot;)&quot;, to: &quot;pages#show&quot;
-
-  @namespace &quot;account&quot;, -&gt;
-    @match &quot;shorthand&quot;
-    @match &quot;description&quot;, to: &quot;description&quot;, as: &quot;description&quot;
-    @match &quot;&quot;action&quot;/callback&quot;, action: /twitter|github/, to: &quot;callbacks&quot;, as: &quot;callback&quot;
-    @resource &quot;subscription&quot;, &quot;credit&quot;, &quot;creditCard&quot;
-
-    @root to: &quot;account#index&quot;
-
-    @namespace &quot;admin&quot;, -&gt;
-      @resource &quot;subscription&quot;
-
-  @namespace &quot;forum&quot;, -&gt;
-    @resources &quot;products&quot;, path: &quot;&quot;, -&gt;
-      @resources &quot;questions&quot;
-
-  @namespace &quot;users&quot;, path: &quot;usuarios&quot;, -&gt;
-    @root to: &quot;home#index&quot;
-
-  @controller &quot;articles&quot;, -&gt;
-    @scope &quot;/articles&quot;, as: &quot;article&quot;, -&gt;
-      @scope path: &quot;/&quot;title&quot;&quot;, title: /[a-z]+/, as: &quot;withTitle&quot;, -&gt;
-        @match &quot;/&quot;id&quot;&quot;, to: &quot;withId&quot;, as: &quot;&quot;
-
-  @scope &quot;&quot;accessToken&quot;&quot;, constraints: { accessToken: /\w{5,5}/ }, -&gt;
-    @resources &quot;rooms&quot;
-
-  @match &quot;/info&quot;: &quot;projects#info&quot;, as: &quot;info&quot;
-
-  @namespace &quot;admin&quot;, -&gt;
-    @scope &quot;(&quot;locale&quot;)&quot;, locale: /en|pl/, -&gt;
-      @resources &quot;descriptions&quot;
-
-  @scope &quot;(&quot;locale&quot;)&quot;, locale: /en|pl/, -&gt;
-    @get &quot;registrations/new&quot;
-    @resources &quot;descriptions&quot;
-    @root to: &quot;projects#index&quot;
-
-  @scope only: [&quot;index&quot;, &quot;show&quot;], -&gt;
-    @resources &quot;products&quot;, constraints: { id: /\d{4}/ }, -&gt;
-      @root to: &quot;products#root&quot;
-      @get &quot;favorite&quot;, on: &quot;collection&quot;
-      @resources &quot;images&quot;
-    @resource &quot;account&quot;
-
-  @resource &quot;dashboard&quot;, constraints: { ip: /192\.168\.1\.\d{1,3}/ }
-
-  @resource &quot;token&quot;, module: &quot;api&quot;
-  @scope module: &quot;api&quot;, -&gt;
-    @resources &quot;errors&quot;, shallow: true, -&gt;
-      @resources &quot;notices&quot;
-
-  @scope path: &quot;api&quot;, -&gt;
-    @resource &quot;me&quot;
-    @match &quot;/&quot;: &quot;mes#index&quot;
-
-  @get &quot;(/&quot;username&quot;)/followers&quot;: &quot;followers#index&quot;
-  @get &quot;/groups(/user/&quot;username&quot;)&quot;: &quot;groups#index&quot;
-  @get &quot;(/user/&quot;username&quot;)/photos&quot;: &quot;photos#index&quot;
-
-  @scope &quot;(groups)&quot;, -&gt;
-    @scope &quot;(discussions)&quot;, -&gt;
-      @resources &quot;messages&quot;
-
-  @match &quot;whatever/&quot;controller&quot;(/&quot;action&quot;(/&quot;id&quot;))&quot;, id: /\d+/
-
-  @resource &quot;profile&quot;, -&gt;
-    @get &quot;settings&quot;
-
-    @new, -&gt;
-      @post &quot;preview&quot;
-
-  @resources &quot;content&quot;
-
-  @namespace &quot;transport&quot;, -&gt;
-    @resources &quot;taxis&quot;
-
-  @namespace &quot;medical&quot;, -&gt;
-    @resource &quot;taxis&quot;
-
-  @scope constraints: { id: /\d+/ }, -&gt;
-    @get &quot;/tickets&quot;, to: &quot;tickets#index&quot;, as: &quot;tickets&quot;
-
-  @scope constraints: { id: /\d{4}/ }, -&gt;
-    @resources &quot;movies&quot;, -&gt;
-      @resources &quot;reviews&quot;
-      @resource &quot;trailer&quot;
-
-  @namespace &quot;private&quot;, -&gt;
-    @root to: redirect(&quot;/private/index&quot;)
-    @match &quot;index&quot;, to: &quot;private#index&quot;
-
-  @scope only: [&quot;index&quot;, &quot;show&quot;], -&gt;
-    @namespace &quot;only&quot;, -&gt;
-      @resources &quot;clubs&quot;, -&gt;
-        @resources &quot;players&quot;
-        @resource  &quot;chairman&quot;
-
-  @scope except: [&quot;new&quot;, &quot;create&quot;, &quot;edit&quot;, &quot;update&quot;, &quot;destroy&quot;], -&gt;
-    @namespace &quot;except&quot;, -&gt;
-      @resources &quot;clubs&quot;, -&gt;
-        @resources &quot;players&quot;
-        @resource  &quot;chairman&quot;
-
-  @namespace &quot;wiki&quot;, -&gt;
-    @resources &quot;articles&quot;, id: /[^\/]+/, -&gt;
-      @resources &quot;comments&quot;, only: [&quot;create&quot;, &quot;new&quot;]
-
-  @resources &quot;wikiPages&quot;, path: &quot;pages&quot;
-  @resource &quot;wikiAccount&quot;, path: &quot;myAccount&quot;
-
-  @scope only: &quot;show&quot;, -&gt;
-    @namespace &quot;only&quot;, -&gt;
-      @resources &quot;sectors&quot;, only: &quot;index&quot;, -&gt;
-        @resources &quot;companies&quot;, -&gt;
-          @scope only: &quot;index&quot;, -&gt;
-            @resources &quot;divisions&quot;
-          @scope except: [&quot;show&quot;, &quot;update&quot;, &quot;destroy&quot;], -&gt;
-            @resources &quot;departments&quot;
-        @resource  &quot;leader&quot;
-        @resources &quot;managers&quot;, except: [&quot;show&quot;, &quot;update&quot;, &quot;destroy&quot;]
-
-  @scope except: &quot;index&quot;, -&gt;
-    @namespace &quot;except&quot;, -&gt;
-      @resources &quot;sectors&quot;, except: [&quot;show&quot;, &quot;update&quot;, &quot;destroy&quot;], -&gt;
-        @resources &quot;companies&quot;, -&gt;
-          @scope except: [&quot;show&quot;, &quot;update&quot;, &quot;destroy&quot;], -&gt;
-            @resources &quot;divisions&quot;
-          @scope only: &quot;index&quot;, -&gt;
-            @resources &quot;departments&quot;
-        @resource  &quot;leader&quot;
-        @resources &quot;managers&quot;, only: &quot;index&quot;
-
-  @resources &quot;sections&quot;, id: /.+/, -&gt;
-    @get &quot;preview&quot;, on: &quot;member&quot;
-
-  @scope as: &quot;routes&quot;, -&gt;
-    @get &quot;/c/&quot;id&quot;&quot;, as: &quot;collision&quot;, to: &quot;collision#show&quot;
-    @get &quot;/collision&quot;, to: &quot;collision#show&quot;
-    @get &quot;/noCollision&quot;, to: &quot;collision#show&quot;, as: nil
-
-    @get &quot;/fc/&quot;id&quot;&quot;, as: &quot;forcedCollision&quot;, to: &quot;forcedCollision#show&quot;
-    @get &quot;/forcedCollision&quot;, as: &quot;forcedCollision&quot;, to: &quot;forcedCollision#show&quot;
-
-  @match &quot;/purchases/&quot;token&quot;/&quot;filename&quot;&quot;,
-    to: &quot;purchases#fetch&quot;,
-    token: /[[&quot;alnum&quot;:]]{10}/,
-    filename: /(.+)/,
-    as: &quot;purchase&quot;
-
-  @resources &quot;lists&quot;, id: /([A-Za-z0-9]{25})|default/, -&gt;
-    @resources &quot;todos&quot;, id: /\d+/
-
-  @scope &quot;/countries/&quot;country&quot;&quot;, constraints: lambda { |params, req| params[&quot;country&quot;].in?([&quot;all&quot;, &quot;France&quot;]) }, -&gt;
-    @match &quot;/&quot;,       to: &quot;countries#index&quot;
-    @match &quot;/cities&quot;, to: &quot;countries#cities&quot;
-
-  @match &quot;/countries/&quot;country&quot;/(*other)&quot;, to: redirect{ |params, req| params[&quot;other&quot;] ? &quot;/countries/all/#{params[&quot;other&quot;]}&quot; : &quot;/countries/all&quot; }
-
-  @match &quot;/&quot;locale&quot;/*file.&quot;format&quot;&quot;, to: &quot;files#show&quot;, file: /path\/to\/existing\/file/
-
-  @scope &quot;/italians&quot;, -&gt;
-    @match &quot;/writers&quot;, to: &quot;italians#writers&quot;, constraints: :&quot;TestRoutingMapper&quot;:&quot;IpRestrictor&quot;
-    @match &quot;/sculptors&quot;, to: &quot;italians#sculptors&quot;
-    @match &quot;/painters/&quot;painter&quot;&quot;, to: &quot;italians#painters&quot;, constraints: {painter: /michelangelo/}
-</code></pre>
-</section>
+<p><a name="2-validation-conditional-get" href="#2-validation-conditional-get"></a></p>
+
+<h4>2. Validation (Conditional Get)</h4>
+
+<ul>
+<li>Back-end adds ETag or Last-modified, e.g. ETag: abcdef012345</li>
+<li>Last-modified is redundant, basically there for HTTP 1.0 clients.</li>
+<li>On 2nd request, gateway cache realizes it has this page in cache, then sends a GET /foo, Host: foo.com, If-None-Match: abcdef012345 to the back-end.</li>
+<li>If back-end returns a 304 Not Modified, gateway cache returns cached version.</li>
+</ul>
+
+<div class="highlight"><pre lang=" coffeescript">show: ->
+  @foo = Foo.find(@params.id)
+  @freshWhen etag: @foo, lastModfied: @foo.get("updatedAt")
+</pre></div>
+
+<div class="highlight"><pre lang=" coffeescript">show: ->
+  @foo = Foo.find(@params.id)
+  if @isStale(etag: @foo, lastModfied: @foo.get("updatedAt"))
+    @respondTo ...
+</pre></div>
+
+<p><a name="combine-expiration-and-validation" href="#combine-expiration-and-validation"></a></p>
+
+<h4>Combine Expiration and Validation</h4>
+
+<ul>
+<li>Back-end sets Cache-control: public, max=age=60 and ETag: abcdef012345</li>
+<li>In &lt; 60 seconds, cache-control takes precedence</li>
+<li>After 60 seconds, it queries back-end using ETag</li>
+<li>Back end can then send back a 304 not modified with a new Cache-control: public, max-age: 60</li>
+</ul>
+
+<p><a name="handling-events" href="#handling-events"></a></p>
+
+<h2>Handling Events</h2>
+
+<p>All controller actions are just events.  This means then that controllers handle events:</p>
+
+<ul>
+<li>DOM events</li>
+<li>Keyboard events</li>
+<li>Gesture events</li>
+<li>socket messages</li>
+<li>url requests</li>
+</ul>
+
+<p>Instead of having to create a controller for each type of message, why not just establish some conventions:</p>
+
+<p><strong>Note:</strong> As of the current master branch manual socket manipulation (@on, @emit) are broken / not fully implemented. Work in progress.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.PostsController extends Tower.Controller
+  # socket.io handler
+  @on "create", "syncCreate" # created by default... knows because it's named after an action
+  @on "notification", "flashMessage" # knows it's socket because 'notification' isn't an action or dom event keyword
+  @on "mousemove", "updateHeatMap", type: 'socket' # if you name a socket event after a keyword then pass the `type: 'socket'` option.
+
+  # dom event handler
+  @on "click", "click"
+  @on "click .item a", "clickItem"
+  # or as an object
+  @on "click .itemA a": "clickItemA",
+    "click .itemB a": "clickItemB",
+    "click .itemC a": "clickItemC"
+
+  @on "change #user-first-name-input", "enable", dependent: "#user-last-name-input"
+  @on "change #user-first-name-input", "enable #user-last-name-input" # enable: (selector)
+  @on "change #user-first-name-input", "validate"
+  @on "change #user-first-name-input", bind: "firstName"
+  @bind "change #user-first-name-input", "firstName"
+  @on "click #add-user-address", "addAddress"
+  @on "click #add-user-address", "add", object: "address"
+  @on "click #remove-user-address", "removeAddress"
+  # $(window).on('click', '#user-details', "toggleDetails");
+  @on "click #user-details", "toggleDetails"
+
+  # show or hide
+  toggleShowHide: ->
+
+  show: ->
+
+  hide: ->
+
+  toggleSelectDeselect: ->
+
+  select: ->
+
+  deselect: ->
+
+  toggleAddRemove: ->
+
+  add: ->
+
+  remove: ->
+
+  toggleEnableDisable: ->  
+    if _.blank(value)
+      @disable()
+    else
+      @enable()
+
+  # enable or disable
+  enable: ->
+    $(options.dependent).attr("disabled", false)
+
+  disable: ->
+    $(options.dependent).attr("disabled", true)
+
+  validate: (element) ->
+    element
+
+  invalidate: ->
+
+  bind: ->
+
+  next: ->
+
+  prev: ->
+</pre></div>
+
+<h2>Manual Sockets / Pub/Sub Sockets.</h2>
+
+<p><strong>Note:</strong> This feature is in-progress as is not currently shipped in Tower. Nonetheless this feature should be ready soon.</p>
+
+<p>For typical models, Tower employs a data-synchronization feature that handles real-time change. This is all great and fancy but what if you need more control in your hands? </p>
+
+<p>Pub/Sub sockets are the answer. Both the client and server controllers will have this functionality and the api is indifferent. On either the client or the server you would first subscribe (<code>@on</code>) or listen on a particular message. </p>
+
+<h3>Listen</h3>
+
+<div class="highlight"><pre lang=" coffeescript">@on 'notification'
+</pre></div>
+
+<p>The first parameter holds the type of message your listening on. This can be anything you want. <br />The second parameter contains either a string with a method name or an anonymous function. </p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.SomeController extends App.ApplicationController
+
+  @on 'notification', 'someMethodHere'
+
+  someMethodHere: (event) ->
+    # Some logic here.
+
+  @on 'notification', (event) ->
+    # A shorter syntax.
+</pre></div>
+
+<p>Both ways will work the later is just shorter. </p>
+
+<h3>Send</h3>
+
+<p>Sending a socket message is no different and just as simple. </p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.SomeController extends App.ApplicationController
+
+  index: ->
+    @emit 'notification', message: 'Hello, World'
+
+</pre></div>
+
+<p>The first parameter is identical to <code>@on</code>, the difference is the next parameters which are simple json objects.</p>
+
+<p><a name="observing-and-binding-to-controllers" href="#observing-and-binding-to-controllers"></a></p>
+
+<h2>Observing and Binding to Controllers</h2>
+
+<p><code>Tower.Controller</code> extends the <code>Ember.Object</code>, which is observable.</p>
+
+<p><a name="resources" href="#resources"></a></p>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href='http://pivotallabs.com/users/spierson/blog/articles/842-railsconf-http-s-best-kept-secret-caching-ryan-tomayko-heroku-'>http://pivotallabs.com/users/spierson/blog/articles/842-railsconf-http-s-best-kept-secret-caching-ryan-tomayko-heroku-</a></li>
+</ul>

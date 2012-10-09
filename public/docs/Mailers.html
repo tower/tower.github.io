@@ -1,0 +1,41 @@
+<h2><code>Tower.Mailer</code></h2>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Notifier extends Tower.Mailer
+  @welcome: (user) ->
+    @notification("welcome", name: user.firstName)
+
+  @notification: (key, locals = {}) ->
+    App.Notifier.defaultUrlOptions.host = locals.host || "mysite.com"
+    subject                             = Tower.t("emails.#{key}.subject", locals)
+    from                                = locals.from || I18n.t("emails.from")
+    to                                  = locals.to
+
+<pre><code>@mail from: from, to: to, subject: subject
+</code></pre>
+
+</pre></div>
+
+<p>Then you use it like this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  welcome: ->
+    App.Notifier.notification(@).deliver()
+</pre></div>
+
+<p><a name="redis-for-email-background-jobs" href="#redis-for-email-background-jobs"></a></p>
+
+<h2>Redis for Email Background Jobs</h2>
+
+<p>Here's a pattern I use a lot</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @welcome: (id) ->
+    App.Notifier.notification(@constructor.find(id)).deliver()
+
+  welcome: ->
+    @enqueue("welcome", @id)
+</pre></div>
+
+<p><a name="inline-css" href="#inline-css"></a></p>
+
+<h2>Inline CSS</h2>

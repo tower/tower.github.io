@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <span class='title'>ModelScope</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Tower.ModelScope
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>packages/tower-model/shared/scope.coffee</td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Remove this layer, if you want to manually reuse a scope maybe have to call <code>clone</code> directly?
+  </div>
+  <p>Interface to <a href='../../classes/Tower/ModelCursor.html'>Tower.ModelCursor</a>, used to build database operations.</p>
+</div>
+<div class='tags'>
+</div>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#constructor-instance'>
+        - (void) <strong>constructor</strong>(cursor)
+      </a>
+    </span>
+    <span class='constructor note title'>Constructor</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#has-instance'>
+        - (void) <strong>has</strong>(object)
+      </a>
+    </span>
+    <span class='desc'>
+      Check if this scope or relation contains this object
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#live-instance'>
+        - (void) <strong>live</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      tells us we want to register it to the cursors list might rename to [live, subscribe, publish, io]
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#build-instance'>
+        - (void) <strong>build</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Builds one or many records based on the scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#insert-instance'>
+        - (void) <strong>insert</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Creates one or many records based on the scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#update-instance'>
+        - (void) <strong>update</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Updates records based on the scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#destroy-instance'>
+        - (void) <strong>destroy</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Deletes records based on the scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#add-instance'>
+        - (void) <strong>add</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Add to set.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#remove-instance'>
+        - (void) <strong>remove</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Remove from set.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#load-instance'>
+        - (void) <strong>load</strong>(records)
+      </a>
+    </span>
+    <span class='desc'>
+      Used for hasMany association only right now.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#reset-instance'>
+        - (void) <strong>reset</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#getEach-instance'>
+        - (void) <strong>getEach</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#find-instance'>
+        - (undefined) <strong>find</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Updates one or many records based on the scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#first-instance'>
+        - (void) <strong>first</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Find the first record matching this scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#last-instance'>
+        - (void) <strong>last</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Find the last record matching this scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#all-instance'>
+        - (void) <strong>all</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Find all the records matching this scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toArray-instance'>
+        - (void) <strong>toArray</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#pluck-instance'>
+        - (void) <strong>pluck</strong>(attributes...)
+      </a>
+    </span>
+    <span class='desc'>
+      Returns an array of column values directly from the underlying table/collection.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#explain-instance'>
+        - (void) <strong>explain</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Show query that will be used for the datastore.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#count-instance'>
+        - (void) <strong>count</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Count the number of records matching this scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#exists-instance'>
+        - (void) <strong>exists</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      Check if a record exists that matches this scope&#39;s cursor.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#fetch-instance'>
+        - (void) <strong>fetch</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#batch-instance'>
+        - (void) <strong>batch</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      @todo
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#options-instance'>
+        - (Object) <strong>options</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      Metadata.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#compile-instance'>
+        - (void) <strong>compile</strong>(cloneContent = true)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toCursor-instance'>
+        - (void) <strong>toCursor</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toJSON-instance'>
+        - (void) <strong>toJSON</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#clone-instance'>
+        - (Tower.ModelScope) <strong>clone</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      Clone this scope (and the critera attached to it).
+    </span>
+  </li>
+</ul>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-instance'>
+      - (void) <strong>constructor</strong>(cursor)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='has-instance'>
+      - (void) <strong>has</strong>(object)
+    </p>
+    <div class='docstring'>
+  <p>Check if this scope or relation contains this object</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>object</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>an object or array of objects.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='live-instance'>
+      - (void) <strong>live</strong>()
+    </p>
+    <div class='docstring'>
+  <p>tells us we want to register it to the cursors list<br />might rename to [live, subscribe, publish, io]</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='build-instance'>
+      - (void) <strong>build</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Builds one or many records based on the scope&#39;s cursor.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Build single record
+    </h4>
+    <pre><code class='coffee'>App.User.build(firstName: &#39;Lance&#39;)</code></pre>
+    <h4>
+      Build multiple records
+    </h4>
+    <pre><code class='coffee'># splat arguments
+App.User.build({firstName: &#39;Lance&#39;}, {firstName: &#39;John&#39;})
+# or pass in an explicit array of records
+App.User.build([{firstName: &#39;Lance&#39;}, {firstName: &#39;John&#39;}])</code></pre>
+    <h4>
+      Build by passing in records
+    </h4>
+    <pre><code class='coffee'>App.User.build(new User(firstName: &#39;Lance&#39;))</code></pre>
+    <h4>
+      Build from scope
+    </h4>
+    <pre><code class='coffee'># single record
+App.User.where(firstName: &#39;Lance&#39;).build()
+# multiple records
+App.User.where(firstName: &#39;Lance&#39;).build([{lastName: &#39;Pollard&#39;}, {lastName: &#39;Smith&#39;}])</code></pre>
+    <h4>
+      Build without instantiating the object in memory
+    </h4>
+    <pre><code class='coffee'>App.User.options(instantiate: false).where(firstName: &#39;Lance&#39;).build()</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (<tt>void</tt>)
+      &mdash;
+      <span class='desc'>Requires a callback to get the data.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='insert-instance'>
+      - (void) <strong>insert</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Creates one or many records based on the scope&#39;s cursor.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Create single record
+    </h4>
+    <pre><code class='coffee'>App.User.insert(firstName: &#39;Lance&#39;)</code></pre>
+    <h4>
+      Create multiple records
+    </h4>
+    <pre><code class='coffee'># splat arguments
+App.User.insert({firstName: &#39;Lance&#39;}, {firstName: &#39;John&#39;})
+# or pass in an explicit array of records
+App.User.insert([{firstName: &#39;Lance&#39;}, {firstName: &#39;John&#39;}])</code></pre>
+    <h4>
+      Create by passing in records
+    </h4>
+    <pre><code class='coffee'>App.User.insert(new User(firstName: &#39;Lance&#39;))</code></pre>
+    <h4>
+      Create from scope
+    </h4>
+    <pre><code class='coffee'># single record
+App.User.where(firstName: &#39;Lance&#39;).insert()
+# multiple records
+App.User.where(firstName: &#39;Lance&#39;).insert([{lastName: &#39;Pollard&#39;}, {lastName: &#39;Smith&#39;}])</code></pre>
+    <h4>
+      Create without instantiating the object in memory
+    </h4>
+    <pre><code class='coffee'>App.User.options(instantiate: false).where(firstName: &#39;Lance&#39;).insert()</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (<tt>void</tt>)
+      &mdash;
+      <span class='desc'>Requires a callback to get the data.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='update-instance'>
+      - (void) <strong>update</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Updates records based on the scope&#39;s cursor.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Update by id
+    </h4>
+    <pre><code class='coffee'>App.User.update(1, firstName: &#39;Lance&#39;)
+App.User.update(1, 2, firstName: &#39;Lance&#39;)
+App.User.update([1, 2], firstName: &#39;Lance&#39;)</code></pre>
+    <h4>
+      Update all
+    </h4>
+    <pre><code class='coffee'>App.User.update(firstName: &#39;Lance&#39;)</code></pre>
+    <h4>
+      Update by passing in records
+    </h4>
+    <pre><code class='coffee'>App.User.update(userA, firstName: &#39;Lance&#39;)
+App.User.update(userA, userB, firstName: &#39;Lance&#39;)
+App.User.update([userA, userB], firstName: &#39;Lance&#39;)</code></pre>
+    <h4>
+      Update from scope
+    </h4>
+    <pre><code class='coffee'>App.User.where(firstName: &#39;John&#39;).update(firstName: &#39;Lance&#39;)
+App.User.where(firstName: &#39;John&#39;).update(1, 2, 3, firstName: &#39;Lance&#39;)</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (<tt>void</tt>)
+      &mdash;
+      <span class='desc'>Requires a callback to get the data.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='destroy-instance'>
+      - (void) <strong>destroy</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Deletes records based on the scope&#39;s cursor.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Destroy by id
+    </h4>
+    <pre><code class='coffee'>App.User.destroy(1)
+App.User.destroy(1, 2)
+App.User.destroy([1, 2])</code></pre>
+    <h4>
+      Destroy all
+    </h4>
+    <pre><code class='coffee'>App.User.destroy()</code></pre>
+    <h4>
+      Update by passing in records
+    </h4>
+    <pre><code class='coffee'>App.User.destroy(userA)
+App.User.destroy(userA, userB)
+App.User.destroy([userA, userB])</code></pre>
+    <h4>
+      Update from scope
+    </h4>
+    <pre><code class='coffee'>App.User.where(firstName: &#39;John&#39;).destroy()
+App.User.where(firstName: &#39;John&#39;).destroy(1, 2, 3)</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (<tt>void</tt>)
+      &mdash;
+      <span class='desc'>Requires a callback to get the data.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='add-instance'>
+      - (void) <strong>add</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Add to set.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='remove-instance'>
+      - (void) <strong>remove</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Remove from set.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='load-instance'>
+      - (void) <strong>load</strong>(records)
+    </p>
+    <div class='docstring'>
+  <p>Used for hasMany association only right now.<br />Probably should be moved to cursor class.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='reset-instance'>
+      - (void) <strong>reset</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='getEach-instance'>
+      - (void) <strong>getEach</strong>()
+    </p>
+    <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Should probably do some more delegating to the cursor, but don&#39;t want to hardcode too many methods.
+  </div>
+  
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='find-instance'>
+      - (undefined) <strong>find</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Updates one or many records based on the scope&#39;s cursor.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Find single record
+    </h4>
+    <pre><code class='coffee'># find record with `id` 45
+App.User.find(45)</code></pre>
+    <h4>
+      Find multiple records
+    </h4>
+    <pre><code class='coffee'># splat arguments
+App.User.find(10, 20)
+# or pass in an explicit array of records
+App.User.find([10, 20])</code></pre>
+    <h4>
+      Create from scope
+    </h4>
+    <pre><code class='coffee'>App.User.where(firstName: &#39;Lance&#39;).find(1, 2)</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (<tt>undefined</tt>)
+      &mdash;
+      <span class='desc'>Requires a callback to get the data.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='first-instance'>
+      - (void) <strong>first</strong>(callback)
+    </p>
+    <div class='docstring'>
+  <p>Find the first record matching this scope&#39;s cursor.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (<tt>Function</tt>)
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='last-instance'>
+      - (void) <strong>last</strong>(callback)
+    </p>
+    <div class='docstring'>
+  <p>Find the last record matching this scope&#39;s cursor.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (<tt>Function</tt>)
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='all-instance'>
+      - (void) <strong>all</strong>(callback)
+    </p>
+    <div class='docstring'>
+  <p>Find all the records matching this scope&#39;s cursor.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (<tt>Function</tt>)
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='toArray-instance'>
+      - (void) <strong>toArray</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='pluck-instance'>
+      - (void) <strong>pluck</strong>(attributes...)
+    </p>
+    <div class='docstring'>
+  <p>Returns an array of column values directly from the underlying table/collection.<br />This also works with serialized attributes.<br />@todo</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='explain-instance'>
+      - (void) <strong>explain</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Show query that will be used for the datastore.<br />@todo</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='count-instance'>
+      - (void) <strong>count</strong>(callback)
+    </p>
+    <div class='docstring'>
+  <p>Count the number of records matching this scope&#39;s cursor.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (<tt>Function</tt>)
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='exists-instance'>
+      - (void) <strong>exists</strong>(callback)
+    </p>
+    <div class='docstring'>
+  <p>Check if a record exists that matches this scope&#39;s cursor.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (<tt>Function</tt>)
+      </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='fetch-instance'>
+      - (void) <strong>fetch</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='batch-instance'>
+      - (void) <strong>batch</strong>()
+    </p>
+    <div class='docstring'>
+  <p>@todo</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='options-instance'>
+      - (Object) <strong>options</strong>(options)
+    </p>
+    <div class='docstring'>
+  <p>Metadata.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (<tt>Object</tt>)
+      &mdash;
+      <span class='desc'>returns all of the options.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='compile-instance'>
+      - (void) <strong>compile</strong>(cloneContent = true)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='toCursor-instance'>
+      - (void) <strong>toCursor</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='toJSON-instance'>
+      - (void) <strong>toJSON</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='clone-instance'>
+      - (Tower.ModelScope) <strong>clone</strong>()
+    </p>
+    <div class='docstring'>
+  <p>Clone this scope (and the critera attached to it).</p>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span><tt><a href='../../classes/Tower/ModelScope.html'>Tower.ModelScope</a></tt></li>
+  </ul>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>
