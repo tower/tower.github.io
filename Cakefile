@@ -7,7 +7,7 @@ path  = require('path')
 spawnGrunt = (args = []) ->
   args.push('--config', path.join(process.cwd(), 'grunt.coffee'))
 
-  grunt   = which('grunt')
+  grunt   = 'node_modules/grunt/bin/grunt'#which('grunt')
   watcher = spawn(grunt, args) 
   watcher.stdout.setEncoding('utf8')
   watcher.stderr.setEncoding('utf8')

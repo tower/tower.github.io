@@ -7,6 +7,7 @@ module.exports =
       '/app/config/client/watch'
       '/app/config/shared/routes'
       '/app/controllers/client/applicationController'
+      '/app/models/shared/post'
       '/templates'
       '/app/views/client/layout/application'
     ]

@@ -1,4 +1,6 @@
 # https://github.com/cowboy/grunt/blob/master/docs/task_init.md
+# https://github.com/shama/grunt/blob/d7469b1266a2a827266a533b76fff31c15458bf3/test/tasks/watch_test.js
+# https://github.com/gruntjs/grunt/blob/devel/test/grunt/file_test.js
 module.exports = (grunt) ->
   file = grunt.file
 
@@ -21,7 +23,8 @@ module.exports = (grunt) ->
     cheatSheets = file.expand(Tower.join(wikiRoot, 'en/cheat-sheets/**/*.md'))
 
     renderMarkdown = (doc) ->
-      filePath = Tower.join(Tower.root, 'public/docs', Tower.basename(doc, '.md') + '.html')
+      filePath = doc.replace(Tower.join(Tower.srcRoot, 'wiki/en') + '/', '').replace(/\.md$/, '.html')
+      filePath = Tower.join(Tower.root, 'public',  filePath)
       Tower.writeFileSync(filePath, markdown.parse(Tower.readFileSync(doc, 'utf-8')))
 
     docs.forEach(renderMarkdown)
@@ -63,6 +66,9 @@ module.exports = (grunt) ->
       stylus:
         files: ['app/stylesheets/client/application.styl']
         tasks: ['stylus']
+      templates:
+        files: ['app/templates/*.coffee', 'app/templates/shared/**/*.coffee', 'app/templates/client/**/*.coffee']
+        tasks: ['templates:compile']
     copy:
       javascripts:
         src: ['vendor/**/*.js']

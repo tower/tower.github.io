@@ -26,6 +26,10 @@
 
     Post.field('slug');
 
+    if (Tower.isServer) {
+      Post.include(App.PostReadMixin);
+    }
+
     return Post;
 
   })(Tower.Model);

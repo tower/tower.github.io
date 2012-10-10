@@ -1,6 +1,5 @@
-(function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends =   function(child, parent) {
+var __hasProp = {}.hasOwnProperty,
+  __extends =   function(child, parent) {
     if (typeof parent.__extend == 'function') return parent.__extend(child);
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } 
     function ctor() { this.constructor = child; } 
@@ -11,17 +10,15 @@
     return child; 
 };
 
-  App.ApplicationController = (function(_super) {
-    var ApplicationController;
+App.ApplicationController = (function(_super) {
+  var ApplicationController;
 
-    function ApplicationController() {
-      return ApplicationController.__super__.constructor.apply(this, arguments);
-    }
+  function ApplicationController() {
+    return ApplicationController.__super__.constructor.apply(this, arguments);
+  }
 
-    ApplicationController = __extends(ApplicationController, _super);
+  ApplicationController = __extends(ApplicationController, _super);
 
-    return ApplicationController;
+  return ApplicationController;
 
-  })(Tower.Controller);
-
-}).call(this);
+})(Tower.Controller);
