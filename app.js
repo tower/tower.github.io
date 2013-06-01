@@ -23,6 +23,18 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+app.get('/guides', function(req, res){
+  res.render('guides');
+});
+
+app.get('/community', function(req, res){
+  res.render('community');
+});
+
+app.get('/screencasts', function(req, res){
+  res.render('screencasts');
+});
+
 
 /**
  * Listen

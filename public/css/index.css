@@ -48,9 +48,7 @@ header {
           header ul li a {
             font-size: 21px; } }
       header ul li.logo {
-        background: url(../img/logo-medium.png) no-repeat;
         position: relative;
-        top: 12px;
         width: 50px;
         height: 55px;
         margin-left: 10%; }
