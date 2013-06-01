@@ -33,7 +33,7 @@ header {
         color: #cbd0d3;
         text-decoration: none;
         font-weight: bold;
-        font-family: Helvetica;
+        font-family: "Droid Serif";
         font-size: 17px; }
         header ul li a:hover {
           color: #666; }
@@ -112,17 +112,19 @@ section#content {
 #tower-intro h1 {
   text-align: center; }
 #tower-intro h2 {
-  color: #7f8c8d;
-  font-size: 23px;
-  font-family: Helvetica;
   text-align: center; }
 
 body {
   background-color: white;
   color: #c5cacb;
-  font-family: Helvetica, Arial;
+  font-family: "Droid Serif";
   min-width: 320px; }
   body h1 {
     font-size: 35px;
+    font-family: "Droid Serif";
     color: #2c3e50;
-    font-family: Helvetica; }
+    color: #5E656D; }
+  body h2 {
+    font-size: 23px;
+    color: #7f8c8d;
+    font-family: "Droid Serif"; }

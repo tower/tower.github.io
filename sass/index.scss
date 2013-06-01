@@ -6,13 +6,20 @@
 body {
   background-color: $bgcolor;
   color: $fgcolor;
-  font-family: Helvetica, Arial;
+  font-family: $body-font;
   min-width: $break-small;
 
   h1 {
     font-size: 35px;
+    font-family: $header-font;
     color: $header-color;
-    font-family: Helvetica;
+    color: #5E656D;
+  }
+
+  h2 {
+    font-size: 23px;
+    color: $h2-color;
+    font-family: $h2-font;
   }
 
   footer {}

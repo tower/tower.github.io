@@ -22,7 +22,7 @@ header {
         color: $nav-link-color;
         text-decoration: none;
         font-weight: bold;
-        font-family: Helvetica;
+        font-family: $link-font;
         font-size: 17px;
         &:hover {
           color: #666;
