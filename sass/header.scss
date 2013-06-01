@@ -50,11 +50,11 @@ header {
       }
 
       &.logo {
-        background: url(../img/logo-small.png) no-repeat;
+        background: url(../img/logo-medium.png) no-repeat;
         position: relative;
         top: 12px;
-        width: 40px;
-        height: 44px;
+        width: 50px;
+        height: 55px;
         margin-left: 10%;
         @media only screen and (max-width: 760px) {
           margin-left: 5%;
