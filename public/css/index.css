@@ -34,7 +34,7 @@ header {
         color: #cbd0d3;
         text-decoration: none;
         font-weight: bold;
-        font-family: "Droid Serif";
+        font-family: "Droid Sans";
         font-size: 17px; }
         header ul li a:hover {
           color: #666; }
@@ -120,7 +120,7 @@ section#content {
 body {
   background-color: white;
   color: #c5cacb;
-  font-family: "Droid Serif";
+  font-family: "Droid Sans";
   min-width: 320px; }
   body h1 {
     font-size: 35px;

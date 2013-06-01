@@ -10,7 +10,7 @@ $break-ssmall: 480px;
 $break-medium: 650px;
 $break-large: 1024px;
 
-$body-font: "Droid Serif";
-$header-font: $body-font;
+$body-font: "Droid Sans";
+$header-font: "Droid Serif";
 $link-font: $body-font;
-$h2-font: $body-font;
+$h2-font: $header-font;
