@@ -1,0 +1,231 @@
+$bgcolor: #ffffff;
+$fgcolor: #c5cacb;
+$nav-link-color: #cbd0d3;
+
+$header-color: #2c3e50;
+$header-secondary-color: #7f8c8d;
+
+$break-small: 320px;
+$break-ssmall: 480px;
+$break-medium: 650px;
+$break-large: 1024px;
+
+/**
+ * Animate Media Queries
+ */
+
+body, div, ul, li {
+    -moz-transition: all .2s linear;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}
+
+
+@mixin respond-to($media) {
+  @if $media == tiny {
+    @media only screen and (max-width: $break-small) { @content; }
+  }
+  @if $media == small {
+    @media only screen and (min-width: $break-small) and (max-width: $break-ssmall) { @content; }
+  }
+  @else if $media == medium {
+    @media only screen and (min-width: $break-medium) and (max-width: $break-large - 1) { @content; }
+  }
+  @else if $media == wide {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+
+}
+
+body {
+  background-color: $bgcolor;
+  color: $fgcolor;
+  font-family: Helvetica, Arial;
+  min-width: $break-small;
+
+  h1 {
+    font-size: 35px;
+    color: $header-color;
+    font-family: Helvetica;
+  }
+
+  header {
+    height: 65px;
+    width: 100%;
+    margin: 40px auto 0 auto;
+    line-height: 60px;
+
+    ul {
+      width: 90%;
+      margin: 0 auto;
+      list-style: none;
+
+      @media only screen and (min-width: 700px) and (max-width: 900px) {
+            width: 100%;
+      }
+
+      @media only screen and (max-width: 760px) {
+        width: 100%;
+      }
+
+      /**@media only screen and (max-width: 599px) {
+        padding-left: 0px;
+      }
+
+      @media only screen and (max-width: 435px) {
+        float: none;
+        display: block;
+        margin: 30px auto;
+        width: 100%;
+      }**/
+
+      li {
+        list-style: none;
+        display: inline-block;
+        padding: 0 10px;
+        margin: 0 15px;
+
+        a {
+          color: $nav-link-color;
+          text-decoration: none;
+          font-weight: bold;
+          font-family: Helvetica;
+          font-size: 17px;
+          &:hover {
+            color: #666;
+            //text-decoration: underline;
+          }
+
+        }
+
+        @media only screen and (max-width: 507px) {
+          display: block;
+          text-align: center;
+          margin: 0 auto;
+          padding: 0px;
+          line-height: 40px;
+          a {
+            font-size: 21px;
+          }
+        }
+
+        &.logo {
+          background: url(../img/logo-small.png)  no-repeat;
+          width: 40px;
+          height: 44px;
+          margin-left: 10%;
+
+          @media only screen and (max-width: 760px) {
+            margin-left: 5%;
+          }
+
+          @media only screen and (max-width: 590px) {
+            margin-left: 0%;
+          }
+
+          @media only screen and (max-width: 507px) {
+            display: block;
+            margin: 50px auto;
+            text-align: center;
+          }
+
+
+        }
+
+        &.first {
+          margin-left: 38%;
+
+          @media only screen and (max-width: 1003px) {
+            margin-left: 34%;
+          }
+
+          @media only screen and (max-width: 930px) {
+            margin-left: 26%;
+          }
+
+          @media only screen and (max-width: 760px) {
+            margin-left: 13%;
+          }
+
+          @media only screen and (max-width: 640px) {
+            margin-left: 6%;
+          }
+
+          @media only screen and (max-width: 578px) {
+            margin-left: 0%;
+          }
+
+        }
+
+      }
+
+    }
+
+  } // header
+
+
+  section#content {
+    position: relative;
+    top: 70px;
+    width: 80%;
+    margin: 0 auto;
+
+    @media only screen and (max-width: 785px) {
+      #tower-intro {
+        margin: 0 auto;
+        margin-bottom: 70px;
+        h1 {
+
+        }
+      }
+      #tower-hero {
+        margin: 0 auto;
+        text-align: center;
+      }
+    }
+
+    @media only screen and (max-width: 507px) {
+      margin: 0 auto;
+      width: 100%;
+      top: 190px;
+      font-size: 12px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+
+      h1 {
+        text-align: center;
+        font-size: 25px;
+        margin-bottom: 8px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      #tower-intro {
+        margin-bottom: 30px;
+      }
+
+    }
+
+
+  }
+
+  #tower-intro {
+    h1 {
+      text-align: center;
+    }
+    h2 {
+      color: $header-secondary-color;
+      font-size: 23px;
+      font-family: Helvetica;
+      text-align: center;
+    }
+  }
+
+
+  footer {
+
+  }
+
+}
