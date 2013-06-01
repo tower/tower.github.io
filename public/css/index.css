@@ -124,7 +124,8 @@ body {
     font-size: 35px;
     font-family: "Droid Serif";
     color: #2c3e50;
-    color: #5E656D; }
+    color: #5E656D;
+    text-align: center; }
   body h2 {
     font-size: 23px;
     color: #7f8c8d;
