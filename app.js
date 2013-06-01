@@ -35,6 +35,10 @@ app.get('/screencasts', function(req, res){
   res.render('screencasts');
 });
 
+app.get('/docs', function(req, res){
+  res.render('docs');
+});
+
 
 /**
  * Listen
