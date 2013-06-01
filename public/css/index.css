@@ -13,9 +13,10 @@ header {
   height: 65px;
   width: 100%;
   margin: 40px auto 0 auto;
-  line-height: 60px; }
+  line-height: 65px; }
   header ul {
     width: 90%;
+    height: 65px;
     margin: 0 auto;
     list-style: none; }
     @media only screen and (min-width: 700px) and (max-width: 900px) {
@@ -28,7 +29,7 @@ header {
       list-style: none;
       display: inline-block;
       padding: 0 10px;
-      margin: 0 15px; }
+      margin: -3px 15px 0; }
       header ul li a {
         color: #cbd0d3;
         text-decoration: none;
@@ -48,6 +49,8 @@ header {
             font-size: 21px; } }
       header ul li.logo {
         background: url(../img/logo-small.png) no-repeat;
+        position: relative;
+        top: 12px;
         width: 40px;
         height: 44px;
         margin-left: 10%; }

@@ -2,34 +2,42 @@ header {
   height: 65px;
   width: 100%;
   margin: 40px auto 0 auto;
-  line-height: 60px;
+  line-height: 65px;
+
   ul {
     width: 90%;
+    height: 65px;
     margin: 0 auto;
     list-style: none;
+
+
     @media only screen and (min-width: 700px) and (max-width: 900px) {
       width: 100%;
     }
     @media only screen and (max-width: 760px) {
       width: 100%;
     }
+
     li {
       list-style: none;
       display: inline-block;
       padding: 0 10px;
-      margin: 0 15px;
+      margin: -3px 15px 0;
+
       a {
         color: $nav-link-color;
         text-decoration: none;
         font-weight: bold;
         font-family: $link-font;
         font-size: 17px;
+
         &:hover {
           color: #666;
           //text-decoration: underline;
 
         }
       }
+
       @media only screen and (max-width: 507px) {
         display: block;
         text-align: center;
@@ -40,8 +48,11 @@ header {
           font-size: 21px;
         }
       }
+
       &.logo {
         background: url(../img/logo-small.png) no-repeat;
+        position: relative;
+        top: 12px;
         width: 40px;
         height: 44px;
         margin-left: 10%;
