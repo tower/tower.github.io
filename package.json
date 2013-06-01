@@ -1,0 +1,9 @@
+{
+  "name": "tower-website",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "*",
+    "ejs": "*",
+    "express-partials": "~0.1.1"
+  }
+}
