@@ -1,0 +1,48 @@
+section#content {
+  position: relative;
+  top: 70px;
+  width: 80%;
+  margin: 0 auto;
+  @media only screen and (max-width: 785px) {
+    #tower-intro {
+      margin: 0 auto;
+      margin-bottom: 70px;
+      h1 {}
+    }
+    #tower-hero {
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+  @media only screen and (max-width: 507px) {
+    margin: 0 auto;
+    width: 100%;
+    top: 190px;
+    font-size: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    h1 {
+      text-align: center;
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 20px;
+    }
+    #tower-intro {
+      margin-bottom: 30px;
+    }
+  }
+}
+
+#tower-intro {
+  h1 {
+    text-align: center;
+  }
+  h2 {
+    color: $header-secondary-color;
+    font-size: 23px;
+    font-family: Helvetica;
+    text-align: center;
+  }
+}

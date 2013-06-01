@@ -6,6 +6,117 @@ body, div, ul, li {
   -webkit-transition: all .2s linear;
   transition: all .2s linear; }
 
+/**
+ * Useful Mixin for quick media queries
+ */
+header {
+  height: 65px;
+  width: 100%;
+  margin: 40px auto 0 auto;
+  line-height: 60px; }
+  header ul {
+    width: 90%;
+    margin: 0 auto;
+    list-style: none; }
+    @media only screen and (min-width: 700px) and (max-width: 900px) {
+      header ul {
+        width: 100%; } }
+    @media only screen and (max-width: 760px) {
+      header ul {
+        width: 100%; } }
+    header ul li {
+      list-style: none;
+      display: inline-block;
+      padding: 0 10px;
+      margin: 0 15px; }
+      header ul li a {
+        color: #cbd0d3;
+        text-decoration: none;
+        font-weight: bold;
+        font-family: Helvetica;
+        font-size: 17px; }
+        header ul li a:hover {
+          color: #666; }
+      @media only screen and (max-width: 507px) {
+        header ul li {
+          display: block;
+          text-align: center;
+          margin: 0 auto;
+          padding: 0px;
+          line-height: 40px; }
+          header ul li a {
+            font-size: 21px; } }
+      header ul li.logo {
+        background: url(../img/logo-small.png) no-repeat;
+        width: 40px;
+        height: 44px;
+        margin-left: 10%; }
+        @media only screen and (max-width: 760px) {
+          header ul li.logo {
+            margin-left: 5%; } }
+        @media only screen and (max-width: 590px) {
+          header ul li.logo {
+            margin-left: 0%; } }
+        @media only screen and (max-width: 507px) {
+          header ul li.logo {
+            display: block;
+            margin: 50px auto;
+            text-align: center; } }
+      header ul li.first {
+        margin-left: 38%; }
+        @media only screen and (max-width: 1003px) {
+          header ul li.first {
+            margin-left: 34%; } }
+        @media only screen and (max-width: 930px) {
+          header ul li.first {
+            margin-left: 26%; } }
+        @media only screen and (max-width: 760px) {
+          header ul li.first {
+            margin-left: 13%; } }
+        @media only screen and (max-width: 640px) {
+          header ul li.first {
+            margin-left: 6%; } }
+        @media only screen and (max-width: 578px) {
+          header ul li.first {
+            margin-left: 0%; } }
+
+section#content {
+  position: relative;
+  top: 70px;
+  width: 80%;
+  margin: 0 auto; }
+  @media only screen and (max-width: 785px) {
+    section#content #tower-intro {
+      margin: 0 auto;
+      margin-bottom: 70px; }
+    section#content #tower-hero {
+      margin: 0 auto;
+      text-align: center; } }
+  @media only screen and (max-width: 507px) {
+    section#content {
+      margin: 0 auto;
+      width: 100%;
+      top: 190px;
+      font-size: 12px;
+      border-top: 1px solid #eee;
+      padding-top: 20px; }
+      section#content h1 {
+        text-align: center;
+        font-size: 25px;
+        margin-bottom: 8px; }
+      section#content h2 {
+        font-size: 20px; }
+      section#content #tower-intro {
+        margin-bottom: 30px; } }
+
+#tower-intro h1 {
+  text-align: center; }
+#tower-intro h2 {
+  color: #7f8c8d;
+  font-size: 23px;
+  font-family: Helvetica;
+  text-align: center; }
+
 body {
   background-color: white;
   color: #c5cacb;
@@ -15,118 +126,3 @@ body {
     font-size: 35px;
     color: #2c3e50;
     font-family: Helvetica; }
-  body header {
-    height: 65px;
-    width: 100%;
-    margin: 40px auto 0 auto;
-    line-height: 60px; }
-    body header ul {
-      width: 90%;
-      margin: 0 auto;
-      list-style: none;
-      /**@media only screen and (max-width: 599px) {
-        padding-left: 0px;
-      }
-
-      @media only screen and (max-width: 435px) {
-        float: none;
-        display: block;
-        margin: 30px auto;
-        width: 100%;
-      }**/ }
-      @media only screen and (min-width: 700px) and (max-width: 900px) {
-        body header ul {
-          width: 100%; } }
-      @media only screen and (max-width: 760px) {
-        body header ul {
-          width: 100%; } }
-      body header ul li {
-        list-style: none;
-        display: inline-block;
-        padding: 0 10px;
-        margin: 0 15px; }
-        body header ul li a {
-          color: #cbd0d3;
-          text-decoration: none;
-          font-weight: bold;
-          font-family: Helvetica;
-          font-size: 17px; }
-          body header ul li a:hover {
-            color: #666; }
-        @media only screen and (max-width: 507px) {
-          body header ul li {
-            display: block;
-            text-align: center;
-            margin: 0 auto;
-            padding: 0px;
-            line-height: 40px; }
-            body header ul li a {
-              font-size: 21px; } }
-        body header ul li.logo {
-          background: url(../img/logo-small.png) no-repeat;
-          width: 40px;
-          height: 44px;
-          margin-left: 10%; }
-          @media only screen and (max-width: 760px) {
-            body header ul li.logo {
-              margin-left: 5%; } }
-          @media only screen and (max-width: 590px) {
-            body header ul li.logo {
-              margin-left: 0%; } }
-          @media only screen and (max-width: 507px) {
-            body header ul li.logo {
-              display: block;
-              margin: 50px auto;
-              text-align: center; } }
-        body header ul li.first {
-          margin-left: 38%; }
-          @media only screen and (max-width: 1003px) {
-            body header ul li.first {
-              margin-left: 34%; } }
-          @media only screen and (max-width: 930px) {
-            body header ul li.first {
-              margin-left: 26%; } }
-          @media only screen and (max-width: 760px) {
-            body header ul li.first {
-              margin-left: 13%; } }
-          @media only screen and (max-width: 640px) {
-            body header ul li.first {
-              margin-left: 6%; } }
-          @media only screen and (max-width: 578px) {
-            body header ul li.first {
-              margin-left: 0%; } }
-  body section#content {
-    position: relative;
-    top: 70px;
-    width: 80%;
-    margin: 0 auto; }
-    @media only screen and (max-width: 785px) {
-      body section#content #tower-intro {
-        margin: 0 auto;
-        margin-bottom: 70px; }
-      body section#content #tower-hero {
-        margin: 0 auto;
-        text-align: center; } }
-    @media only screen and (max-width: 507px) {
-      body section#content {
-        margin: 0 auto;
-        width: 100%;
-        top: 190px;
-        font-size: 12px;
-        border-top: 1px solid #eee;
-        padding-top: 20px; }
-        body section#content h1 {
-          text-align: center;
-          font-size: 25px;
-          margin-bottom: 8px; }
-        body section#content h2 {
-          font-size: 20px; }
-        body section#content #tower-intro {
-          margin-bottom: 30px; } }
-  body #tower-intro h1 {
-    text-align: center; }
-  body #tower-intro h2 {
-    color: #7f8c8d;
-    font-size: 23px;
-    font-family: Helvetica;
-    text-align: center; }
