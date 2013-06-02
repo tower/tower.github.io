@@ -1,4 +1,4 @@
- <div class="row-fluid">
+<div class="row-fluid">
   <div id="tower-intro" class="span7">
     <div id="tower-introduction">
       <h1>Introducing Tower.js</h1>
@@ -12,13 +12,405 @@
 
 <hr />
 
+<!--
 <div class="row-fluid">
   <div id="tower-blocks" class="span5">
-  <img src="/public/img/blocks.png" />
+    <img src="/public/img/blocks.png" />
   </div>
   <div id="tower-2" class="span7">
     <div id="tower-introduction">
       <h1>Why Should You Use Tower</h1>
     </div>
   </div>
+</div>
+-->
+
+<!-- from wiki -->
+
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-markdown-content instapaper_body">
+    <div class="markdown-body">
+      <h2>
+<a name="resource" class="anchor" href="#resource"><span class="octicon octicon-link"></span></a>Resource</h2>
+
+<p>Data models that can be stored in any database or remote service using adapters.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">resource</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-resource'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="attributes" class="anchor" href="#attributes"><span class="octicon octicon-link"></span></a>Attributes</h3>
+
+<div class="highlight"><pre><span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'title'</span><span class="p">)</span> <span class="c1">// defaults to 'string'</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'body'</span><span class="p">,</span> <span class="s1">'text'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'published'</span><span class="p">,</span> <span class="s1">'boolean'</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="validations" class="anchor" href="#validations"><span class="octicon octicon-link"></span></a>Validations</h3>
+
+<div class="highlight"><pre><span class="nx">resource</span><span class="p">(</span><span class="s1">'user'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'email'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="s1">'presence'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="s1">'isEmail'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="s1">'emailProvider'</span><span class="p">,</span> <span class="p">{</span> <span class="k">in</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'gmail.com'</span> <span class="p">]</span> <span class="p">})</span> <span class="c1">// some hypothetical one</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'username'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">validator</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span>
+      <span class="k">return</span> <span class="o">!!</span><span class="nx">val</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/[a-zA-Z]/</span><span class="p">);</span>
+    <span class="p">});</span>
+</pre></div>
+
+<p>There are two DSL methods for validation.</p>
+
+<ol>
+<li>
+<code>validate</code>: for using predefined validations (see <a href="https://github.com/tower/validator">tower-validator</a>), purely to clean up the API.</li>
+<li>
+<code>validator</code>: for defining custom validator functions right inline. If you want to reuse your custom validator function across resources, just move the function into tower-validator.</li>
+</ol><h3>
+<a name="queries" class="anchor" href="#queries"><span class="octicon octicon-link"></span></a>Queries</h3>
+
+<div class="highlight"><pre><span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">where</span><span class="p">(</span><span class="s1">'published'</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">posts</span><span class="p">){</span>
+
+  <span class="p">});</span>
+</pre></div>
+
+<p>See <a href="">tower-query</a> for the entire syntax. The <code>where</code> method just delegates to a <code>Query</code> instance. You can also access the query object directly (it just adds <code>.select(resourceName)</code> for you):</p>
+
+<div class="highlight"><pre><span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">).</span><span class="nx">query</span><span class="p">().</span><span class="nx">sort</span><span class="p">(</span><span class="s1">'title'</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">).</span><span class="nx">all</span><span class="p">();</span>
+</pre></div>
+
+<h3>
+<a name="actions" class="anchor" href="#actions"><span class="octicon octicon-link"></span></a>Actions</h3>
+
+<p>There are 4 main actions for resources (which are just delegated to <code>query().action(name)</code>:</p>
+
+<ul>
+<li>create</li>
+<li>all</li>
+<li>update</li>
+<li>remove</li>
+</ul><div class="highlight"><pre><span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">).</span><span class="nx">create</span><span class="p">();</span>
+<span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">).</span><span class="nx">all</span><span class="p">();</span>
+<span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">).</span><span class="nx">update</span><span class="p">({</span> <span class="nx">published</span><span class="o">:</span> <span class="kc">true</span> <span class="p">});</span>
+<span class="nx">resource</span><span class="p">(</span><span class="s1">'post'</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
+</pre></div>
+
+<p>Under the hood, when you execute one of these actions, they get handled by a database-/service-specific adapter (mongodb, cassandra, facebook, etc.). Those adapters can perform optimizations such as streaming query results back.</p>
+
+<h2>
+<a name="adapter" class="anchor" href="#adapter"><span class="octicon octicon-link"></span></a>Adapter</h2>
+
+<p>Datastore abstraction layer.</p>
+
+<p>To abstract out some database like Cassandra, a REST API like Facebook, or even something like plain web crawling, so that it can be queried like any other resource, just implement the <code>exec</code> method on a new adapter.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">adapter</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-adapter'</span><span class="p">);</span>
+</pre></div>
+
+<p>See one of these for a complete example:</p>
+
+<ul>
+<li>mongodb: <a href="https://github.com/tower/mongodb-adapter">https://github.com/tower/mongodb-adapter</a>
+</li>
+<li>ec2: <a href="https://github.com/tower/ec2-adapter">https://github.com/tower/ec2-adapter</a>
+</li>
+</ul><p>Example custom REST adapter implementing the <code>exec</code> method:</p>
+
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Map of query actions to HTTP methods.</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">methods</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">find</span><span class="o">:</span> <span class="s1">'GET'</span><span class="p">,</span>
+  <span class="nx">create</span><span class="o">:</span> <span class="s1">'POST'</span><span class="p">,</span>
+  <span class="nx">update</span><span class="o">:</span> <span class="s1">'PUT'</span><span class="p">,</span>
+  <span class="nx">remove</span><span class="o">:</span> <span class="s1">'DELETE'</span>
+<span class="p">};</span>
+
+<span class="nx">adapter</span><span class="p">(</span><span class="s1">'rest'</span><span class="p">).</span><span class="nx">exec</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">fn</span><span class="p">){</span>
+  <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">selects</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">resource</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">[</span><span class="nx">query</span><span class="p">.</span><span class="nx">type</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">serializeParams</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+
+  <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">'/api/'</span> <span class="o">+</span> <span class="nx">name</span><span class="p">,</span>
+    <span class="nx">dataType</span><span class="o">:</span> <span class="s1">'json'</span><span class="p">,</span>
+    <span class="nx">type</span><span class="o">:</span> <span class="nx">method</span><span class="p">,</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="nx">params</span><span class="p">,</span>
+    <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="nx">fn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="nx">fn</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Convert query constraints into query parameters.</span>
+<span class="cm"> */</span>
+
+<span class="kd">function</span> <span class="nx">serializeParams</span><span class="p">(</span><span class="nx">query</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">constraints</span> <span class="o">=</span> <span class="nx">query</span><span class="p">.</span><span class="nx">constraints</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{};</span>
+
+  <span class="nx">constraints</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">constraint</span><span class="p">){</span>
+    <span class="nx">params</span><span class="p">[</span><span class="nx">constraint</span><span class="p">.</span><span class="nx">left</span><span class="p">.</span><span class="nx">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nx">constraint</span><span class="p">.</span><span class="nx">right</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="nx">params</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Map REST API objects to resources:</p>
+
+<div class="highlight"><pre><span class="nx">adapter</span><span class="p">(</span><span class="s1">'facebook'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">'user'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'firstName'</span><span class="p">).</span><span class="nx">from</span><span class="p">(</span><span class="s1">'first_name'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'middleName'</span><span class="p">).</span><span class="nx">from</span><span class="p">(</span><span class="s1">'middle_name'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'lastName'</span><span class="p">).</span><span class="nx">from</span><span class="p">(</span><span class="s1">'last_name'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'gender'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="s1">'in'</span><span class="p">,</span> <span class="p">[</span> <span class="s1">'female'</span><span class="p">,</span> <span class="s1">'male'</span> <span class="p">])</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'link'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="s1">'isUrl'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'username'</span><span class="p">);</span>
+</pre></div>
+
+<p>Specify (optional) how to serialize data types from JavaScript to the database-/service-specific format:</p>
+
+<div class="highlight"><pre><span class="nx">adapter</span><span class="p">(</span><span class="s1">'mongodb'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'string'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'date'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'float'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'integer'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'number'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'boolean'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'bitmask'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="s1">'array'</span><span class="p">,</span> <span class="nx">fn</span><span class="p">);</span>
+</pre></div>
+
+
+
+<h2>
+<a name="template" class="anchor" href="#template"><span class="octicon octicon-link"></span></a>Template</h2>
+
+<p>Client-side reactive templates (just plain DOM node manipulation, no strings).</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-template'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">el</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#todos'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">template</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+<span class="nx">fn</span><span class="p">({</span> <span class="nx">some</span><span class="o">:</span> <span class="s1">'data'</span> <span class="p">});</span> <span class="c1">// applies content to DOM directives.</span>
+</pre></div>
+
+<h2>
+<a name="directive" class="anchor" href="#directive"><span class="octicon octicon-link"></span></a>Directive</h2>
+
+<p>API to the DOM. Tells the DOM what to do.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">directive</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-directive'</span><span class="p">);</span>
+
+<span class="nx">directive</span><span class="p">(</span><span class="s1">'data-text'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">,</span> <span class="nx">element</span><span class="p">,</span> <span class="nx">attr</span><span class="p">){</span>
+  <span class="nx">element</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">scope</span><span class="p">[</span><span class="nx">attr</span><span class="p">.</span><span class="nx">value</span><span class="p">];</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">};</span>
+<span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#example'</span><span class="p">);</span>
+
+<span class="nx">directive</span><span class="p">(</span><span class="s1">'data-text'</span><span class="p">).</span><span class="nx">exec</span><span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="nx">element</span><span class="p">);</span>
+</pre></div>
+
+<p>example template:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"example"</span> <span class="na">data-text=</span><span class="s">"foo"</span><span class="nt">&gt;&lt;/span&gt;</span>
+</pre></div>
+
+<p>becomes:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"example"</span> <span class="na">data-text=</span><span class="s">"foo"</span><span class="nt">&gt;</span>Hello World<span class="nt">&lt;/span&gt;</span>
+</pre></div>
+
+<p>The directives are used more robustly in <a href="https://github.com/tower/template">tower-template</a>.</p>
+
+<h2>
+<a name="content" class="anchor" href="#content"><span class="octicon octicon-link"></span></a>Content</h2>
+
+<p>Data for the DOM.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-content'</span><span class="p">);</span>
+
+<span class="nx">content</span><span class="p">(</span><span class="s1">'menu'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'items'</span><span class="p">,</span> <span class="s1">'array'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'selected'</span><span class="p">,</span> <span class="s1">'object'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">action</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">selected</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">index</span><span class="p">];</span>
+  <span class="p">});</span>
+
+<span class="nx">content</span><span class="p">(</span><span class="s1">'menu'</span><span class="p">).</span><span class="nx">init</span><span class="p">({</span> <span class="nx">items</span><span class="o">:</span> <span class="p">[</span> <span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span> <span class="p">]</span> <span class="p">}).</span><span class="nx">select</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="expression" class="anchor" href="#expression"><span class="octicon octicon-link"></span></a>Expression</h2>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">expression</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-expression'</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="route" class="anchor" href="#route"><span class="octicon octicon-link"></span></a>Route</h2>
+
+<p>Tiny route component for client and server.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-route'</span><span class="p">);</span>
+
+<span class="nx">route</span><span class="p">(</span><span class="s1">'/welcome'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+  <span class="nx">context</span><span class="p">.</span><span class="nx">render</span><span class="p">({</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Or with the <code>action</code> method:</p>
+
+<div class="highlight"><pre><span class="nx">route</span><span class="p">(</span><span class="s1">'/welcome'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">action</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+    <span class="nx">context</span><span class="p">.</span><span class="nx">render</span><span class="p">({</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">});</span>
+  <span class="p">});</span>
+</pre></div>
+
+<p>You can also name them (makes it so you don't have to mess with url strings in code, to redirect/transition/etc.:</p>
+
+<div class="highlight"><pre><span class="nx">route</span><span class="p">(</span><span class="s1">'new-customer'</span><span class="p">,</span> <span class="s1">'/welcome'</span><span class="p">);</span>
+</pre></div>
+
+<h2>
+<a name="router" class="anchor" href="#router"><span class="octicon octicon-link"></span></a>Router</h2>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">router</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-router'</span><span class="p">);</span>
+
+<span class="nx">router</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+
+<h2>
+<a name="type" class="anchor" href="#type"><span class="octicon octicon-link"></span></a>Type</h2>
+
+<p>API for defining/sanitizing custom resource attribute types.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-type'</span><span class="p">);</span>
+</pre></div>
+
+<p>Define comparators/validators for basic types:</p>
+
+<div class="highlight"><pre><span class="nx">type</span><span class="p">(</span><span class="s1">'string'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">validator</span><span class="p">(</span><span class="s1">'gte'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">gte</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">validator</span><span class="p">(</span><span class="s1">'gt'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">gt</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="p">});</span>
+</pre></div>
+
+<p>Define a custom type with custom validators:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">now</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="s1">'2013-05-01'</span><span class="p">);</span>
+
+<span class="nx">type</span><span class="p">(</span><span class="s1">'birthdate'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">validator</span><span class="p">(</span><span class="s1">'can-drive'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">now</span> <span class="o">&gt;=</span> <span class="nx">val</span><span class="p">;</span>
+  <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">validate</span> <span class="o">=</span> <span class="nx">type</span><span class="p">.</span><span class="nx">validator</span><span class="p">(</span><span class="s1">'birthdate.can-drive'</span><span class="p">);</span>
+<span class="nx">validate</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="s1">'1950-12-21'</span><span class="p">));</span> <span class="c1">// true</span>
+</pre></div>
+
+<p>Sanitize values:</p>
+
+<div class="highlight"><pre><span class="nx">type</span><span class="p">(</span><span class="s1">'digits'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stripWhitespace</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stripLetters</span><span class="p">);</span>
+
+<span class="nx">type</span><span class="p">(</span><span class="s1">'digits'</span><span class="p">).</span><span class="nx">sanitize</span><span class="p">(</span><span class="s1">'  1  foo b2a3r'</span><span class="p">);</span> <span class="c1">// 123</span>
+
+<span class="kd">function</span> <span class="nx">stripWhitespace</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\s+/g</span><span class="p">,</span> <span class="s1">''</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">stripLetters</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[a-z]+/g</span><span class="p">,</span> <span class="s1">''</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="validator" class="anchor" href="#validator"><span class="octicon octicon-link"></span></a>Validator</h2>
+
+<p>Minimal, extensible validation component.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">validator</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-validator'</span><span class="p">);</span>
+
+<span class="nx">validator</span><span class="p">(</span><span class="s1">'eq'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">eq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">===</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">validator</span><span class="p">(</span><span class="s1">'neq'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">neq</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">!==</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">validator</span><span class="p">(</span><span class="s1">'gte'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">gte</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;=</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">validator</span><span class="p">(</span><span class="s1">'gt'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">gte</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="text" class="anchor" href="#text"><span class="octicon octicon-link"></span></a>Text</h2>
+
+<p>I18n, inflections, and other random bits of text to keep organized.</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'tower-text'</span><span class="p">);</span>
+
+<span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">'You have 1 message'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">past</span><span class="p">(</span><span class="s1">'You had 1 message'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">future</span><span class="p">(</span><span class="s1">'You might get a message'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">none</span><span class="p">(</span><span class="s1">'You have no messages'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">past</span><span class="p">(</span><span class="s1">'You never had any messages'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">future</span><span class="p">(</span><span class="s1">'You might never get a message'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">other</span><span class="p">(</span><span class="s1">'You have {{count}} messages'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">past</span><span class="p">(</span><span class="s1">'You had {{count}} messages'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">future</span><span class="p">(</span><span class="s1">'You might get {{count}} messages'</span><span class="p">);</span>
+
+<span class="nx">assert</span><span class="p">(</span><span class="mi">9</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">inflections</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+
+<span class="c1">// 1</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You have 1 message'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">1</span> <span class="p">}));</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You had 1 message'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">tense</span><span class="o">:</span> <span class="s1">'past'</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">1</span> <span class="p">}));</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You might get a message'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">tense</span><span class="o">:</span> <span class="s1">'future'</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">1</span> <span class="p">}));</span>
+
+<span class="c1">// 0</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You have no messages'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}));</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You never had any messages'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">tense</span><span class="o">:</span> <span class="s1">'past'</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}));</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You might never get a message'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">tense</span><span class="o">:</span> <span class="s1">'future'</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">0</span> <span class="p">}));</span>
+
+<span class="c1">// n</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You have 3 messages'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">3</span> <span class="p">}));</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You had 3 messages'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">tense</span><span class="o">:</span> <span class="s1">'past'</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">3</span> <span class="p">}));</span>
+<span class="nx">assert</span><span class="p">(</span><span class="s1">'You might get 3 messages'</span> <span class="o">===</span> <span class="nx">text</span><span class="p">(</span><span class="s1">'messages'</span><span class="p">).</span><span class="nx">render</span><span class="p">({</span> <span class="nx">tense</span><span class="o">:</span> <span class="s1">'future'</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">3</span> <span class="p">}));</span>
+</pre></div>
+
+<h2>
+<a name="cookbook" class="anchor" href="#cookbook"><span class="octicon octicon-link"></span></a>Cookbook</h2>
+
+<div class="highlight"><pre><span class="nv">$ </span>tower create ec2:server
+</pre></div>
+    </div>
+  </div>
+  </div>
+
 </div>
