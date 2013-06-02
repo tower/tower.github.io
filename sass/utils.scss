@@ -1,0 +1,28 @@
+/**
+ * Animate Media Queries
+
+body, div, ul, li {
+    -moz-transition: all .2s linear;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}*/
+
+/**
+ * Useful Mixin for quick media queries
+ */
+
+@mixin respond-to($media) {
+  @if $media == tiny {
+    @media only screen and (max-width: $break-small) { @content; }
+  }
+  @if $media == small {
+    @media only screen and (min-width: $break-small) and (max-width: $break-ssmall) { @content; }
+  }
+  @else if $media == medium {
+    @media only screen and (min-width: $break-medium) and (max-width: $break-large - 1) { @content; }
+  }
+  @else if $media == wide {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+
+}
