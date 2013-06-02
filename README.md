@@ -1,22 +1,9 @@
-# App
+# Tower Website
 
-## Sitemap
+## Instructions
 
-- /docs
-- /guides
-- /api
-- /community
-- /screencasts
-- /examples
-- /tutorials
-- /contributors
-- /roadmap
-
-## Development
-
-Create a symlink to the tower wiki:
+To launch the sass compiler, use: (from this repo's directory)
 
 ```
-cd towerjs.org
-ln -s /Users/viatropos/Documents/git/modules/tower/wiki
+sass --watch --scss sass/index.scss:public/css/index.css
 ```
