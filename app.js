@@ -1,10 +1,15 @@
-var express = require('express')
-  , partials = require('express-partials')
-  , app     = express()
-  , path = require('path');
 
 /**
- * Configurations
+ * Dependencies.
+ */
+
+var express = require('express');
+var partials = require('express-partials');
+var app = express();
+var path = require('path');
+
+/**
+ * Configuration.
  */
 
 app.configure(function(){
@@ -17,7 +22,6 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(app.router);
 });
-
 
 app.get('/', function(req, res){
   res.render('index');
@@ -39,9 +43,8 @@ app.get('/docs', function(req, res){
   res.render('docs');
 });
 
-
 /**
- * Listen
+ * Listen.
  */
 
 app.listen(3000);

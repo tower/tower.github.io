@@ -1,11 +1,11 @@
 /**
  * Animate Media Queries
- */
 body, div, ul, li {
   -moz-transition: all .2s linear;
   -webkit-transition: all .2s linear;
   transition: all .2s linear; }
 
+ */
 /**
  * Useful Mixin for quick media queries
  */
