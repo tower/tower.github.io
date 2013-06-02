@@ -1,0 +1,129 @@
+<ul>
+<li>put <code>id</code> first</li>
+<li>put <code>class</code> second</li>
+<li>put the rest of the attributes afterward. makes reading easier.</li>
+<li>name the <code>id</code> like <code>&lt;name&gt;-&lt;type&gt;</code>, so <code>home-section</code> or <code>confirm-popup</code></li>
+<li>at first give as many elements a unique id as possible. don't style the element in css using it's id though, unless it's a very specific page like <code>#landing-page</code> or something.  As your app grows you may need to refactor out the ids, but that will be a very easy task.  It is a lot harder to try to come up with a generic class-naming scheme up front when you don't know all of the variables.</li>
+<li>don't style anything by its tag name, beyond just setting up your initial style palette (default styling for <code>p</code> tags, for example). Instead, give it a class name, even if it's the same name as the tag: <code>&lt;header class='header'&gt;</code>.</li>
+<li>use localization up front, it's a good habit to get into, otherwise I've found you waste a good amount of time tracking down labels and trying to figure out why your navigation bar says "Home page" while the title says "Home Page" (where "Page" in the second case has a capital "P").</li>
+</ul>
+
+<p>By maintaining this general structure, you can somewhat predict the number of HTML elements in your page (todo: calculation):</p>
+
+<div class="highlight"><pre lang=" coffeescript">body ->
+  header ->
+    hgroup ->
+      h1
+      h2
+  nav ->
+  section ->
+    header ->
+      h2 ->
+    div ->
+    footer ->
+  footer ->
+</pre></div>
+
+<p><a name="general-structure" href="#general-structure"></a></p>
+
+<h3>General Structure</h3>
+
+<div class="highlight"><pre lang=" coffeescript">section id: 'home-section', class: 'section', ->
+  header class: 'header', ->
+    h2 'Home'
+  div class: 'content', ->
+  footer class: 'footer', ->
+</pre></div>
+
+<p>The reason you always want to have a wrapping <code>&lt;div class='content'&gt;</code>, rather than having for example a <code>&lt;table class='content'&gt;</code> (if the only thing in your content area is a table), is because you don't want to have to override styles specific to the different elements in order to give it the same look (maybe you have 10px padding around your <code>&lt;div class='content'&gt;</code>, now if you don't wrap your table, you have to style your table differently, such as removing borders).</p>
+
+<p><a name="headers" href="#headers"></a></p>
+
+<h3>Headers</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>one level</h1>
+
+header class: 'header', ->
+  h2 'Home'
+
+
+
+<h1>two levels</h1>
+
+header class: 'header', ->
+  hgroup ->
+    h2 class: 'title', 'Tower.js'
+    h3 class: 'subtitle', 'A Web Framework'
+</pre></div>
+
+<p>You can remove the wrapper <code>&lt;header&gt;</code> tag if you're using the header inside of something like a content body (like a markdown document), but there's no real need to leave it out - that extra tag here and there doesn't come at any real performance cost.</p>
+
+<p><a name="footers" href="#footers"></a></p>
+
+<h3>Footers</h3>
+
+<ul>
+<li>For the top-level components, also give it an <code>id</code>, such as <code>&lt;footer id='footer'&gt;</code></li>
+</ul>
+
+<div class="highlight"><pre lang=" coffeescript">footer class: 'footer'
+</pre></div>
+
+<p><a name="sidebars" href="#sidebars"></a></p>
+
+<h3>Sidebars</h3>
+
+<div class="highlight"><pre lang=" coffeescript">aside class: 'sidebar'
+</pre></div>
+
+<p><a name="popups" href="#popups"></a></p>
+
+<h3>Popups</h3>
+
+<div class="highlight"><pre lang=" coffeescript">aside class: 'popup'
+</pre></div>
+
+<p><a name="tab-navigators" href="#tab-navigators"></a></p>
+
+<h3>Tab Navigators</h3>
+
+<p>Here are some different ways you might structure views:</p>
+
+<div class="highlight"><pre lang=" coffeescript">ul class: 'tabs', ->
+  li ->
+    partial 'signup'
+  li ->
+    partial 'order'
+    partial 'cart'
+  li ->
+    partial 'cart'
+    partial 'total'
+</pre></div>
+
+<p>In that case, you want to reuse the same thing in multiple tabs.</p>
+
+<p><a name="rich-er-ui" href="#rich-er-ui"></a></p>
+
+<h3>Rich(er) UI</h3>
+
+<p>Put use the extra <code>&lt;span&gt;</code> tags if you need the rich UI button look:</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>this</h1>
+
+dl ->
+  dt 'Email'
+  dd ->
+    span '<a href='mailto:example@localhost.com'>example@localhost.com</a>'
+
+
+
+<h1>vs. this</h1>
+
+dl ->
+  dt 'Email'
+  dd '<a href='mailto:example@localhost.com'>example@localhost.com</a>'
+</pre></div>

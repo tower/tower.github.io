@@ -1,0 +1,331 @@
+.nav-group-start a {
+  border-left: 1px solid #fff !important;
+}
+.navbar-inner {
+  font-family: 'Forum', cursive;
+  background: #999 !important;
+}
+.navbar-inner a {
+  color: #eaecea !important;
+  text-shadow: none !important;
+}
+body {
+  position: relative;
+  background: #f7f7f7 !important;
+}
+body .header ul,
+body .header li,
+body .section li,
+body .header p,
+body .header ol,
+body .section p,
+body .section ul,
+body .section ol,
+body .section cite {
+  font: 16px Georgia;
+  line-height: 26px;
+  color: #4d4d4d;
+}
+body .header ul a,
+body .header li a,
+body .section li a,
+body .header p a,
+body .header ol a,
+body .section p a,
+body .section ul a,
+body .section ol a,
+body .section cite a {
+  color: #32747f;
+}
+body #content {
+  background: inherit;
+}
+a.brand {
+  margin-left: 0 !important;
+  padding-right: 20px !important;
+  float: left !important;
+}
+.dropdown-menu a {
+  color: #32373a !important;
+}
+.forkme {
+  display: none;
+}
+.subnav {
+  display: none;
+}
+pre {
+  background: #f0f0f0 !important;
+  border: 1px solid #fafafa !important;
+  border-top: 1px solid #fff !important;
+  box-shadow: inset 0 1px 1px 1px #e0e0e0, inset 0 1px 20px 1px rgba(224,224,224,0.3);
+  border-radius: 0px;
+  margin-left: -10px;
+  padding-left: 10px !important;
+  margin-left: -10px;
+  padding-left: 10px !important;
+}
+pre code,
+code {
+  font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Courier, monospace;
+  font-size: 12px;
+  color: #59595f !important;
+}
+pre,
+p {
+  margin-bottom: 18px;
+  margin-top: 18px;
+}
+code {
+  color: #dd554b !important;
+  border: none;
+  padding: 0 0 0 0;
+}
+pre code {
+  color: #48484c;
+  line-height: 22px;
+}
+pre {
+  display: block !important;
+  white-space: pre;
+  overflow-x: auto !important;
+}
+pre code {
+  display: block !important;
+  width: auto !important;
+}
+header h1 {
+  color: #808080 !important;
+  text-align: center;
+  text-shadow: 0 1px 0 #fff;
+}
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.2;
+  background: transparent;
+  font-family: 'Varela', sans-serif;
+  margin-bottom: 15px;
+  padding-bottom: 0px;
+  margin-top: 30px;
+  padding-bottom: 5px;
+  margin: $baseLineHeight 0;
+  font-weight: 700;
+}
+h1 code,
+h2 code,
+h3 code,
+h4 code {
+  font-family: 'Varela', sans-serif;
+}
+.section h1 {
+  border-top: 5px solid #e6e6e6;
+  padding-top: 15px;
+  margin-top: 0;
+  color: #666 !important;
+  text-shadow: 0 1px 0 #fff;
+}
+.section h1 code {
+  text-shadow: 0 1px 0 #fff;
+}
+.section h1,
+.section h2 {
+  border-bottom: 1px solid $grayLighter;
+}
+h1 code {
+  padding: 1em 0 0.5em;
+  margin-top: 2em;
+  font-size: 36px;
+  color: #bfbfbf !important;
+  text-shadow: none;
+  font-weight: normal;
+  background: none !important;
+}
+h2 code {
+  font-weight: normal;
+  font-size: 18px;
+  background: none !important;
+}
+h3 code {
+  font-weight: normal;
+  font-size: 16px;
+}
+h2 {
+  border-top: 1px dotted #bfbfbf;
+  padding: 1em 0 0.5em;
+  margin-top: 2em;
+  font-size: 24px;
+  color: #a6a6a6;
+  text-shadow: 0 1px 0 #fff;
+  font-weight: normal;
+}
+h3 {
+  font-size: 18px;
+}
+#footer {
+  background: #79c5cd url("/images/noise.png");
+  color: #eaecea;
+}
+#footer a {
+  color: #ec3d2f;
+}
+/*
+a
+  color: #EC3D2F
+
+#navigation
+  display: block
+  position: relative;
+  margin: 0 auto
+  width: auto
+  max-width: 850px
+  .header
+    display: none
+  li
+    margin: 0 0 0 21px !important
+  a
+    color: white
+#header
+  display: block
+  position: relative;
+  margin: 0 auto
+  width: auto
+  max-width: 810px
+  padding: 60px 20px 20px 20px
+  h1
+    text-align: left
+  h1, h2, h3, h4
+    color: white
+  .forkme
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    border: 0
+    opacity: 0.9
+    img
+      width: 149px;
+      height: 149px
+#footer  
+  min-height: 100px
+  background: $green url(/images/noise.png);
+  position: relative;
+  bottom: 0px;
+#body
+  position: relative;
+  h1
+    background: $red;
+    padding-top: 10px
+    margin-bottom: 10px
+    margin-top: 0px
+    margin-left: -40px
+    margin-right: -40px
+    color: white
+    font-size: 40px
+  #background
+    position: absolute
+    opacity: 90
+    top: 0px
+    right: 0px
+    bottom: 0px
+    left: 0px
+  //background: #222;
+  //background: $white url(/images/noise.png);
+  color: #111
+  margin: 0 auto;
+  width: auto
+  max-width: 920px
+  clearfix()
+  #content
+    padding: 20px
+    background: white
+    position: relative
+    float: left
+    width: 610px
+    margin-left: 20px
+    z-index: 1
+  
+  #sidebar
+    width: 920px
+    left: 50%
+    margin-left: -460px
+    display: block
+    z-index: 0
+    position: fixed
+    right: 0
+    > ul
+      list-style-type: none
+      width: 270px
+      float: right
+      margin: 0px 0px 0px 0px
+      ul
+        display: none
+    li
+      background: $red
+      opacity: 90
+      color: white
+      padding: 2px 8px 2px 40px
+      margin: 0px 0px 0px 0px
+      a, a:hover
+        color: white
+    
+@media screen and (max-width: 810px)
+  .forkme
+    display: none
+*/
+@media screen and (max-width: 480px) {
+  body .header ul,
+  body .header li,
+  body .section li,
+  body .header p,
+  body .header ol,
+  body .section p,
+  body .section ul,
+  body .section ol,
+  body .section cite {
+    font-size: 13px;
+    line-height: auto;
+  }
+  pre code {
+    font-size: 10px;
+    line-height: auto;
+  }
+  content {
+    margin-left: 0px;
+  }
+}
+h1,
+h2,
+h3,
+h4 {
+  -webkit-font-smoothing: antialiased;
+}
+p,
+li {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  line-height: 1.4 !important;
+  font-family: 'Forum', cursive !important;
+  font-size: 17px !important;
+}
+pre {
+  white-space: pre !important;
+  overflow-x: auto !important;
+}
+pre .str,
+pre .atv {
+  color: #dd554b;
+}
+pre .kwd {
+  color: #59595f;
+}
+pre .com {
+  color: #b3b3b3;
+}
+pre .typ,
+pre .atn {
+  color: #398a93;
+}
+pre .lit {
+  color: #5c8547;
+}

@@ -1,0 +1,43 @@
+<h1>CoffeeScript Cheat Sheet</h1>
+
+<p><a name="vs" href="#vs"></a></p>
+
+<h3><code>=&gt;</code> vs <code>-&gt;</code></h3>
+
+<p><a name="key-in-object" href="#key-in-object"></a></p>
+
+<h3><code>key in object</code></h3>
+
+<div class="highlight"><pre lang=" coffeescript">return true if key of object
+return true if object.hasOwnProperty(key)
+</pre></div>
+
+<p><a name="key1-key2" href="#key1-key2"></a></p>
+
+<h3><code>{key1, key2}</code></h3>
+
+<p><a name="key1" href="#key1"></a></p>
+
+<h3><code>{@key1}</code></h3>
+
+<div class="highlight"><pre lang=" coffeescript">@render "action", locals: {post: @post}
+@render "action", locals: {@post}
+</pre></div>
+
+<p><a name="or" href="#or"></a></p>
+
+<h2>OR=</h2>
+
+<div class="highlight"><pre lang=" coffeescript">a ?= true
+
+b ||= true
+
+c or= true
+</pre></div>
+
+<div class="highlight"><pre lang=" javascript">if (typeof a === "undefined" || a === null) a = true;
+
+b || (b = true);
+
+c || (c = true);
+</pre></div>

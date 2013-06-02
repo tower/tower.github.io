@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <span class='title'>View</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Tower.View
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>packages/tower-view/shared/view.coffee</td>
+        </tr>
+        <tr>
+          <td>Inherits:</td>
+          <td>
+            <a href='../../classes/Tower/Class.html'>Tower.Class</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+                        <a href='../../mixins/Tower/ViewAssetHelper.html'>Tower.ViewAssetHelper</a>,
+                        <a href='../../mixins/Tower/ViewComponentHelper.html'>Tower.ViewComponentHelper</a>,
+                        <a href='../../mixins/Tower/ViewHeadHelper.html'>Tower.ViewHeadHelper</a>,
+                        <a href='../../mixins/Tower/ViewRenderingHelper.html'>Tower.ViewRenderingHelper</a>,
+            <a href='../../mixins/Tower/ViewStringHelper.html'>Tower.ViewStringHelper</a>
+          </td>
+        </tr>
+      </table>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='included'>
+        Methods included from
+        <a href='../../mixins/Tower/ViewAssetHelper.html'>Tower.ViewAssetHelper</a>
+      </h3>
+      <p class='included'>
+                <a href='../../mixins/Tower/ViewAssetHelper.html#javascripts-mixin'>#javascripts</a>,
+                <a href='../../mixins/Tower/ViewAssetHelper.html#javascript-mixin'>#javascript</a>,
+                <a href='../../mixins/Tower/ViewAssetHelper.html#stylesheets-mixin'>#stylesheets</a>,
+                <a href='../../mixins/Tower/ViewAssetHelper.html#stylesheet-mixin'>#stylesheet</a>,
+                <a href='../../mixins/Tower/ViewAssetHelper.html#stylesheetTag-mixin'>#stylesheetTag</a>,
+                <a href='../../mixins/Tower/ViewAssetHelper.html#javascriptTag-mixin'>#javascriptTag</a>,
+        <a href='../../mixins/Tower/ViewAssetHelper.html#_extractAssetPaths-mixin'>#_extractAssetPaths</a>
+      </p>
+      <h3 class='included'>
+        Methods included from
+        <a href='../../mixins/Tower/ViewComponentHelper.html'>Tower.ViewComponentHelper</a>
+      </h3>
+      <p class='included'>
+      </p>
+      <h3 class='included'>
+        Methods included from
+        <a href='../../mixins/Tower/ViewHeadHelper.html'>Tower.ViewHeadHelper</a>
+      </h3>
+      <p class='included'>
+                <a href='../../mixins/Tower/ViewHeadHelper.html#metaTag-mixin'>#metaTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#snapshotLinkTag-mixin'>#snapshotLinkTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#html4ContentTypeTag-mixin'>#html4ContentTypeTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#chromeFrameTag-mixin'>#chromeFrameTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#html5ContentTypeTag-mixin'>#html5ContentTypeTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#contentTypeTag-mixin'>#contentTypeTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#csrfMetaTag-mixin'>#csrfMetaTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#searchLinkTag-mixin'>#searchLinkTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#faviconLinkTag-mixin'>#faviconLinkTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#linkTag-mixin'>#linkTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#ieApplicationMetaTags-mixin'>#ieApplicationMetaTags</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#ieTaskMetaTag-mixin'>#ieTaskMetaTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#appleMetaTags-mixin'>#appleMetaTags</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#appleViewportMetaTag-mixin'>#appleViewportMetaTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#appleFullScreenMetaTag-mixin'>#appleFullScreenMetaTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#appleMobileCompatibleMetaTag-mixin'>#appleMobileCompatibleMetaTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#appleTouchIconLinkTag-mixin'>#appleTouchIconLinkTag</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#appleTouchIconLinkTags-mixin'>#appleTouchIconLinkTags</a>,
+                <a href='../../mixins/Tower/ViewHeadHelper.html#openGraphMetaTags-mixin'>#openGraphMetaTags</a>,
+        <a href='../../mixins/Tower/ViewHeadHelper.html#openGraphMetaTag-mixin'>#openGraphMetaTag</a>
+      </p>
+      <h3 class='included'>
+        Methods included from
+        <a href='../../mixins/Tower/ViewRenderingHelper.html'>Tower.ViewRenderingHelper</a>
+      </h3>
+      <p class='included'>
+                <a href='../../mixins/Tower/ViewRenderingHelper.html#partial-mixin'>#partial</a>,
+                <a href='../../mixins/Tower/ViewRenderingHelper.html#page-mixin'>#page</a>,
+                <a href='../../mixins/Tower/ViewRenderingHelper.html#urlFor-mixin'>#urlFor</a>,
+                <a href='../../mixins/Tower/ViewRenderingHelper.html#yields-mixin'>#yields</a>,
+                <a href='../../mixins/Tower/ViewRenderingHelper.html#hasContentFor-mixin'>#hasContentFor</a>,
+                <a href='../../mixins/Tower/ViewRenderingHelper.html#has-mixin'>#has</a>,
+        <a href='../../mixins/Tower/ViewRenderingHelper.html#contentFor-mixin'>#contentFor</a>
+      </p>
+      <h3 class='included'>
+        Methods included from
+        <a href='../../mixins/Tower/ViewStringHelper.html'>Tower.ViewStringHelper</a>
+      </h3>
+      <p class='included'>
+                <a href='../../mixins/Tower/ViewStringHelper.html#preserve-mixin'>#preserve</a>,
+                <a href='../../mixins/Tower/ViewStringHelper.html#htmlEscape-mixin'>#htmlEscape</a>,
+                <a href='../../mixins/Tower/ViewStringHelper.html#t-mixin'>#t</a>,
+                <a href='../../mixins/Tower/ViewStringHelper.html#l-mixin'>#l</a>,
+        <a href='../../mixins/Tower/ViewStringHelper.html#boolean-mixin'>#boolean</a>
+      </p>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

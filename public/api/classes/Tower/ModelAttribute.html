@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <span class='title'>ModelAttribute</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Tower.ModelAttribute
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>packages/tower-model/shared/attribute.coffee</td>
+        </tr>
+      </table>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#constructor-instance'>
+        - (void) <strong>constructor</strong>(owner, name, options = {}, block)
+      </a>
+    </span>
+    <span class='constructor note title'>Constructor</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_setDefault-instance'>
+        - (void) <strong>_setDefault</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_defineAccessors-instance'>
+        - (void) <strong>_defineAccessors</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_defineAttribute-instance'>
+        - (void) <strong>_defineAttribute</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_addValidations-instance'>
+        - (void) <strong>_addValidations</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_addIndex-instance'>
+        - (void) <strong>_addIndex</strong>(options)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#validators-instance'>
+        - (void) <strong>validators</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#defaultValue-instance'>
+        - (void) <strong>defaultValue</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encode-instance'>
+        - (void) <strong>encode</strong>(value, binding)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decode-instance'>
+        - (void) <strong>decode</strong>(value, binding)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#code-instance'>
+        - (void) <strong>code</strong>(type, value, binding)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#attach-instance'>
+        - (void) <strong>attach</strong>(owner)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-instance'>
+      - (void) <strong>constructor</strong>(owner, name, options = {}, block)
+    </p>
+    <div class='docstring'>
+  
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Datatypes
+    </h4>
+    <pre><code class='coffee'>&#39;boolean&#39;
+&#39;integer&#39;
+&#39;decimal&#39; (double)
+&#39;long&#39; (double)
+&#39;bigint&#39;
+&#39;float&#39;
+&#39;date&#39;
+&#39;time&#39;
+&#39;datetime&#39;
+&#39;timestamp&#39;
+&#39;string&#39;
+&#39;text&#39;
+&#39;binary&#39;
+&#39;object&#39; == &#39;blob&#39; == anything
+&#39;hash&#39;
+&#39;array&#39;
+&#39;reference&#39; == id of related document
+&#39;geo&#39;</code></pre>
+    <h4>
+      Other data types
+    </h4>
+    <pre><code class='coffee'>&#39;id&#39;
+&#39;bigint&#39;</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>
+    Options Hash:
+    (option):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>set</span>
+      <span class='type'>
+        (<tt>Boolean|String|Function</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>If <code>set</code> is a boolean, it will look for a method named <code>&quot;set#{field.name}&quot;</code> on the prototype.  If it&#39;s a string, it will call that method on the prototype. If it&#39;s a function, it will call that function as if it were on the prototype.</span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='_setDefault-instance'>
+      - (void) <strong>_setDefault</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_defineAccessors-instance'>
+      - (void) <strong>_defineAccessors</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_defineAttribute-instance'>
+      - (void) <strong>_defineAttribute</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_addValidations-instance'>
+      - (void) <strong>_addValidations</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_addIndex-instance'>
+      - (void) <strong>_addIndex</strong>(options)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='validators-instance'>
+      - (void) <strong>validators</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='defaultValue-instance'>
+      - (void) <strong>defaultValue</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encode-instance'>
+      - (void) <strong>encode</strong>(value, binding)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decode-instance'>
+      - (void) <strong>decode</strong>(value, binding)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='code-instance'>
+      - (void) <strong>code</strong>(type, value, binding)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='attach-instance'>
+      - (void) <strong>attach</strong>(owner)
+    </p>
+    <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    for the pure javascript version we&#39;re going to need to have this method.
+  </div>
+  
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

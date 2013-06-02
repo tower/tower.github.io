@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='assets/codo.css' type='text/css'>
+  <script src='assets/codo.js'></script>
+  <script src='assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path=''></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>README.md</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='file_list.html'>Files</a>
+      <a id='method_list_link' href='method_list.html'>Methods</a>
+      <a id='extra_list_link' href='extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <nav class='toc'>
+        <p class='title'>
+          <a class='hide_toc' href='#'>
+            <strong>Table of Contents</strong>
+          </a>
+          <small>
+            (<a class='float_toc' href='#'>left</a>)
+          </small>
+        </p>
+      </nav>
+      <div id='filecontents'>
+        <h1>Tower.js <img src="http://cloud.github.com/downloads/viatropos/tower/tower.png"/></h1> <blockquote><p>Full Stack Web Framework for Node.js and the Browser.</p></blockquote><p>Built on top of Node&#39;s Connect and Express, modeled after Ruby on Rails.  Built for the client and server from the ground up.</p><p><a href="http://travis-ci.org/viatropos/tower"><img src="https://secure.travis-ci.org/viatropos/tower.png" alt="Build Status"></a> </p><p>Follow me <a href="http://twitter.com/viatropos">@viatropos</a>.</p> <ul><li><strong>IRC</strong>: #towerjs on irc.freenode.net</li> <li><strong>Ask a question</strong>: <a href="http://stackoverflow.com/questions/tagged/towerjs">http://stackoverflow.com/questions/tagged/towerjs</a></li> <li><strong>Issues</strong>: <a href="https://github.com/viatropos/tower/issues">https://github.com/viatropos/tower/issues</a></li> <li><strong>Roadmap</strong>: <a href="https://github.com/viatropos/tower/blob/master/ROADMAP.md">https://github.com/viatropos/tower/blob/master/ROADMAP.md</a></li> <li><strong>Latest Docs</strong>: <a href="https://github.com/viatropos/tower-docs">https://github.com/viatropos/tower-docs</a></li> </ul><p>Note, Tower is still very early alpha. Check out the <a href="https://github.com/viatropos/tower/blob/master/ROADMAP.md">roadmap</a> to see where we&#39;re going. If your up for it please contribute! The 0.5.0 release will have most of the features and will be roughly equivalent to a beta release. From there, it&#39;s performance optimization, workflow streamlining, and creating some awesome examples. 1.0 will be a plug-and-chug real-time app framework.</p><p>Master branch will always be functional, and for the most part in sync with the version installed through the npm registry.</p><h2>Default Development Stack</h2> <ul><li>Ember</li> <li>jQuery</li> <li>Handlebars (templating)</li> <li>Stylus (LESS is also supported)</li> <li>MongoDB (database)</li> <li>Redis (background jobs)</li> <li>Mocha (tests)</li> <li>CoffeeScript</li> <li>Twitter Bootstrap</li> </ul><p>Includes a database-agnostic ORM with browser (memory and ajax) and MongoDB support, modeled after ActiveRecord and Mongoid for Ruby.  Includes a controller architecture that works the same on both the client and server, modeled after Rails.  The routing API is pretty much exactly like Rails 3&#39;s.  Templates work on client and server as well (and you can swap in any template engine no problem).  Includes asset pipeline that works just like Rails 3&#39;s - minifies and gzips assets with an md5-hashed name for optimal browser caching, only if you so desire.  And it includes a watcher that automatically injects javascripts and stylesheets into the browser as you develop.  It solves a lot of our problems, hope it solves yours too.</p><h2>Install</h2><pre><code>npm install tower -g</code></pre><p>You can grab the latest client tower.js <a href="http://cloud.github.com/downloads/viatropos/tower/tower.js">here</a>, although you don&#39;t need to (when you generate a new app it will be downloaded automatically).</p><p>You will also need <a href="https://github.com/cowboy/grunt">grunt</a>, an awesome build tool:</p><pre><code>npm install grunt -g</code></pre><p>Finally, make sure you have mongodb installed and running:</p><pre><code>brew install mongodb
+mongod # starts server</code></pre><p>If you would like to try out the background-worker code, you can also install and start redis:</p><pre><code>brew install redis
+redis-server</code></pre><h2>Generate</h2><pre><code>tower new app
+cd app
+npm install
+cake watch
+tower generate scaffold Post title:string body:text
+tower generate scaffold User firstName:string lastName:string email:string
+node server</code></pre><p>If you run into an error during <code>npm install</code>, remove the <code>node_modules</code> folder and try again.</p><p>To restart your server automatically if it crashes, run with forever:</p><pre><code>npm install forever -g
+forever server.js</code></pre><h2>Application</h2><pre><code class="lang-coffeescript"># app/config/shared/application.coffee
+global.App = Tower.Application.create()</code></pre><h2>Models</h2><pre><code class="lang-coffeescript"># app/models/shared/user.coffee
+class App.User extends Tower.Model
+  @field &#39;firstName&#39;, required: true
+  @field &#39;lastName&#39;
+  @field &#39;email&#39;, format: /\w+@\w+.com/
+  @field &#39;activatedAt&#39;, type: &#39;Date&#39;, default: -&gt; new Date()
+
+  @hasOne &#39;address&#39;, embed: true
+
+  @hasMany &#39;posts&#39;
+  @hasMany &#39;comments&#39;
+
+  @scope &#39;recent&#39;, -&gt; createdAt: &#39;&gt;=&#39;: -&gt; _(3).days().ago().toDate()
+
+  @validates &#39;firstName&#39;, &#39;email&#39;, presence: true
+
+  @after &#39;create&#39;, &#39;welcome&#39;
+
+  welcome: -&gt;
+    Tower.Mailer.welcome(@).deliver()</code></pre><pre><code class="lang-coffeescript"># app/models/shared/post.coffee
+class App.Post extends Tower.Model
+  @field &#39;title&#39;
+  @field &#39;body&#39;
+  @field &#39;tags&#39;, type: [&#39;String&#39;], default: []
+  @field &#39;slug&#39;
+
+  @belongsTo &#39;author&#39;, type: &#39;User&#39;
+
+  @hasMany &#39;comments&#39;, as: &#39;commentable&#39;
+  @hasMany &#39;commenters&#39;, through: &#39;comments&#39;, type: &#39;User&#39;
+
+  @before &#39;validate&#39;, &#39;slugify&#39;
+
+  slugify: -&gt;
+    @set &#39;slug&#39;, @get(&#39;title&#39;).replace(/[^a-z0-9]+/g, &#39;-&#39;).toLowerCase()</code></pre><pre><code class="lang-coffeescript"># app/models/shared/comment.coffee
+class App.Comment extends Tower.Model
+  @field &#39;message&#39;
+
+  @belongsTo &#39;author&#39;, type: &#39;User&#39;
+  @belongsTo &#39;commentable&#39;, polymorphic: true</code></pre><pre><code class="lang-coffeescript"># app/models/shared/address.coffee
+class App.Address extends Tower.Model
+  @field &#39;street&#39;
+  @field &#39;city&#39;
+  @field &#39;state&#39;
+  @field &#39;zip&#39;
+  @field &#39;coordinates&#39;, type: &#39;Geo&#39;
+
+  @belongsTo &#39;user&#39;, embed: true</code></pre><h3>Chainable Scopes, Queries, and Pagination</h3><pre><code class="lang-coffeescript">App.User
+  .where(createdAt: &#39;&gt;=&#39;: _(2).days().ago(), &#39;&lt;=&#39;: new Date())
+  .desc(&#39;createdAt&#39;)
+  .asc(&#39;firstName&#39;)
+  .paginate(page: 5)
+  .all()</code></pre><h3>Associations</h3><pre><code class="lang-coffeescript">user  = App.User.first()
+
+# hasMany &#39;posts&#39;
+posts = user.get(&#39;posts&#39;).where(title: &#39;First Post&#39;).first()
+post  = user.get(&#39;posts&#39;).build(title: &#39;A Post!&#39;)
+post  = user.get(&#39;posts&#39;).create(title: &#39;A Saved Post!&#39;)
+posts = user.get(&#39;posts&#39;).all()
+
+post  = App.Post.first()
+
+# belongsTo &#39;author&#39;
+user  = post.get(&#39;author&#39;)</code></pre><h3>Validations</h3><pre><code class="lang-coffeescript">user = App.User.build()
+user.save()         #=&gt; false
+user.get(&#39;errors&#39;)  #=&gt; {&quot;email&quot;: [&quot;Email must be present&quot;]}
+user.set(&#39;email&#39;, &#39;me@gmail.com&#39;)
+user.save()         #=&gt; true
+user.get(&#39;errors&#39;)  #=&gt; {}</code></pre><h2>Routes</h2><pre><code class="lang-coffeescript"># config/routes.coffee
+App.routes -&gt;
+  @match &#39;/login&#39;, &#39;sessions#new&#39;, via: &#39;get&#39;, as: &#39;login&#39;
+  @match &#39;/logout&#39;, &#39;sessions#destroy&#39;, via: &#39;get&#39;, as: &#39;logout&#39;
+
+  @resources &#39;posts&#39;, -&gt;
+    @resources &#39;comments&#39;
+
+  @namespace &#39;admin&#39;, -&gt;
+    @resources &#39;users&#39;
+    @resources &#39;posts&#39;, -&gt;
+      @resources &#39;comments&#39;
+
+  @constraints subdomain: /^api$/, -&gt;
+    @resources &#39;posts&#39;, -&gt;
+      @resources &#39;comments&#39;
+
+  @match &#39;(/*path)&#39;, to: &#39;application#index&#39;, via: &#39;get&#39;</code></pre><h2>Controllers</h2><pre><code class="lang-coffeescript"># app/controllers/server/postsController.coffee
+class App.PostsController extends Tower.Controller
+  index: -&gt;
+    App.Post.all (error, posts) =&gt;
+      @render &#39;index&#39;, locals: posts: posts
+
+  new: -&gt;
+    @post = App.Post.build()
+    @render &#39;new&#39;
+
+  create: -&gt;
+    @post = App.Post.build(@params.post)
+
+    super (success, failure) -&gt;
+      @success.html =&gt; @render &#39;posts/edit&#39;
+      @success.json =&gt; @render text: &#39;success!&#39;
+      @failure.html =&gt; @render text: &#39;Error&#39;, status: 404
+      @failure.json =&gt; @render text: &#39;Error&#39;, status: 404
+
+  show: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render &#39;show&#39;
+
+  edit: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      @render &#39;edit&#39;
+
+  update: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      post.updateAttributes @params.post, (error) =&gt;
+        @redirectTo action: &#39;show&#39;
+
+  destroy: -&gt;
+    App.Post.find @params.id, (error, post) =&gt;
+      post.destroy (error) =&gt;
+        @redirectTo action: &#39;index&#39;</code></pre><h2>Views</h2><p>Views are all Ember.</p><h2>Templates</h2><p>Templates adhere to the <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2.x</a> markup conventions.</p><p>The default templating engine is <a href="http://easydoc.org/coffeecup">CoffeeCup</a>, which is pure CoffeeScript.  It&#39;s much more powerful than Jade, and it&#39;s just as performant if not more so.  You can set Jade or any other templating engine as the default by setting <code>Tower.View.engine = &quot;jade&quot;</code> in <code>config/application</code>.  Tower uses <a href="http://github.com/viatropos/mint.js">Mint.js</a>, which is a normalized interface to most of the Node.js templating languages.</p><h2>Styles</h2><p>It&#39;s all using Twitter Bootstrap, so check out their docs.  <a href="http://twitter.github.com/bootstrap/">http://twitter.github.com/bootstrap/</a> </p><p>Actually, all that&#39;s built in!  So for the simple case you don&#39;t even need to write anything in your controllers (skinny controllers, fat models).  The default implementation is actually a lot more robust than that, just wanted to show a simple example.</p><h2>Databases</h2><pre><code class="lang-coffeescript"># app/config/server/databases.coffee
+module.exports =
+  mongodb:
+    development:
+      name: &#39;app-development&#39;
+      port: 27017
+      host: &#39;127.0.0.1&#39;
+    test:
+      name: &#39;app-test&#39;
+      port: 27017
+      host: &#39;127.0.0.1&#39;
+    staging:
+      name: &#39;app-staging&#39;
+      port: 27017
+      host: &#39;127.0.0.1&#39;
+    production:
+      name: &#39;app-production&#39;
+      port: 27017
+      host: &#39;127.0.0.1&#39;</code></pre><h2>Mailers</h2><pre><code class="lang-coffeescript">class App.Notification extends Tower.Mailer
+  # app/views/mailers/welcome.coffee template
+  @welcome: (user) -&gt;
+    @mail to: user.email, from: &#39;me@gmail.com&#39;</code></pre><h2>Internationalization</h2><pre><code class="lang-coffeescript"># app/config/shared/locales/en.coffee
+module.exports =
+  hello: &#39;world&#39;
+  forms:
+    titles:
+      signup: &#39;Signup&#39;
+  pages:
+    titles:
+      home: &#39;Welcome to %{site}&#39;
+  posts:
+    comments:
+      none: &#39;No comments&#39;
+      one: &#39;1 comment&#39;
+      other: &#39;%{count} comments&#39;
+  messages:
+    past:
+      none: &#39;You never had any messages&#39;
+      one: &#39;You had 1 message&#39;
+      other: &#39;You had %{count} messages&#39;
+    present:
+      one: &#39;You have 1 message&#39;
+    future:
+      one: &#39;You might have 1 message&#39;</code></pre><h2>Helpers</h2><p>Since all of the controller/routing code is available on the client, you can go directly through that system just like you would the server.</p><pre><code class="lang-coffeescript"># Just request the url, and let it do it&#39;s thing
+Tower.get &#39;/posts&#39;
+
+# Same thing, this time passing parameters
+Tower.get &#39;/posts&#39;, createdAt: &quot;2011-10-26..2011-10-31&quot;
+
+# Dynamic
+Tower.urlFor(Post.first()) #=&gt; &quot;/posts/the-id&quot;</code></pre><p>Those methods pass through the router and client-side middleware so you have access to <code>request</code> and <code>response</code> objects like you would on the server.</p><h2>Middleware</h2><p>It&#39;s built on <a href="http://github.com/sencha/connect">connect</a>, so you can use any of the middleware libs out there.</p><h2>Assets</h2><pre><code class="lang-coffeescript"># app/config/server/assets.coffee
+module.exports =
+  javascripts:
+    vendor: [
+      &#39;/vendor/javascripts/jquery.js&#39;
+      &#39;/vendor/javascripts/underscore.js&#39;
+      &#39;/vendor/javascripts/socket.io&#39;
+      &#39;/vendor/javascripts/tower.js&#39;
+    ]
+
+    lib: [
+      &#39;/lib/grid.js&#39;
+      &#39;/lib/profiler.js&#39;
+    ]
+
+    application: [
+      &#39;/app/models/shared/post.js&#39;
+      &#39;/app/models/shared/comment.js&#39;
+    ]
+
+  stylesheets:
+    vendor: [
+      &#39;/vendor/stylesheets/reset.css&#39;
+    ]
+    application: [
+      &#39;/app/assets/stylesheets/application.css&#39;
+      &#39;/app/assets/stylesheets/theme.css&#39;
+    ]</code></pre><h2>Structure</h2><p>Here&#39;s the structure of a newly generated app with a <code>Post</code> model:</p><pre><code>.
+├── app
+│   ├── config
+│   │   ├── client
+│   │   │   ├── bootstrap.coffee
+│   │   │   └── watch.coffee
+│   │   ├── server
+│   │   │   ├── environments
+│   │   │   │   ├── development.coffee
+│   │   │   │   ├── production.coffee
+│   │   │   │   └── test.coffee
+│   │   │   ├── initializers
+│   │   │   ├── assets.coffee
+│   │   │   ├── bootstrap.coffee
+│   │   │   ├── credentials.coffee
+│   │   │   ├── databases.coffee
+│   │   │   └── session.coffee
+│   │   └── shared
+│   │       ├── locales
+│   │       │   └── en.coffee
+│   │       ├── application.coffee
+│   │       └── routes.coffee
+│   ├── controllers
+│   │   ├── client
+│   │   │   ├── applicationController.coffee
+│   │   │   └── postsController.coffee
+│   │   └── server
+│   │       ├── applicationController.coffee
+│   │       └── postsController.coffee
+│   ├── models
+│   │   ├── client
+│   │   ├── server
+│   │   └── shared
+│   │       └── post.coffee
+│   ├── stylesheets
+│   │   ├── client
+│   │   │   └── application.styl
+│   │   └── server
+│   │       └── email.styl
+│   ├── templates
+│   │   ├── server
+│   │   │   └── layout
+│   │   │       ├── _meta.coffee
+│   │   │       └── application.coffee
+│   │   └── shared
+│   │       ├── layout
+│   │       │   ├── _body.coffee
+│   │       │   ├── _flash.coffee
+│   │       │   ├── _footer.coffee
+│   │       │   ├── _header.coffee
+│   │       │   ├── _navigation.coffee
+│   │       │   └── _sidebar.coffee
+│   │       ├── posts
+│   │       │   ├── _flash.coffee
+│   │       │   ├── _form.coffee
+│   │       │   ├── _item.coffee
+│   │       │   ├── _list.coffee
+│   │       │   ├── _table.coffee
+│   │       │   ├── edit.coffee
+│   │       │   ├── index.coffee
+│   │       │   ├── new.coffee
+│   │       │   └── show.coffee
+│   │       └── welcome.coffee
+│   └── views
+│       └── client
+│           ├── layout
+│           │   └── application.coffee
+│           └── posts
+│               ├── form.coffee
+│               ├── index.coffee
+│               └── show.coffee
+├── data
+│   └── seeds.coffee
+├── lib
+├── log
+├── public
+│   ├── fonts
+│   ├── images
+│   ├── javascripts
+│   ├── stylesheets
+│   ├── swfs
+│   ├── uploads
+│   ├── 404.html
+│   ├── 500.html
+│   ├── favicon.ico
+│   ├── humans.txt
+│   └── robots.txt
+├── scripts
+│   └── tower
+├── test
+│   ├── cases
+│   │   ├── controllers
+│   │   │   ├── client
+│   │   │   └── server
+│   │           └── postsControllerTest.coffee
+│   │   ├── features
+│   │   │   └── client
+│   │   └── models
+│   │       ├── client
+│   │       ├── server
+│   │       └── shared
+│   │           └── postTest.coffee
+│   ├── factories
+│   │   └── postFactory.coffee
+│   ├── client.coffee
+│   ├── mocha.opts
+│   └── server.coffee
+├── tmp
+├── wiki
+│   ├── _sidebar.md
+│   └── home.md
+├── Cakefile
+├── grunt.coffee
+├── package.json
+├── Procfile
+├── README.md
+└── server.js</code></pre><p>All assets are read from <code>/public</code>, which is the compiled output of everything in <code>/app</code>, <code>/lib</code>, <code>/vendor</code>, and wherever else you might put things.  The default is to use stylus for css in <code>/app/assets/stylesheets</code>.</p><p>By having this <code>assets.coffee</code> file, you can specify exactly how you want to compile your files for the client so it&#39;s as optimized and cacheable as possible in production.</p><h3>Minify and Gzip</h3><pre><code class="lang-bash">cake assets:compile</code></pre><h3>Push to S3</h3><pre><code class="lang-bash">cake assets:publish</code></pre><h2>Test</h2><pre><code class="lang-bash">npm test</code></pre><p>Run individual test file:</p><pre><code class="lang-bash">mocha $(find test -name &quot;*persistenceTest.coffee&quot;)</code></pre><p>Run test matching pattern:</p><pre><code class="lang-bash">mocha $(find test -name &quot;*persistenceTest.coffee&quot;) -g &quot;string property$&quot;</code></pre><p>Run tests matching directory and pattern:</p><pre><code class="lang-bash">mocha $(find test -name &quot;*Test.coffee&quot; | egrep &quot;/*view*/&quot;)</code></pre><p><a href="http://stackoverflow.com/a/12255734/169992">Run tests <em>not</em> matching directory and pattern</a>:</p><pre><code class="lang-bash"># run all tests except for client tests
+mocha $(find test -name client -prune -o -name &#39;*Test.coffee&#39; -print)</code></pre><h2>Examples</h2> <ul><li><a href="https://github.com/viatropos/tower-authentication-example">Facebook/Twitter Authentication (Passport)</a></li> <li><a href="https://github.com/viatropos/towerjs.org">towerjs.org (project site)</a></li> </ul><h2>Contributing to Tower</h2><pre><code>git clone https://github.com/viatropos/tower.git
+cd tower</code></pre><h3>Building Tower</h3><p>You can build Tower manually with:</p><pre><code>make</code></pre><p>Or you can have it recompile the files when you change them:</p><pre><code>make watch</code></pre><h3>&quot;Linking&quot; Tower</h3><p>You can symlink your local tower repo to your global npm node_modules directory, which makes it so you can use it in your apps (so if you make changes to the tower repo, you&#39;ll see them in your app). Very useful.</p><p>In the tower repo:</p><pre><code>npm link</code></pre><p>In a tower app:</p><pre><code>npm link tower</code></pre><p>If you want to try installing tower from the remote npm registry, you can just unlink it and run <code>npm install</code>:</p><pre><code>npm unlink tower
+npm install tower</code></pre><p>Using <code>npm link</code> makes it very easy to mess with the source.</p><h3>Running Tests</h3><p>In the tower repo, run server tests with:</p><pre><code>make test-server</code></pre><p>To run client tests, first compile the test app and start its server:</p><pre><code>make build-test-client
+make start-test-client</code></pre><p>Then run the tests (uses phantomjs)</p><pre><code>make test-client</code></pre><p>If you don&#39;t have phantomjs you can install it with:</p><pre><code>brew install phantomjs</code></pre><h2>License</h2><p>(The MIT License)</p><p>Copyright &copy; 2012 <a href="http://twitter.com/viatropos">Lance Pollard</a> &lt;lancejpollard@gmail.com&gt;</p><p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &#39;Software&#39;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p><p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p><p>THE SOFTWARE IS PROVIDED &#39;AS IS&#39;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

@@ -1,6 +1,41 @@
 {
-  "name": "tower-website",
-  "version": "0.0.1",
+  "name": "towerjs.org",
+  "private": true,
+  "version": "0.2.0",
+  "description": "",
+  "homepage": "http://viatropos.github.com/towerjs.org",
+  "main": "./server.js",
+  "subdomain": "towerjs.org",
+  "author": "'Lance Pollard' <lancejpollard@gmail.com>",
+  "keywords": [
+    "node"
+  ],
+  "maintainers": [
+    {
+      "name": "Lance Pollard",
+      "email": "lancejpollard@gmail.com"
+    }
+  ],
+  "contributors": [
+    "TheHydroImpulse"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://mths.be/mit"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/viatropos/towerjs.org/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viatropos/towerjs.org.git"
+  },
+  "engines": {
+    "node": ">= 0.8.0",
+    "npm": ">= 1"
+  },
   "dependencies": {
     "express": "*",
     "ejs": "*",

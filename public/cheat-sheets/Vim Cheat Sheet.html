@@ -1,0 +1,77 @@
+<p>Unknowns:</p>
+
+<ul>
+<li>block selection</li>
+<li>aligning = and :</li>
+<li>switching between languages</li>
+<li><p>vertically select block of text</p></li>
+<li><p><a href='http://docs.sublimetext.info/en/latest/index.html'>http://docs.sublimetext.info/en/latest/index.html</a></p></li>
+<li><a href='https://github.com/phillipkoebbe/DetectSyntax'>https://github.com/phillipkoebbe/DetectSyntax</a></li>
+</ul>
+
+<p>Use the > command. To indent 5 lines, 5>>. To mark a block of lines and indent it, Vjj> to indent 3 lines (vim only). To indent a curly-braces block, put your cursor on one of the curly braces and use >%.</p>
+
+<p>If you’re copying blocks of text around and need to align the indent of a block in its new location, use ]p instead of just p. This aligns the pasted block with the surrounding text.</p>
+
+<p>Also, the shiftwidth setting allows you to control how many spaces to indent.</p>
+
+<blockquote>
+  <blockquote>
+    <p>Indent line by shiftwidth spaces<br />&lt;&lt;   De-indent line by shiftwidth spaces<br />5>>  Indent 5 lines<br />5==  Re-indent 5 lines</p>
+  </blockquote>
+</blockquote>
+
+<p>var a = b;<br />var asdf = j;</p>
+
+<blockquote>
+  <p>%   Increase indent of a braced or bracketed block (place cursor on brace first)<br />=%   Reindent a braced or bracketed block (cursor on brace)<br />&lt;%   Decrease indent of a braced or bracketed block (cursor on brace)<br />]p   Paste text, aligning indentation with surroundings</p>
+</blockquote>
+
+<p>=i{  Re-indent the 'inner block', i.e. the contents of the block<br />=a{  Re-indent 'a block', i.e. block and containing braces<br />=2a{ Re-indent '2 blocks', i.e. this block and containing block</p>
+
+<blockquote>
+  <p>i{  Increase inner block indent<br /><i{  Decrease inner block indent</p>
+</blockquote>
+
+<p><a name="vim-commands" href="#vim-commands"></a></p>
+
+<h2>Vim Commands</h2>
+
+<div class="highlight"><pre lang="">:scriptnames
+:colorscheme github
+</pre></div>
+
+<p><a name="mc" href="#mc"></a></p>
+
+<h2>MC</h2>
+
+<div class="highlight"><pre lang="">brew install mc
+</pre></div>
+
+<p><a href='http://eureka.ykyuen.info/2011/04/04/nerdtree-the-file-explorer-in-vivim/'>http://eureka.ykyuen.info/2011/04/04/nerdtree-the-file-explorer-in-vivim/</a><br /><a href='http://www.vim.org/scripts/script.php?script_id=2438'>http://www.vim.org/scripts/script.php?script_id=2438</a></p>
+
+<p><a name="vim-syntax-highlighting" href="#vim-syntax-highlighting"></a></p>
+
+<h2>Vim Syntax Highlighting</h2>
+
+<p>Add this to <code>~/.vimrc</code>:</p>
+
+<div class="highlight"><pre lang="">set term=ansi
+syntax on
+set number
+foldmethod=syntax
+</pre></div>
+
+<p>Also make sure that "Display ANSI colors" is enabled in the Terminal Settings.</p>
+
+<p><a href='http://amix.dk/vim/vimrc.html'>http://amix.dk/vim/vimrc.html</a></p>
+
+<p>To use the variable in this expression, you need to use the execute command:</p>
+
+<p>execute ':set gfn=Monaco:h' . a:n </p>
+
+<p>You have to use <code>gvim</code> (MacVim), a separate app, to control font faces and sizes.</p>
+
+<ul>
+<li>delete previous word: <code>db</code></li>
+</ul>

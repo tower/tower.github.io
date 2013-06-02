@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='../../../../assets/codo.css' type='text/css'>
+  <script src='../../../../assets/codo.js'></script>
+  <script src='../../../../assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path='../../../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>packages</span>
+    &raquo;
+    <span class='title'>tower-controller</span>
+    &raquo;
+    <span class='title'>shared</span>
+    &raquo;
+    <span class='title'>testHelper.coffee</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../../../extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        File:
+        testHelper.coffee
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>packages/tower-controller/shared</td>
+        </tr>
+      </table>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#global.testWith-file'>
+        ? (void) <strong>global.testWith</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      done()
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#Tower.start-file'>
+        ? (void) <strong>Tower.start</strong>(port, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      <a href="https://raw.github.com/plessbd/superagent/f6e7a85555bbd1a70babf62b4d0c0ec674f3d2f5/lib/node/index.js">https://raw.github.com/plessbd/superagent/f6e7a85555bbd1a70babf62b4d0c0ec674f3d2f5/lib/node/index.js</a>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#Tower.startWithSocket-file'>
+        ? (void) <strong>Tower.startWithSocket</strong>(port, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#Tower.stop-file'>
+        ? (void) <strong>Tower.stop</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#undefined.Request.prototype.make-file'>
+        ? (void) <strong>undefined.Request.prototype.make</strong>(callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_.get-file'>
+        ? (void) <strong>_.get</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_.post-file'>
+        ? (void) <strong>_.post</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_.head-file'>
+        ? (void) <strong>_.head</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_.put-file'>
+        ? (void) <strong>_.put</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_.destroy-file'>
+        ? (void) <strong>_.destroy</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_.request-file'>
+        ? (void) <strong>_.request</strong>(method, path, options, callback)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#global.testCreate-file'>
+        ? (void) <strong>global.testCreate</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#global.testUpdate-file'>
+        ? (void) <strong>global.testUpdate</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#global.testDestroy-file'>
+        ? (void) <strong>global.testDestroy</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#global.testRequest-file'>
+        ? (void) <strong>global.testRequest</strong>(method, url, params, block, other)
+      </a>
+    </span>
+    <span class='desc'>
+      assert.equal result.title, &#39;Three&#39; assert.equal result.slug, &#39;three&#39; done()
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='global.testWith-file'>
+      ? (void) <strong>global.testWith</strong>()
+    </p>
+    <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Add method to mocha so you can both pass args to the test description and use those args in the test.
+  </div>
+  <pre><code>  done()</code></pre>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      
+    </h4>
+    <pre><code class='coffee'>testWith &#39;/users.json&#39;, {user: firstName: &#39;John&#39;}, (params, done) -&gt;
+  post &#39;/users.json&#39;, params, -&gt;
+    assert.equal @body.firstName, &#39;John&#39;</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='Tower.start-file'>
+      ? (void) <strong>Tower.start</strong>(port, callback)
+    </p>
+    <div class='docstring'>
+  <p><a href="https://raw.github.com/plessbd/superagent/f6e7a85555bbd1a70babf62b4d0c0ec674f3d2f5/lib/node/index.js">https://raw.github.com/plessbd/superagent/f6e7a85555bbd1a70babf62b4d0c0ec674f3d2f5/lib/node/index.js</a> </p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='Tower.startWithSocket-file'>
+      ? (void) <strong>Tower.startWithSocket</strong>(port, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='Tower.stop-file'>
+      ? (void) <strong>Tower.stop</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='undefined.Request.prototype.make-file'>
+      ? (void) <strong>undefined.Request.prototype.make</strong>(callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_.get-file'>
+      ? (void) <strong>_.get</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_.post-file'>
+      ? (void) <strong>_.post</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_.head-file'>
+      ? (void) <strong>_.head</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_.put-file'>
+      ? (void) <strong>_.put</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_.destroy-file'>
+      ? (void) <strong>_.destroy</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_.request-file'>
+      ? (void) <strong>_.request</strong>(method, path, options, callback)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='global.testCreate-file'>
+      ? (void) <strong>global.testCreate</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='global.testUpdate-file'>
+      ? (void) <strong>global.testUpdate</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='global.testDestroy-file'>
+      ? (void) <strong>global.testDestroy</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='global.testRequest-file'>
+      ? (void) <strong>global.testRequest</strong>(method, url, params, block, other)
+    </p>
+    <div class='docstring'>
+  <pre><code>assert.equal result.title, &#39;Three&#39;
+assert.equal result.slug, &#39;three&#39;
+
+done()</code></pre>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      This is without the helper
+    </h4>
+    <pre><code class='coffee'>test &#39;/posts.json&#39;, (done) -&gt;
+  params =
+    post:
+      title: &#39;Three&#39;
+
+  post &#39;/posts.json&#39;, params: params, (response) =&gt;
+    result = response.body
+
+    assert.equal result.title, &#39;Three&#39;
+    assert.equal result.slug, &#39;three&#39;
+
+    done()</code></pre>
+    <h4>
+      This is with the helper
+    </h4>
+    <pre><code class='coffee'>testCreate &#39;/posts.json&#39;, post: title: &#39;Three&#39;, (done) -&gt;
+  result = @result</code></pre>
+    <h4>
+      Overloading this method
+    </h4>
+    <pre><code class='coffee'>testShow &#39;/posts/:id.json&#39;, urlFor(post)</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

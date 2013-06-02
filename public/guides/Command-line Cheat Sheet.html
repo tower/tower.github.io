@@ -1,0 +1,216 @@
+<p>This is a generic/intro guide to the bash shell.</p>
+
+<p>The reason for this is to provider relatively new coders with a simple reference to the command-line.</p>
+
+<p><a name="file-system-commands" href="#file-system-commands"></a></p>
+
+<h2>File System Commands</h2>
+
+<p><a name="print-current-directory" href="#print-current-directory"></a></p>
+
+<h3>Print Current Directory</h3>
+
+<div class="highlight"><pre lang=" bash">pwd
+</pre></div>
+
+<p><a name="changing-directories" href="#changing-directories"></a></p>
+
+<h3>Changing Directories</h3>
+
+<div class="highlight"><pre lang=" bash">cd ./packages
+cd packages
+</pre></div>
+
+<p><a name="list-files-in-directory" href="#list-files-in-directory"></a></p>
+
+<h3>List Files in Directory</h3>
+
+<div class="highlight"><pre lang=" bash">ls
+</pre></div>
+
+<p><a name="moving-files" href="#moving-files"></a></p>
+
+<h3>Moving Files</h3>
+
+<div class="highlight"><pre lang=" bash">mv packages lib
+</pre></div>
+
+<p><a name="copying-files-and-directories" href="#copying-files-and-directories"></a></p>
+
+<h3>Copying Files and Directories</h3>
+
+<div class="highlight"><pre lang=" bash">cp ./lib/tower.js ./tmp/tower.js
+</pre></div>
+
+<p><a name="create-a-file" href="#create-a-file"></a></p>
+
+<h3>Create a File</h3>
+
+<div class="highlight"><pre lang=" bash">touch ./tmp/tower.js
+</pre></div>
+
+<p><a name="removing-files-and-directories" href="#removing-files-and-directories"></a></p>
+
+<h3>Removing Files and Directories</h3>
+
+<div class="highlight"><pre lang=" bash">rm -rfv ./tmp
+</pre></div>
+
+<p><a name="symlinking-files" href="#symlinking-files"></a></p>
+
+<h3>Symlinking Files</h3>
+
+<p><a name="make-a-file-executable" href="#make-a-file-executable"></a></p>
+
+<h3>Make a file "executable"</h3>
+
+<div class="highlight"><pre lang=" bash">chmod 755 ./bin/tower
+</pre></div>
+
+<p><a name="append-content-to-a-file" href="#append-content-to-a-file"></a></p>
+
+<h3>Append content to a file</h3>
+
+<p><a name="replace-content-in-a-file" href="#replace-content-in-a-file"></a></p>
+
+<h3>Replace content in a file</h3>
+
+<p><a name="searching-files" href="#searching-files"></a></p>
+
+<h3>Searching files</h3>
+
+<p><a name="http-commands" href="#http-commands"></a></p>
+
+<h2>HTTP Commands</h2>
+
+<p><a name="downloading-files" href="#downloading-files"></a></p>
+
+<h3>Downloading Files</h3>
+
+<div class="highlight"><pre lang=" bash">curl ...
+</pre></div>
+
+<p><a name="uploading-files" href="#uploading-files"></a></p>
+
+<h3>Uploading Files</h3>
+
+<p><a name="downloading-a-website" href="#downloading-a-website"></a></p>
+
+<h3>Downloading a Website</h3>
+
+<p><a name="get-json" href="#get-json"></a></p>
+
+<h3>GET JSON</h3>
+
+<p><a name="post-json" href="#post-json"></a></p>
+
+<h3>POST JSON</h3>
+
+<p><a name="put-json" href="#put-json"></a></p>
+
+<h3>PUT JSON</h3>
+
+<p><a name="delete-json" href="#delete-json"></a></p>
+
+<h3>DELETE JSON</h3>
+
+<p><a name="system-commands" href="#system-commands"></a></p>
+
+<h2>System Commands</h2>
+
+<p><a name="show-operation-system-version" href="#show-operation-system-version"></a></p>
+
+<h3>Show Operation System Version</h3>
+
+<div class="highlight"><pre lang=" bash">uname -a
+</pre></div>
+
+<p><a name="print-ip-address" href="#print-ip-address"></a></p>
+
+<h3>Print IP Address</h3>
+
+<p><a name="show-executable-path" href="#show-executable-path"></a></p>
+
+<h3>Show executable path</h3>
+
+<div class="highlight"><pre lang=" bash">which tower
+</pre></div>
+
+<p><a name="list-processes" href="#list-processes"></a></p>
+
+<h3>List Processes</h3>
+
+<div class="highlight"><pre lang=" bash">ps -ax
+</pre></div>
+
+<p><a name="kill-a-process" href="#kill-a-process"></a></p>
+
+<h3>Kill a Process</h3>
+
+<p><a name="logging" href="#logging"></a></p>
+
+<h3>Logging</h3>
+
+<div class="highlight"><pre lang=" bash">tail -n 500
+top
+</pre></div>
+
+<p><a name="limits" href="#limits"></a></p>
+
+<h3>Limits</h3>
+
+<div class="highlight"><pre lang=" bash">ulimit -n 10240
+</pre></div>
+
+<p><a name="shell-variables" href="#shell-variables"></a></p>
+
+<h2>Shell Variables</h2>
+
+<p><a name="environment-variables" href="#environment-variables"></a></p>
+
+<h3>Environment Variables</h3>
+
+<p><a name="custom-variables" href="#custom-variables"></a></p>
+
+<h3>Custom Variables</h3>
+
+<p><a name="pipes" href="#pipes"></a></p>
+
+<h2>Pipes</h2>
+
+<p><a name="filters" href="#filters"></a></p>
+
+<h2>Filters</h2>
+
+<p><a name="summary" href="#summary"></a></p>
+
+<h2>Summary</h2>
+
+<ul>
+<li><code>sed</code></li>
+<li><code>awk</code></li>
+<li><code>grep</code></li>
+<li><code>find</code></li>
+<li><code>which</code></li>
+<li><code>chmod</code></li>
+<li><code>curl</code></li>
+<li><code>wget</code></li>
+<li><code>touch</code></li>
+<li><code>cp</code></li>
+<li><code>cd</code></li>
+<li><code>pwd</code></li>
+<li><code>ls</code></li>
+<li><code>kill</code></li>
+<li><code>ps</code></li>
+<li><code>wc</code></li>
+<li><code>cat</code></li>
+<li><code>echo</code></li>
+</ul>
+
+<h2>Keyboard Events</h2>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href='http://cb.vu/unixtoolbox.xhtml'>http://cb.vu/unixtoolbox.xhtml</a></li>
+</ul>

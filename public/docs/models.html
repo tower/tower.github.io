@@ -1,0 +1,2137 @@
+<h2>Overview</h2>
+
+<p><code>Tower.Model</code> provides a standard set of interfaces for manipulating data. It also helps building custom ORMs for use outside of Tower.</p>
+
+<p><code>Tower.Model</code> provides the <strong>same interface</strong> on the client and the server.  When you're on the client, it knows how to store the data in memory or through ajax and/or websockets to the server (more below).  When you're on the server, it's saving it to MongoDB (by default), and once support for other databases such as CouchDB, MySQL, Neo4j, etc. is integrated, it can save to those with no change to your code.</p>
+
+<p>This means you can write one set of models and it will work in Node.js and the browser. In reality though, you'll want to add functionality specific to the client (jQuery stuff) and server (background jobs like emailing, etc.), but for simple apps you can get away with one set of models!</p>
+
+<blockquote>
+  <p><strong>Note</strong>: If a particular datastore isn't implemented yet, feel free to implement it and create a pull request, many people would probably use the datastore you created. It's pretty easy to create, it just takes implementing a few methods.  See the [[Tower.Store]] section for details.</p>
+</blockquote>
+
+<h2>Getting started with Models in Tower</h2>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'firstName'
+</pre></div>
+
+<h2>The Criteria Object</h2>
+
+<pre id="criteria-diagram" class="textdiagram">
+/-------------------\               
+| URL Parameter API |-----\
+\-------------------/     |
+                          |
+ /------------------\     |
+ | Command Line API |-----+
+ \------------------/     |     /----------\
+                          +-----| Criteria |
+        /-----------\     |     \----------/
+        | Model API |-----+
+        \-----------/     |
+                          |
+         /----------\     |
+         | JSON API |-----/
+         \----------/
+</pre>
+
+<p><img src="http://ditaa.org/ditaa/render?grid=%2F-------------------%5C+++++++++++++++%0D%0A%7C+URL+Parameter+API+%7C-----%5C%0D%0A%5C-------------------%2F+++++%7C%0D%0A++++++++++++++++++++++++++%7C%0D%0A+%2F------------------%5C+++++%7C%0D%0A+%7C+Command+Line+API+%7C-----%2B%0D%0A+%5C------------------%2F+++++%7C+++++%2F----------%5C%0D%0A++++++++++++++++++++++++++%2B-----%7C+Criteria+%7C%0D%0A++++++++%2F-----------%5C+++++%7C+++++%5C----------%2F%0D%0A++++++++%7C+Model+API+%7C-----%2B%0D%0A++++++++%5C-----------%2F+++++%7C%0D%0A++++++++++++++++++++++++++%7C%0D%0A+++++++++%2F----------%5C+++++%7C%0D%0A+++++++++%7C+JSON+API+%7C-----%2F%0D%0A+++++++++%5C----------%2F&amp;scale=1&amp;background=FFFFFF&amp;E=on&amp;timeout=10" alt="Ditaa diagram version" title="" /></p>
+
+<h2>Create a record</h2>
+
+<p>The following happens for <code>create</code>, <code>update</code>, and <code>destroy</code>, no matter if it's called on the client or server.</p>
+
+<div class="highlight"><pre lang="">/-------------------\
+| App.User.create() |
+\-------------------/
+  | /-----------------\
+  +-| cursor.create() |
+    \-----------------/
+      | /----------------\
+      +-| store.create() |
+      | \----------------/
+      | /------------------------------------\
+      +-| Tower.notifyConnections('created') |
+        \------------------------------------/
+          | /--------------------------\
+          +-| each connection.notify() |
+            \--------------------------/
+              | /--------------------------------\
+              +-| socket.emit('created', record) |
+                \--------------------------------/
+</pre></div>
+
+<p><img src="http://ditaa.org/ditaa/render?grid=%2F-------------------%5C%0D%0A%7C+App.User.create%28%29+%7C%0D%0A%5C-------------------%2F%0D%0A++%7C+%2F-----------------%5C%0D%0A++%2B-%7C+cursor.create%28%29+%7C%0D%0A++++%5C-----------------%2F%0D%0A++++++%7C+%2F----------------%5C%0D%0A++++++%2B-%7C+store.create%28%29+%7C%0D%0A++++++%7C+%5C----------------%2F%0D%0A++++++%7C+%2F------------------------------------%5C%0D%0A++++++%2B-%7C+Tower.notifyConnections%28%27created%27%29+%7C%0D%0A++++++++%5C------------------------------------%2F%0D%0A++++++++++%7C+%2F--------------------------%5C%0D%0A++++++++++%2B-%7C+each+connection.notify%28%29+%7C%0D%0A++++++++++++%5C--------------------------%2F%0D%0A++++++++++++++%7C+%2F--------------------------------%5C%0D%0A++++++++++++++%2B-%7C+socket.emit%28%27created%27%2C+record%29+%7C%0D%0A++++++++++++++++%5C--------------------------------%2F&amp;scale=1&amp;background=FFFFFF&amp;E=on&amp;timeout=10" alt="Ditaa diagram" title="" /></p>
+
+<p>When called from the server, it emits to the connected clients; when called from the client, it emits to the server, which will then run the same process on the server, emitting to the connected clients.</p>
+
+<p><a name="model-attributes" href="#model-attributes"></a></p>
+
+<h2>Model Attributes</h2>
+
+<p>Consider a simple class for modeling a user in an application. A user may have a first name, last name, and middle name. We can define these attributes on a user by using the <code>field</code> macro function.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'firstName', type: 'String'
+  @field 'middleName', type: 'String'
+  @field 'lastName', type: 'String'
+</pre></div>
+
+<p>Below is a list of valid types for fields.</p>
+
+<ul>
+<li>Array</li>
+<li>[todo] BigDecimal (Stores as a String in the database)</li>
+<li>Boolean</li>
+<li>Float</li>
+<li>Object</li>
+<li>Integer</li>
+<li>String</li>
+<li>Time</li>
+<li>Date</li>
+<li>DateTime</li>
+</ul>
+
+<p>If you decide not to specify the field <code>type</code>, Tower will treat it as a JavaScript <code>String</code>.  If you don't want Tower to try typecasting your value, type it to <code>Object</code>.</p>
+
+<p><a name="getting-and-setting-field-values" href="#getting-and-setting-field-values"></a></p>
+
+<h3>Getting and Setting Field Values</h3>
+
+<p>When a field is defined, Tower provides several different ways of accessing the field.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Get the value of the first name field.</h1>
+
+user.get('firstName')
+
+
+
+<h1>Set the value for the first name field.</h1>
+
+user.set('firstName', 'Jean')
+</pre></div>
+
+<p>In cases where you want to set multiple field values at once, there are a few different ways of handling this as well.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.new(firstName: 'Jean-Baptiste', middleName: 'Emmanuel')
+
+
+
+<h1>Get the field values as a hash.</h1>
+
+user.getProperties('firstName', 'middleName')
+
+
+<h1>=> { firstName: 'Jean-Baptiste', middleName: 'Emmanuel' }</h1>
+
+
+
+<h1>Set the field values in the record.</h1>
+
+user.setProperties(firstName: 'Jean-Baptiste', middleName: 'Emmanuel')
+</pre></div>
+
+<p>This is straight from Ember.js.  It wraps all <code>set</code> calls in a single operation.</p>
+
+<p><a name="defaults" href="#defaults"></a></p>
+
+<h3>Defaults</h3>
+
+<p>You can tell a field in Tower to always have a default value if nothing has been provided. Defaults are either static values or callback functions.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'bloodAlcoholLevel', type: 'Float', default: 0.40
+  @field 'lastLogin', type: 'Time', default: -> _(10).minutes().ago().toDate()
+</pre></div>
+
+<p>Be wary that default values that are not defined as functions are evaluated at class load time, so the following 2 definitions are not equivalent. (You probably would prefer the second, which is at record creation time.)</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'dob', type: 'Time', default: new Date
+  @field 'dob', type: 'Time', default: -> new Date
+</pre></div>
+
+<p>If you want to set a default with a dependency on the record's state, <code>this</code> inside a callback evaluates to the record instance.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'joinedAt', type: 'Time', default: -> if @get('isNew') then _(2).hours().ago() else new Date
+</pre></div>
+
+<p><a name="computed-attributes" href="#computed-attributes"></a></p>
+
+<h2>Computed Attributes</h2>
+
+<p>If attributes are computed from fields, don't make it a field, just use computed properties directly:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'firstName'
+  @field 'lastName'
+
+  name: Ember.computed(->
+    "#{@get('firstName')} #{@get('lastName')}".trim()
+  ).property('firstName', 'lastName')
+</pre></div>
+
+<p><a name="tower-model-attribute-initialization" href="#tower-model-attribute-initialization"></a></p>
+
+<h2>Tower Model Attribute Initialization</h2>
+
+<p>You can instantiate models two ways:</p>
+
+<ol>
+<li>Explicitly with <code>build</code></li>
+<li>Internally from the datastore</li>
+</ol>
+
+<p>The reason for this is when the record comes from the database, <code>isNew == false</code>, and you must run the <code>find</code> callbacks.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>this is what you normally do</h1>
+
+user = App.User.build(firstName: 'Josh')
+
+
+<h1>this is what the datastore does</h1>
+
+user = App.User.build(attributesFromDatabase, isNew: false)
+
+
+<h1>that isNew: false triggers this:</h1>
+
+user._initializeFromStore(attributesFromDatabase)
+</pre></div>
+
+<p><a name="in-progress-authentication-layer" href="#in-progress-authentication-layer"></a></p>
+
+<h2>(in progress) Authentication Layer</h2>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @authenticated 'password'
+</pre></div>
+
+<div class="highlight"><pre lang=" coffeescript">user.authenticate('crazy-passwword')
+</pre></div>
+
+<h1>(in progress) Authorization Layer</h1>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+</pre></div>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Ability extends Tower.Model
+</pre></div>
+
+<div class="highlight"><pre lang=" coffeescript">class App.ApplicationController extends Tower.Controller
+  @beforeAction 'setCurrentUser'
+  @beforeAction 'setCurrentAbility'
+
+  setCurrentUser: (next) ->
+    App.User.first (error, user) => # need to use a real solution with sessions, etc.
+      @currentUser = user
+      next()
+
+  setCurrentAbility: ->
+    @currentAbility = new App.Ability(@currentUser)
+</pre></div>
+
+<p><a name="model-callbacks" href="#model-callbacks"></a></p>
+
+<h2>Model Callbacks</h2>
+
+<p>Tower supports 3 main callbacks:</p>
+
+<ul>
+<li><code>before</code></li>
+<li><code>around</code></li>
+<li><code>after</code></li>
+</ul>
+
+<p>The following callbacks are implemented:</p>
+
+<ul>
+<li><code>@after   'initialize'</code></li>
+<li><code>@before  'validate'</code></li>
+<li><code>@after   'validate'</code></li>
+<li><code>@before  'create'</code></li>
+<li><code>@after   'create'</code></li>
+<li><code>@before  'update'</code></li>
+<li><code>@after   'update'</code></li>
+<li><code>@before  'save'</code></li>
+<li><code>@after   'save'</code></li>
+<li><code>@before  'destroy'</code></li>
+<li><code>@after   'destroy'</code></li>
+</ul>
+
+<p>Callbacks are available on any model.</p>
+
+<p><a name="define-a-callback-with-the-callback-phase-helpers" href="#define-a-callback-with-the-callback-phase-helpers"></a></p>
+
+<h3>Define a callback with the callback phase helpers</h3>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Post extends Tower.Model
+  @field 'title', type: 'String'
+  @field 'slug', type: 'String'
+
+  @before 'save', 'generateSlug'
+
+  generateSlug:  ->
+    @set 'slug', _.parameterize @get('title')
+</pre></div>
+
+<p><a name="define-the-phase-and-callback-directly" href="#define-the-phase-and-callback-directly"></a></p>
+
+<h3>Define the phase and callback directly</h3>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Post extends Tower.Model
+  @field 'title', type: 'String'
+  @field 'slug', type: 'String'
+
+  @callback 'save', 'before', 'generateSlug'
+
+  generateSlug:  ->
+    @set 'slug', _.parameterize @get('title')
+</pre></div>
+
+<p><a name="define-callbacks-with-anonymous-functions" href="#define-callbacks-with-anonymous-functions"></a></p>
+
+<h3>Define callbacks with anonymous functions</h3>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Post extends Tower.Model
+  @field 'title', type: 'String'
+  @field 'slug', type: 'String'
+
+  @before 'save', ->
+    @set 'slug', _.parameterize @get('title')
+</pre></div>
+
+<p><a name="callbacks-can-be-asynchronous" href="#callbacks-can-be-asynchronous"></a></p>
+
+<h3>Callbacks can be asynchronous</h3>
+
+<p>If you have a callback that executes asynchronous code, you can add the <code>callback</code> argument to your function, and call it when complete:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Post extends Tower.Model
+  @field 'title', type: 'String'
+  @field 'url', type: 'String'
+
+  @before 'save', 'scrapeWebsite'
+
+  scrapeWebsite: (callback) ->
+    SomeCrawler.scrapeHTML @get('url'), (error, html) ->
+      callback(error)
+</pre></div>
+
+<p>Callbacks are called <em>in series</em>, so if you have several async callbacks, know they will be executed one after another.</p>
+
+<p><a name="background-processing" href="#background-processing"></a></p>
+
+<h2>Background Processing</h2>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @after 'create', 'welcome'
+
+  @sendWelcomeEmail: (id) ->
+    App.User.find id, (error, user) =>
+      App.Notification.welcome(user).deliver()
+
+  welcome: ->
+    App.User.enqueue 'sendWelcomeEmail', @get('id')
+</pre></div>
+
+<p>In the above example, after a User is created we call it's <code>welcome</code> method.  That queues a class method, passing the user <code>id</code> as a parameter.  You pass the <code>id</code> rather than the whole User model to the <code>queue</code> method because this is going to be serialized to some backend key-value store, like Redis, and it's both a smaller amount of data to store, and it's easier to serialize/deserialize just an id.</p>
+
+<p><a name="models-on-the-client" href="#models-on-the-client"></a></p>
+
+<h2>Models on the Client</h2>
+
+<p>When you're on the client, you have three options on where to store the data defined by your models:</p>
+
+<ul>
+<li><code>Tower.Store.Memory</code>: in memory</li>
+<li><code>Tower.Store.LocalStorage</code>: in the browser (via local storage)</li>
+<li><code>Tower.Store.Ajax</code>: on the server (via ajax)</li>
+</ul>
+
+<p>You can specify a default store like this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">Tower.Model.default('store', Tower.Store.Ajax)
+</pre></div>
+
+<p>You can swap out stores dynamically on a per-class basis as well:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @default 'store', Tower.Store.Memory
+
+App.User.insert() # save in memory
+App.User.store(Tower.Store.Ajax)
+App.User.insert() # save with ajax
+</pre></div>
+
+<p><a name="the-cursor" href="#the-cursor"></a></p>
+
+<h2>The Cursor</h2>
+
+<p>Any of the finder or persistence methods that return an array are really returning a cursor.</p>
+
+<p><a name="attribute-dirty-tracking" href="#attribute-dirty-tracking"></a></p>
+
+<h2>Attribute "Dirty Tracking"</h2>
+
+<p>Tower supports tracking of changed or "dirty" fields with an API that mirrors that of Active Model. If a defined field has been modified in a model the model will be marked as dirty and some additional behavior comes into play.</p>
+
+<p><a name="viewing-changes" href="#viewing-changes"></a></p>
+
+<h3>Viewing Changes</h3>
+
+<p>There are various ways to view what has been altered on a model. Changes are recorded from the time a record is instantiated, either as a new record or via loading from the database up to the time it is saved. Any persistence operation clears the changes.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @field 'name', type: 'String'
+
+user = App.User.first()
+
+
+
+<h1>Check to see if the record has changed.</h1>
+
+user.isDirty() #=> false
+
+user.set('name', 'Alan Garner')
+
+
+
+<h1>Check to see if the record has changed.</h1>
+
+user.get('isDirty') #=> true
+
+
+
+<h1>Get a hash of the old and changed values for each field.</h1>
+
+user.get('changes') #=> { 'name' : [ 'Alan Parsons', 'Alan Garner' ] }
+
+
+
+<h1>Get the changes for a specific field.</h1>
+
+user.attributeChange('name') #=> [ 'Alan Parsons', 'Alan Garner' ]
+
+
+
+<h1>Get the previous value for a field.</h1>
+
+user.attributeWas('name') #=> 'Alan Parsons'
+</pre></div>
+
+<p><a name="resetting-changes" href="#resetting-changes"></a></p>
+
+<h3>Resetting Changes</h3>
+
+<p>You can reset changes of a field to it's previous value by calling the reset method.</p>
+
+<div class="highlight"><pre lang=" coffeescript">user = App.User.first()
+
+user.set('name', 'Alan Garner')
+
+
+
+<h1>Reset the changed name back to the original</h1>
+
+user.resetAttribute('name')
+
+user.get('name') #=> 'Alan Parsons'
+</pre></div>
+
+<p><a name="notes-on-dirty-tracking-and-persistence" href="#notes-on-dirty-tracking-and-persistence"></a></p>
+
+<h3>Notes on Dirty Tracking and Persistence</h3>
+
+<p>Tower uses dirty tracking as the core of its persistence operations. It looks at the changes on a record and atomically updates only what has changed unlike other frameworks that write the entire record on each save. If no changes have been made, Tower will not hit the database on a call to Model#save.</p>
+
+<p><a name="finders" href="#finders"></a></p>
+
+<h2>Finders</h2>
+
+<p>Here are the methods used to query models in a datastore:</p>
+
+<ul>
+<li><code>Tower.Model.all</code></li>
+<li><code>Tower.Model.find</code></li>
+<li><code>Tower.Model.first</code></li>
+<li><code>Tower.Model.last</code></li>
+<li><code>Tower.Model.count</code></li>
+<li><code>Tower.Model.exists</code></li>
+<li><code>Tower.Model.batch</code></li>
+</ul>
+
+<p>These methods are delegated to a method of the same name a <code>Tower.Model.Scope</code> instance.  By delegating all query and persistence calls to the <code>Tower.Model.Scope</code> object, there's one place in the Tower code to build out a very powerful API for chainable scopes (more on that later).  This means you can do:</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.all()
+</pre></div>
+
+<p>or create a reusable scope:</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.where(firstName: /^[aA]/).limit(10)
+</pre></div>
+
+<p>By calling one of the finder methods, the scope's criteria are compiled into an optimized query and the models are queried.</p>
+
+<p><a name="towermodel-all" href="#towermodel-all"></a></p>
+
+<h3><code>Tower.Model.all</code></h3>
+
+<p>Returns an array of models.  It only takes one argument, the <code>callback</code>.  If you're using the memory store, it will also return an array of models so you don't need to pass in a callback.  This makes TDD much easier.  BUT, don't count on that, as the other stores return sometimes random things.  Use the callback whenever you can.  As usual, the first argument in the callback is an error.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.all (error, models) ->
+  for model in models
+    model.get('id')
+</pre></div>
+
+<p><a name="towermodel-find" href="#towermodel-find"></a></p>
+
+<h3><code>Tower.Model.find</code></h3>
+
+<p>Provides the ability to find one or many models given a set of ids.  This is a more all-inclusive API than <code>all</code>.</p>
+
+<p>The first way to use this method is for finding a single record given the provided <code>id</code>. If no record is found this will raise an error unless the configuration option is changed.  You can call this method on a scope as well, so you can find all users with a last name of 'Black' who have this <code>id</code>.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.find(id)
+App.User.find('4baa56f1230048567300485c')
+App.User.where(lastName: 'Black').find(id)
+</pre></div>
+
+<p>You may also find multiple records given the provided array of ids. If a single record is not found the error will get raised.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.find([idOne, idTwo])
+App.User.find(['4baa56f1230048567300485c','4baa56f1230048567300485d'])
+App.User.where(lastName: 'Black').find([idOne, idTwo])
+</pre></div>
+
+<p>If multiple ids are passed, you will get an array back. If you only pass 1 id, then you get a record back. The complete signature looks like this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.find '4baa56f1230048567300485c', (error, record) ->
+App.User.find ['4baa56f1230048567300485c', '4baa56f1230048567300485d'], (error, records) ->
+</pre></div>
+
+<p><a name="towermodel-first" href="#towermodel-first"></a></p>
+
+<h3><code>Tower.Model.first</code></h3>
+
+<p>Find the first record in the datastore given the provided criteria. Will return a record or null if nothing is found and defaults to the natural sorting of records in the datastore. You can provide sort criteria as well if you want to dictate the exact record that would be returned first.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.first (error, record) ->
+</pre></div>
+
+<p><a name="towermodel-last" href="#towermodel-last"></a></p>
+
+<h3><code>Tower.Model.last</code></h3>
+
+<p>Find the last record in the datastore given the provided criteria. Will return a record or null if nothing is found and defaults to to sorting by id in descending order. You may provide sort criteria as well if you want to dictate the exact record that would be returned - Tower will invert the sort criteria you provide.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.last (error, record) ->
+</pre></div>
+
+<p><a name="towermodel-count" href="#towermodel-count"></a></p>
+
+<h3><code>Tower.Model.count</code></h3>
+
+<p>Get the count of records given the provided criteria.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.count (error, count) ->
+</pre></div>
+
+<p><a name="towermodel-exists" href="#towermodel-exists"></a></p>
+
+<h3><code>Tower.Model.exists</code></h3>
+
+<p>Returns true if any records in the datastore exist given the provided criteria and false if there are none.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Do any records exist in the datastore for the provided conditions?</h1>
+
+App.User.exists (error, exists) ->
+</pre></div>
+
+<p><a name="todo-towermodel-batch" href="#todo-towermodel-batch"></a></p>
+
+<h3>(todo) <code>Tower.Model.batch</code></h3>
+
+<p>This will grab records from the datastore in chunks, to prevent a memory usage explosion if you have a lot of records.</p>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.batch(20).each (user) ->
+</pre></div>
+
+<p><a name="adding-field-indices" href="#adding-field-indices"></a></p>
+
+<h2>Adding Field Indices</h2>
+
+<p><a name="towermodel-index" href="#towermodel-index"></a></p>
+
+<h3><code>Tower.Model.index</code></h3>
+
+<p><a name="model-inheritance" href="#model-inheritance"></a></p>
+
+<h2>Model Inheritance</h2>
+
+<p>Tower supports inheritance in both root and embedded records. In scenarios where records are inherited from their fields, relations, validations and scopes get copied down into their child records, but not vise-versa.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Canvas extends Tower.Model
+  @field 'name', type: 'String'
+
+  @hasMany 'shapes', embedded: true
+
+class App.Browser extends App.Canvas
+  @field 'version', type: 'Integer'
+
+  @scope 'recent', @where(version: '>': 3)
+
+class App.Firefox extends Browser
+
+class App.Shape extends Tower.Model
+  @field 'x', type: 'Integer'
+  @field 'y', type: 'Integer'
+
+  @belongsTo 'canvas', embedded: true
+
+class App.Circle extends App.Shape
+  @field 'radius', type: 'Float'
+
+class App.Rectangle extends App.Shape
+  @field 'width', type: 'Float'
+  @field 'height', type: 'Float'
+</pre></div>
+
+<p>In the above example, Canvas, Browser and Firefox will all save in the canvases collection. An additional attribute <code>_type</code> is stored in order to make sure when loaded from the database the correct record is returned. This also holds true for the embedded records Circle, Rectangle, and Shape.</p>
+
+<p><a name="querying-for-subclasses" href="#querying-for-subclasses"></a></p>
+
+<h3>Querying for Subclasses</h3>
+
+<p>Querying for subclasses is handled in the normal manner, and although the records are all in the same collection, queries will only return records of the correct type, similar to Single Table Inheritance in ActiveRecord.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Returns Canvas records and subclasses</h1>
+
+App.Canvas.where(name: 'Paper')
+
+
+<h1>Returns only Firefox records</h1>
+
+App.Firefox.where(name: 'Window 1')
+</pre></div>
+
+<p><a name="model-associations" href="#model-associations"></a></p>
+
+<h2>Model Associations</h2>
+
+<p>You can add any type of subclass App.to a has one or has many association, through either normal setting or through the build and create methods on the association:</p>
+
+<div class="highlight"><pre lang=" coffeescript">firefox = new App.Firefox
+
+
+<h1>Builds a Shape object</h1>
+
+firefox.shapes.build({ x: 0, y: 0 })
+
+
+<h1>Builds a Circle object</h1>
+
+firefox.shapes.build({ x: 0, y: 0 }, Circle)
+
+
+<h1>Creates a Rectangle object</h1>
+
+firefox.shapes.create({ x: 0, y: 0 }, Rectangle)
+
+rect = App.Rectangle.new(width: 100, height: 200)
+firefox.shapes
+</pre></div>
+
+<p><a name="deep-dive-into-tower-models" href="#deep-dive-into-tower-models"></a></p>
+
+<h2>Deep Dive into Tower Models</h2>
+
+<p><a name="instantiating-a-record" href="#instantiating-a-record"></a></p>
+
+<h3>Instantiating a record</h3>
+
+<p>To instantiate a record you have two options, to use <code>build</code> or <code>new</code>:</p>
+
+<div class="highlight"><pre lang=" coffeescript">user = App.User.build()
+user = App.User.new()
+</pre></div>
+
+<p>In JavaScript, you can't use the <code>new</code> keyword directly, so it's probably best to use <code>build</code>.</p>
+
+<p>The <code>build</code> and <code>new</code> functions are aliases to <code>Ember.Object.create</code>.  The reason we did this was because, when dealing with database records specifially, the <code>create</code> method intuitively should actually persist a record to the database.  So, <code>App.User.create</code> builds the object using <code>App.User.build</code> as well as saves it to the database.  We thought about calling this method <code>insert</code> rather than <code>create</code>, but <code>insert</code> doesn't feel like it should return a record.  In summary, App.User.build is the same as Ember.Object.create, which just constructs an object in JavaScript in memory, while App.User.create has the additional functionality of persisting it to the database.  Just wanted to avoid confusion there.</p>
+
+<p>Currently you shouldn't instantiate a model (or anything in Tower or Ember, really) with the native JavaScript constructor function:</p>
+
+<div class="highlight"><pre lang=" coffeescript">user = new App.User
+</pre></div>
+
+<p>The reason for this is because Tower models extend <code>Ember.Object</code>, and <code>Ember.Object.create</code> is implemented differently than <code>new Ember.Object</code>.  This API may be made simpler in the future.</p>
+
+<p>When you instantiate a record, you can pass it attributes:</p>
+
+<div class="highlight"><pre lang=" coffeescript">user = App.User.build(email: '<a href='mailto:example@localhost.com'>example@localhost.com</a>')
+</pre></div>
+
+<p>For those of you from the Ember world, this roughly equivalent to:</p>
+
+<div class="highlight"><pre lang=" coffeescript">Ember.Object.create().setProperties(email: '<a href='mailto:example@localhost.com'>example@localhost.com</a>')
+</pre></div>
+
+<p>When you instantiate a record without persisting it, it will not be added to any published cursor.  To add it to a cursor without persisting it to the database, you can call <code>Tower.Model.Cursor.push(records)</code> and it will add it to the published cursors.  If the record is persisted, however, <code>Tower.Model.Cursor.push(record)</code> will be called automatically.</p>
+
+<p><a name="creating-a-record" href="#creating-a-record"></a></p>
+
+<h3>Creating a record</h3>
+
+<p>You can create a record from a model's class or instance:</p>
+
+<div class="highlight"><pre lang=" coffeescript">user = App.User.create()
+user = App.User.build()
+user.save()
+</pre></div>
+
+<p>Whenever you create a record like this, it will be saved to the database.  If you're on the client, it will use either web sockets or Ajax to send the record to the server.  After the record is created it will notify all published cursors of its presence.  Note that on the client, it will notify cursors before the Ajax response comes, to make it look as if the record saved immediately.  If the server responds with any errors, it will keep the newly created record in the cursor but set validation errors.</p>
+
+<p>Here is how the record creation process works internally.</p>
+
+<p>First you call the <code>App.User.create</code>.  The <code>create</code> method gets delegated to a new <code>Tower.Model.Scope</code> instance, which then delegates it to a new <code>Tower.Model.Cursor</code> instance (this will be optimized in the future, but it is necessary for now to keep the API simple).  In <code>Tower.Model.Scope#create</code>, it normalizes the attributes you just passed in and sets the arguments to the <code>@cursor.data</code> array, which holds all the records you're just about to create. You can pass in a single hash of attributes, and array of attribute hashes, or a splat of arguments, all followed by a callback.</p>
+
+<p>Then <code>Tower.Model.Cursor#create</code> iterates through each of attributes in its <code>@data</code> array and builds a model, such as calling <code>App.User.build(attributes)</code>.  It then iterates through each of the model instances and calls <code>model.save</code>, which goes through the model validation lifecycle (described later).  The model then creates another cursor and passes itself in (again, this will be optimized, but it was necessary to keep the API simple for now), calling the <code>create</code> method.  So basically, it's back to where it was, only this time the cursor knows we don't need to call <code>model.save</code>.  Instead, the cursors <code>create</code> method calls <code>@store.create</code>, passing itself in as the first parameter - that is, the <code>store.create</code> method takes a cursor.  The reason we do this is to give the store enough context about the database operation we're about to perform, so the store can optimize its actual implementation.</p>
+
+<p>The store then creates the record (say for example we're using the MongoDB store on the server and the Memory store on the client).  When it completes, it will return the newly created records - each with a new <code>id</code> property - to the calling cursor.  If you passed in a callback, you will now get the record or array of records in the callback.  Finally, the cursor notifies Tower that a record was created.</p>
+
+<p>When Tower gets notified that a record was created, here's what happens on the client.  First, it iterates through all of the client-side controllers and finds any cursors you've published on them.  It then pushes the record(s) into any of the matching cursors - so if any of those cursors were bound to Ember CollectionViews for example, they would display the new record.</p>
+
+<p>When a record gets created on the server, here's what happens.  First, it iterates through all the connected clients (instances of <code>Tower.Net.Connection</code>), which are stored in the <code>Tower.connections</code> property.  Then for each connected client, it does a similar thing to what it did on the client: iterates through the controllers, finds the cursors, and tests the record(s) against them.  But instead of <em>adding</em> it to the cursor, it just compiles a final array of records the client is allowed to receive.  Once the records have been collected for a single client, it then sends a push notification to the client (through web sockets or fallbacks) with the newly created records.  Then on the client, it just loads them into the store, pushing them into the matching cursors, etc. (same process).  Effectively, this means "cursors" work the same on the client and server.</p>
+
+<p><a name="what-is-the-cursor" href="#what-is-the-cursor"></a></p>
+
+<h2>What is the "Cursor"?</h2>
+
+<p>Most generally, <code>Tower.Model.Cursor</code> is a set of criteria for matching a class of models.  On the client, it also is used as an Array, acting as a collection of models matching its criteria.  Technically you can do the same thing on the server, but by default it won't add records to the cursor on the server because it's unnecessary since no state is maintained on the server.</p>
+
+<h1><code>Tower.Model.Persistence</code></h1>
+
+<p>Tower's standard persistence methods come in the form of common methods you would find in other mapping frameworks.</p>
+
+<ul>
+<li><code>Tower.Model.insert</code></li>
+<li><code>Tower.Model.update</code></li>
+<li><code>Tower.Model.destroy</code></li>
+<li><code>Tower.Model#save</code></li>
+<li><code>Tower.Model#updateAttributes</code></li>
+<li><code>Tower.Model#updateAttribute</code></li>
+<li><code>Tower.Model#destroy</code></li>
+</ul>
+
+<p><a name="towermodel-insert" href="#towermodel-insert"></a></p>
+
+<h2><code>Tower.Model.insert</code></h2>
+
+<p>Inserts a new record into the datastore given the provided attributes. This will run validations and will return the record whether it was persisted or not. You can check Tower.Model#persisted? to see if it was successful.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Insert a new German poet to the db.</h1>
+
+App.User.insert(firstName: 'Heinrich', lastName: 'Heine')
+
+
+<h1>This can also take a block.</h1>
+
+App.User.insert firstName: 'Heinrich', (record) ->
+  record.set('lastName', 'Heine')
+
+App.User.insert(firstName: 'Lance')
+App.User.where(firstName: 'Lance').insert()
+App.User.where(firstName: 'Lance').insert([{lastName: 'Pollard'}, {lastName: 'Smith'}])
+App.User.where(firstName: 'Lance').insert(new App.User(lastName: 'Pollard'))
+</pre></div>
+
+<p><a name="towermodel-update" href="#towermodel-update"></a></p>
+
+<h2><code>Tower.Model.update</code></h2>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.update 1, name: 'John', (error, record)
+App.User.update 1, 2, 3, name: 'John', (error, records)
+App.User.update [1, 2, 3], name: 'John', (error, records)
+App.User.update name: 'John', (error, records)
+
+App.User.where(firstName: 'Lance').update(1, 2, 3)
+App.User.update(App.User.first(), App.User.last(), firstName: 'Lance')
+App.User.update([App.User.first(), App.User.last()], firstName: 'Lance')
+App.User.update([1, 2], firstName: 'Lance')
+</pre></div>
+
+<p><a name="towermodel-destroy" href="#towermodel-destroy"></a></p>
+
+<h2><code>Tower.Model.destroy</code></h2>
+
+<p>Deletes all matching records in the datastore given the supplied conditions. See the criteria section on deletion for preferred ways to perform these actions. This runs destroy callbacks on all matching records.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Destroy all the records from the collection.</h1>
+
+App.User.destroy()
+
+
+
+<h1>Destroy all matching records.</h1>
+
+App.User.where(firstName: 'Heinrich').destroy()
+</pre></div>
+
+<p><a name="towermodel-save" href="#towermodel-save"></a></p>
+
+<h2><code>Tower.Model#save</code></h2>
+
+<p>Saves the record to the datastore. If the record is new then the entire record will be inserted. If the record is already saved then only changes to the record will the persisted. This runs validations by default, however they can be switched off by providing an option to the method. Returns true if validation passed and false if not.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Insert a new German poet to the db.</h1>
+
+user = new App.User(firstName: 'Heinrich', lastName: 'Heine')
+user.save()
+
+
+
+<h1>Save without running validations.</h1>
+
+user.save(validate: false)
+
+
+
+<h1>Save an existing record's changed fields.</h1>
+
+user.set('firstName', 'Christian Johan')
+
+user.save (error) ->
+</pre></div>
+
+<p><a name="towermodel-update-attributes" href="#towermodel-update-attributes"></a></p>
+
+<h2><code>Tower.Model#updateAttributes</code></h2>
+
+<p>Modifies the provided attributes to new values and persists them in a single call. This runs validations and will return true if they passed, false if not.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Update the provided attributes.</h1>
+
+user.updateAttributes(firstName: 'Jean', lastName: 'Zorg')
+</pre></div>
+
+<p><a name="towermodel-update-attribute" href="#towermodel-update-attribute"></a></p>
+
+<h2><code>Tower.Model#updateAttribute</code></h2>
+
+<p>Updates a single attribute in the datastore without going through the normal validation procedure, but does fire callbacks. Returns <code>true</code> if save was successful, <code>false</code> if not.  These are "atomic updates" in MongoDB.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Update the provided attribute.</h1>
+
+user.updateAttribute(:firstName, 'Jean')
+</pre></div>
+
+<p><a name="towermodel-destroy-1" href="#towermodel-destroy-1"></a></p>
+
+<h2><code>Tower.Model#destroy</code></h2>
+
+<p>Deletes the record from the datastore while running destroy callbacks.</p>
+
+<div class="highlight"><pre lang=" coffeescript">user.destroy()
+</pre></div>
+
+<h1><code>Tower.Model.Scopes</code> Part 2 - Querying</h1>
+
+<p>The following are a list of chainable query methods in Tower.  Shown alongside each example are the generated query parameters and options which are passed to the <code>store</code> object.  The stores then convert these normalized criteria into the datastore-specific format.</p>
+
+<p>Please note that criteria are lazy evaluated, and with each chained method it will be cloned and return a new criteria copy.</p>
+
+<p><a name="query-methods" href="#query-methods"></a></p>
+
+<h2>Query Methods</h2>
+
+<ul>
+<li><code>Tower.Model.allIn</code></li>
+<li><code>Tower.Model.allOf</code></li>
+<li><code>Tower.Model.alsoIn</code></li>
+<li><code>Tower.Model.anyIn</code></li>
+<li><code>Tower.Model.anyOf</code></li>
+<li><code>Tower.Model.asc</code></li>
+<li><code>Tower.Model.desc</code></li>
+<li><code>Tower.Model.distinct</code></li>
+<li><code>Tower.Model.excludes</code></li>
+<li><code>Tower.Model.includes</code></li>
+<li><code>Tower.Model.limit</code></li>
+<li><code>Tower.Model.near</code></li>
+<li><code>Tower.Model.notIn</code></li>
+<li><code>Tower.Model.only</code></li>
+<li><code>Tower.Model.order</code></li>
+<li><code>Tower.Model.paginate</code></li>
+<li><code>Tower.Model.offset</code></li>
+<li><code>Tower.Model.where</code></li>
+<li><code>Tower.Model.within</code></li>
+</ul>
+
+<p><a name="towermodel-all-in" href="#towermodel-all-in"></a></p>
+
+<h2><code>Tower.Model.allIn</code></h2>
+
+<p>Adds a criterion that specifies values that must all match in order to return results.</p>
+
+<p><a name="model" href="#model"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people with Bond and 007 as aliases.</h1>
+
+App.User.allIn(aliases: ['Bond', '007'])
+</pre></div>
+
+<p><a name="criteria" href="#criteria"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'aliases' : { '$all' : [ 'Bond', '007' ] }}
+</pre></div>
+
+<p><a name="towermodel-all-of" href="#towermodel-all-of"></a></p>
+
+<h2><code>Tower.Model.allOf</code></h2>
+
+<p>Adds a criterion that specifies expressions that must all match in order to return results.</p>
+
+<p><a name="model-1" href="#model-1"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all crazy old people.</h1>
+
+App.User.allOf(age: {'>=': 60}, mentalState: 'crazy mofos')
+</pre></div>
+
+<p><a name="criteria-1" href="#criteria-1"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ '$and' : [{ 'age' : { '$gt' : 60 }}, { 'mentalState' : 'crazy mofos' }] }
+</pre></div>
+
+<p><a name="towermodel-also-in" href="#towermodel-also-in"></a></p>
+
+<h2><code>Tower.Model.alsoIn</code></h2>
+
+<p>Adds a criterion that specifies values where any value can be matched in order to return results. This is similar to Criteria#anyIn with the exception here that if if it chained with values for the same field it performs a union of the values where anyIn perform an intersection.</p>
+
+<p><a name="model-2" href="#model-2"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people with either Bond or 007 as aliases.</h1>
+
+App.User.alsoIn(aliases: [ 'Bond', '007' ])
+App.User.anyIn(aliases: [ 'Bond' ]).alsoIn(aliases: [ '007' ])
+</pre></div>
+
+<p><a name="criteria-2" href="#criteria-2"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'aliases' : { '$in' : [ 'Bond', '007' ] }}
+</pre></div>
+
+<p><a name="towermodel-any-in" href="#towermodel-any-in"></a></p>
+
+<h2><code>Tower.Model.anyIn</code></h2>
+
+<p>Adds a criterion that specifies values where any value can be matched in order to return results. This is similar to Criteria#alsoIn with the exception here that if if it chained with values for the same field it performs an intersection of the values where alsoIn perform a union.</p>
+
+<p><a name="model-3" href="#model-3"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people with either Bond or 007 as aliases.</h1>
+
+App.User.anyIn(aliases: [ 'Bond', '007' ])
+App.User
+  .anyIn(aliases: [ 'Bond', '007', 'James' ])
+  .anyIn(aliases: [ 'Bond', '007' ])
+</pre></div>
+
+<p><a name="criteria-3" href="#criteria-3"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'aliases' : { '$in' : [ 'Bond', '007' ] }}
+</pre></div>
+
+<p><a name="towermodel-any-of" href="#towermodel-any-of"></a></p>
+
+<h2><code>Tower.Model.anyOf</code></h2>
+
+<p>Adds a criterion that specifies a set of expressions that any can match in order to return results. The underlying MongoDB expression is $or.</p>
+
+<p><a name="model-4" href="#model-4"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people with either last name Penn or Teller</h1>
+
+App.User.anyOf({ lastName: 'Penn' }, { lastName: 'Teller' })
+</pre></div>
+
+<p><a name="criteria-4" href="#criteria-4"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'lastName' :
+  { '$or' :
+    [ { 'lastName' : 'Penn' }, { 'lastName' : 'Teller' } ]
+  }
+}
+</pre></div>
+
+<p><a name="towermodel-asc" href="#towermodel-asc"></a></p>
+
+<h2><code>Tower.Model.asc</code></h2>
+
+<p>Adds ascending sort options for the provided fields.</p>
+
+<p><a name="model-5" href="#model-5"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Sort people by first and last name ascending.</h1>
+
+App.User.asc('firstName', 'lastName')
+</pre></div>
+
+<p><a name="criteria-5" href="#criteria-5"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'sort' :
+    {[ [ 'firstName', 'asc' ],
+      [ 'lastName', 'asc' ] ]} }
+</pre></div>
+
+<p><a name="towermodel-desc" href="#towermodel-desc"></a></p>
+
+<h2><code>Tower.Model.desc</code></h2>
+
+<p>Adds descending sort options for the provided fields.</p>
+
+<p><a name="model-6" href="#model-6"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Sort people by first and last name descending.</h1>
+
+App.User.desc('firstName', 'lastName')
+</pre></div>
+
+<p><a name="criteria-6" href="#criteria-6"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'sort' :
+    {[ [ 'firstName', 'desc' ],
+      [ 'lastName', 'desc' ] ]} }
+</pre></div>
+
+<p><a name="towermodel-distinct-name" href="#towermodel-distinct-name"></a></p>
+
+<h2><code>Tower.Model.distinct(name)</code></h2>
+
+<p>Get the distinct values for the provided field.</p>
+
+<p><a name="model-7" href="#model-7"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Get the distinct values for last names</h1>
+
+App.User.distinct('lastName')
+</pre></div>
+
+<p><a name="criteria-7" href="#criteria-7"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'distinct' : 'lastName' }
+</pre></div>
+
+<p><a name="towermodel-excludes" href="#towermodel-excludes"></a></p>
+
+<h2><code>Tower.Model.excludes</code></h2>
+
+<p>Adds a criterion that specifies a set of expressions that cannot match in order to return results. The underlying MongoDB expression is $ne.</p>
+
+<p><a name="model-8" href="#model-8"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people without either last name Teller and first name Bob.</h1>
+
+App.User.excludes(lastName: 'Teller', firstName: 'Bob')
+</pre></div>
+
+<p><a name="criteria-8" href="#criteria-8"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{{ 'lastName' : { '$ne' : 'Teller' } }, { 'firstName' : { '$ne' : 'Bob' } }}
+</pre></div>
+
+<p><a name="towermodel-includes" href="#towermodel-includes"></a></p>
+
+<h2><code>Tower.Model.includes</code></h2>
+
+<p>Adds a criterion that specifies a list of relational associations to eager load when executing the query. This is to prevent the n+1 issue when iterating over records that access their relations during the iteration.</p>
+
+<p>This only works with <code>hasMany</code>, <code>hasOne</code>, and <code>belongsTo</code> relations and only 1 level deep at the current moment. If you try to eager load a many to many an exception will get raised. Many to many is not supported due to the performance actually being slower despite lowering the number of datastore calls.</p>
+
+<p><a name="model-9" href="#model-9"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Eager load the posts and games when retrieving the people.</h1>
+
+App.User.includes('posts', 'comments')
+</pre></div>
+
+<p><a name="criteria-9" href="#criteria-9"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">peopleIds = people.find({}, { 'fields' : { '_id' : 1 }})
+posts.find({ 'personId' : { '$in' : peopleIds }})
+comments.find({ 'personId' : { '$in' : peopleIds }})
+</pre></div>
+
+<p><a name="towermodel-limit" href="#towermodel-limit"></a></p>
+
+<h2><code>Tower.Model.limit</code></h2>
+
+<p>Limits the number of returned results by the provided value.</p>
+
+<p><a name="model-10" href="#model-10"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Only return 20 records.</h1>
+
+App.User.limit(20)
+</pre></div>
+
+<p><a name="criteria-10" href="#criteria-10"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'limit' : 20 }
+</pre></div>
+
+<p><a name="towermodel-near" href="#towermodel-near"></a></p>
+
+<h2><code>Tower.Model.near</code></h2>
+
+<p>Adds a criterion to find locations that are near the supplied coordinates. This performs a MongoDB $near selection and requires a 2d index to be on the provided field.</p>
+
+<p><a name="model-11" href="#model-11"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all bars near Berlin</h1>
+
+Bar.near(location: [ 52.30, 13.25 ])
+</pre></div>
+
+<p><a name="criteria-11" href="#criteria-11"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'location' : { '$near' : [ 52.30, 13.25 ] }}
+</pre></div>
+
+<p><a name="towermodel-not-in" href="#towermodel-not-in"></a></p>
+
+<h2><code>Tower.Model.notIn</code></h2>
+
+<p>Adds a criterion that specifies a set of expressions that cannot match in order to return results. The underlying MongoDB expression is $nin.</p>
+
+<p><a name="model-12" href="#model-12"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people without last names Zorg and Dallas</h1>
+
+App.User.notIn(lastName: [ 'Zorg', 'Dallas' ])
+</pre></div>
+
+<p><a name="criteria-12" href="#criteria-12"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{{ 'lastName' : { '$nin' : [ 'Zorg', 'Dallas' ] } }}
+</pre></div>
+
+<p><a name="towermodel-only" href="#towermodel-only"></a></p>
+
+<h2><code>Tower.Model.only</code></h2>
+
+<p>Limits the fields returned from the datastore to those supplied to the method. Extremely useful for list views where the entire records are not needed. Cannot be used in conjunction with <code>#without</code>.</p>
+
+<p><a name="model-13" href="#model-13"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Return only the first and last names of each person.</h1>
+
+App.User.only('firstName', 'lastName')
+</pre></div>
+
+<p><a name="criteria-13" href="#criteria-13"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">options: { 'fields' : { 'firstName' : 1, 'lastName' : 1 }}
+</pre></div>
+
+<p><a name="towermodel-order" href="#towermodel-order"></a></p>
+
+<h2><code>Tower.Model.order</code></h2>
+
+<p>Sorts the results given the arguments that must match the MongoDB driver sorting syntax (key/value pairs of field and direction).</p>
+
+<p><a name="model-14" href="#model-14"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Provide the sorting options.</h1>
+
+App.User.order('firstName', 'asc').order('lastName', 'desc')
+</pre></div>
+
+<p><a name="criteria-14" href="#criteria-14"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'sort' :
+    {[ [ 'firstName', 'asc' ],
+      [ 'lastName', 'desc' ] ]} }
+</pre></div>
+
+<p><a name="towermodel-skip" href="#towermodel-skip"></a></p>
+
+<h2><code>Tower.Model.skip</code></h2>
+
+<p>Skips the number of the results given the provided value, similar to a SQL 'offset'.</p>
+
+<p><a name="model-15" href="#model-15"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Skip 20 records.</h1>
+
+App.User.skip(20)
+</pre></div>
+
+<p><a name="criteria-15" href="#criteria-15"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">{ 'skip' : 20 }
+</pre></div>
+
+<p><a name="towermodel-where" href="#towermodel-where"></a></p>
+
+<h2><code>Tower.Model.where</code></h2>
+
+<p>Adds a criterion that must match in order to return results. If provided a string it interperets it as a javascript function and converts it to the proper $where clause. Tower also provides convenience h4s on Symbol to make advanced queries simpler to write.</p>
+
+<p><a name="model-16" href="#model-16"></a></p>
+
+<h3>Model</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people with first name Emmanuel</h1>
+
+App.User.where(firstName: 'Emmanuel')
+
+
+
+<h1>Match all people who live in Berlin, where address is embedded.</h1>
+
+App.User.where('addresses.city': 'Berlin')
+
+
+
+<h1>Same as above but with a hash.</h1>
+
+App.User.where(addresses: city: 'Berlin')
+
+
+
+<h1>Match all people who live at an address in Berlin or</h1>
+
+
+
+<h1>Munich where address is embedded.</h1>
+
+App.User.where('addresses.city': {'$in': ['Berlin', 'Munich']})
+
+
+
+<h1>Example complex queries</h1>
+
+App.User.where(age: '>': 21)
+App.User.where(age: $gt: 21)
+App.User.where(age: '>=': 21)
+App.User.where(age: $gte: 21)
+App.User.where(title: $in: ['Sir', 'Madam'])
+App.User.where(age: '<': 55)
+App.User.where(age: $lt: 55)
+App.User.where(age: '<=': 55)
+App.User.where(age: $lte: 55)
+App.User.where(title: $ne: 'Mr')
+App.User.where(title: $nin: ['Esquire'])
+App.User.where(age: '>=': 18, '<=': 55)
+</pre></div>
+
+<p><a name="criteria-16" href="#criteria-16"></a></p>
+
+<h3>Criteria</h3>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Match all people with first name Emmanuel</h1>
+
+{ 'firstName' : 'Emmanuel' }
+
+
+
+<h1>Match all people who live in Berlin, where address is embedded.</h1>
+
+{ 'addresses.city' : 'Berlin' }
+
+
+
+<h1>Example queries using symbol h4s to perform more complex criteria.</h1>
+
+{ 'age' : { '$gt' : 18 }}
+{ 'age' : { '$gt' : 18 }}
+{ 'age' : { '$gte' : 18 }}
+{ 'age' : { '$gte' : 18 }}
+{ 'title' : { '$in' : [ 'Sir', 'Madam' ] }}
+{ 'age' : { '$lt' : 55 }}
+{ 'age' : { '$lt' : 55 }}
+{ 'age' : { '$lte' : 55 }}
+{ 'age' : { '$lte' : 55 }}
+{ 'title' : { '$ne' : 'Mr' }}
+{ 'title' : { '$nin' : [ 'Esquire' ] }}
+{ 'age' : { '$gte' : 18, '$lte' : 55 }}
+</pre></div>
+
+<h2>Models on the Server</h2>
+
+<p>Models on the server work the same as they do on the client, you just have a different set of stores available:</p>
+
+<ul>
+<li><code>Tower.Store.Memory</code>: in memory</li>
+<li><code>Tower.Store.MongoDB</code>: node-mongo-native driver</li>
+</ul>
+
+<p>I'm working on a Neo4j store right now, and the CouchDB one should be super easy to implement.  If anyone wants to implement a PostGreSQL, MySQL, or SQLite3 store, I'd be happy to include it in!</p>
+
+<p>As with any ORM, sometimes you're going to need direct access to the (in this case) MongoDB driver.  Reasons for this are usually either you're doing some complex/custom/optimized query that requires features outside of the scope of the ORM, or using the ORM overly complicates what you're trying to do (this happens way down the road, and using an ORM is definitely beneficial up front).  You can access the store directly from a model like this:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @store Tower.Store.MongoDB
+
+store = App.User.store()  # instance of Tower.Store.MongoDB
+store.lib()               # the core library, such as `require("mongodb")`
+</pre></div>
+
+<p>Sometimes a <code>Tower.Store</code> implementation may have more than the base API.  For instance, in <code>Tower.Store.MongoDB</code>, you have access to collections and the database connection, which is helpful.</p>
+
+<h1><code>Tower.Model.States</code></h1>
+
+<div class="highlight"><pre lang=" coffeescript">Tower.Model.States =
+  isLoaded:  false
+  isDirty:   false
+  isSaving:  false
+  isDeleted: false
+  isError:   false
+  isNew:     true
+  isValid:   true
+</pre></div>
+
+<h1>Stores</h1>
+
+<p>There's a unified interface to the different types of stores, so you can use the model and have it transparently manage data.  For example, for the browser, you can use the memory store, and for the server, you can use the mongodb store.  Redis, PostgreSQL, and Neo4j are in the pipeline.</p>
+
+<p>The Store knows about the Model.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Page extents Tower.Model
+  @store "mongodb"
+</pre></div>
+
+<p><a name="resources" href="#resources"></a></p>
+
+<h2>Resources</h2>
+
+<h1>Stores are the interface models use to find their data.</h1>
+
+<h1><a href='http://www.w3.org/TR/IndexedDB/'>http://www.w3.org/TR/IndexedDB/</a></h1>
+
+<h1><a href='https://github.com/kriszyp/perstore'>https://github.com/kriszyp/perstore</a></h1>
+
+<h1>all()</h1>
+
+<h1>all(title: "Title")</h1>
+
+<h1>all({title: "Title"}, {safe: true})</h1>
+
+<h1>all({title: "Title"}, {safe: true}, (error, records) ->)</h1>
+
+<h1>You can only do the last one!</h1>
+
+<p><a name="create" href="#create"></a></p>
+
+<h2>Create</h2>
+
+<div class="highlight"><pre lang=" coffeescript">App.User.store().insert(new User(firstName: "Lance"))
+App.User.store().insert(firstName: "Lance")
+App.User.store().insert([{firstName: "Lance"}, {firstName: "Dane"}])
+</pre></div>
+
+<h1>Validations</h1>
+
+<p><a name="the-errors-object" href="#the-errors-object"></a></p>
+
+<h2>The Errors Object</h2>
+
+<p><a name="validation-helpers" href="#validation-helpers"></a></p>
+
+<h2>Validation Helpers</h2>
+
+<p>Tower offers many pre-defined validation helpers that you can use directly inside your model class App.definitions. These helpers provide common validation rules. Every time a validation fails, an error message is added to the object's errors collection, and this message is associated with the field being validated.</p>
+
+<p>Each helper accepts an arbitrary number of attribute names, so with a single line of code you can add the same kind of validation to several attributes.</p>
+
+<p>All of them accept the <code>on</code> and <code>message</code> options, which define when the validation should be run and what message should be added to the errors collection if it fails, respectively. The <code>on</code> option takes one of the values <code>save</code> (the default), <code>create</code> or <code>update</code>. There is a default error message for each one of the validation helpers. These messages are used when the <code>message</code> option isn't specified. Let's take a look at each one of the available helpers.</p>
+
+<p><a name="acceptance" href="#acceptance"></a></p>
+
+<h3>Acceptance</h3>
+
+<p>Validates that a checkbox on the user interface was checked when a form was submitted. This is typically used when the user needs to agree to your application's terms of service, confirm reading some text, or any similar concept. This validation is very specific to web applications and this 'acceptance' does not need to be recorded anywhere in your database (if you don't have a field for it, the helper will just create a virtual attribute).</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'termsOfService', acceptance: true
+</pre></div>
+
+<p>The default error message for this helper is 'must be accepted'.</p>
+
+<p>It can receive an <code>accept</code> option, which determines the value that will be considered acceptance. It defaults to '1' and can be easily changed.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  validates 'termsOfService', acceptance: { accept: 'yes' }
+</pre></div>
+
+<p><a name="associated" href="#associated"></a></p>
+
+<h3>Associated</h3>
+
+<p>You should use this helper when your model has associations with other models and they also need to be validated. When you try to save your object, valid? will be called upon each one of the associated objects.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Library extends Tower.Model
+  @hasMany 'books'
+
+  @validates associated: 'books'
+</pre></div>
+
+<p>This validation will work with all of the association types.</p>
+
+<p>Don't use validatesAssociated on both ends of your associations. They would call each other in an infinite loop.</p>
+
+<p>The default error message for validatesAssociated is 'is invalid'. Note that each associated object will contain its own errors collection; errors do not bubble up to the calling model.</p>
+
+<p><a name="confirmation" href="#confirmation"></a></p>
+
+<h3>Confirmation</h3>
+
+<p>You should use this helper when you have two text fields that should receive exactly the same content. For example, you may want to confirm an email address or a password. This validation creates a virtual attribute whose name is the name of the field that has to be confirmed with '_confirmation' appended.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'email', confirmation: true
+</pre></div>
+
+<p>This check is performed only if emailConfirmation is not nil. To require confirmation, make sure to add a presence check for the confirmation attribute (we'll take a look at presence later on this guide):</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'email', confirmation: true
+  @validates 'emailConfirmation', presence: true
+</pre></div>
+
+<p>The default error message for this helper is 'doesn't match confirmation'.</p>
+
+<p><a name="exclusion" href="#exclusion"></a></p>
+
+<h3>Exclusion</h3>
+
+<p>This helper validates that the attributes' values are not included in a given set. In fact, this set can be any enumerable object.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Account extends Tower.Model
+  @validates 'subdomain', exclusion: { in: ['www', 'us', 'ca', 'jp'], message: 'Subdomain %{value} is reserved.' }
+</pre></div>
+
+<p>The exclusion helper has an option <code>in</code> that receives the set of values that will not be accepted for the validated attributes. The <code>in</code> option has an alias called <code>within</code> that you can use for the same purpose, if you'd like to. This example uses the <code>message</code> option to show how you can include the attribute's value.</p>
+
+<p>The default error message is 'is reserved'.</p>
+
+<p><a name="format" href="#format"></a></p>
+
+<h3>Format</h3>
+
+<p>This helper validates the attributes' values by testing whether they match a given regular expression, which is specified using the <code>with</code> option.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Product extends Tower.Model
+  @validates 'legacyCode', format: { with: /\A[a-zA-Z]+\z/, message: 'Only letters allowed' }
+</pre></div>
+
+<p>The default error message is 'is invalid'.</p>
+
+<p><a name="inclusion" href="#inclusion"></a></p>
+
+<h3>Inclusion</h3>
+
+<p>This helper validates that the attributes' values are included in a given set. In fact, this set can be any enumerable object.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Coffee extends Tower.Model
+  @validates 'size', inclusion: { in: ['small', 'medium', 'large'], message: '%{value} is not a valid size' }
+</pre></div>
+
+<p>The inclusion helper has an option <code>in</code> that receives the set of values that will be accepted. The <code>in</code> option has an alias called <code>within</code> that you can use for the same purpose, if you'd like to. The previous example uses the <code>message</code> option to show how you can include the attribute's value.</p>
+
+<p>The default error message for this helper is 'is not included in the list'.</p>
+
+<p><a name="length" href="#length"></a></p>
+
+<h3>Length</h3>
+
+<p>This helper validates the length of the attributes' values. It provides a variety of options, so you can specify length constraints in different ways:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'name', length: { minimum: 2 }
+  @validates 'bio', length: { maximum: 500 }
+  @validates 'password', length: { in: 6..20 }
+  @validates 'registrationNumber', length: 6
+</pre></div>
+
+<p>The possible length constraint options are:</p>
+
+<p><code>minimum</code> – The attribute cannot have less than the specified length.<br /><code>maximum</code> – The attribute cannot have more than the specified length.<br /><code>in</code> (or <code>within</code>) – The attribute length must be included in a given interval. The value for this option must be a range.<br /><code>is</code> – The attribute length must be equal to the given value.<br />The default error messages depend on the type of length validation being performed. You can personalize these messages using the <code>wrongLength</code>, <code>tooLong</code>, and <code>tooShort</code> options and %{count} as a placeholder for the number corresponding to the length constraint being used. You can still use the <code>message</code> option to specify an error message.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'bio', length: { maximum: 1000, tooLong: '%{count} characters is the maximum allowed' }
+</pre></div>
+
+<p>This helper counts characters by default, but you can split the value in a different way using the <code>tokenizer</code> option:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Essay extends Tower.Model
+  @validates 'content', length:
+    minimum:   300,
+    maximum:   400,
+    tooShort:  'must have at least %{count} words',
+    tooLong:   'must have at most %{count} words'
+</pre></div>
+
+<p>Note that the default error messages are plural (e.g., 'is too short (minimum is %{count} characters)'). For this reason, when <code>minimum</code> is 1 you should provide a personalized message or use validatesPresenceOf instead. When <code>in</code> or <code>within</code> have a lower limit of 1, you should either provide a personalized message or call presence prior to length.</p>
+
+<p>The size helper is an alias for length.</p>
+
+<p><a name="numericality" href="#numericality"></a></p>
+
+<h3>Numericality</h3>
+
+<p>This helper validates that your attributes have only numeric values. By default, it will match an optional sign followed by an integral or floating point number. To specify that only integral numbers are allowed set <code>onlyInteger</code> to true.</p>
+
+<p>If you set <code>onlyInteger</code> to true, then it will use the</p>
+
+<div class="highlight"><pre lang=" coffeescript">/\A[+-]?\d+\Z/
+</pre></div>
+
+<p>regular expression to validate the attribute's value. Otherwise, it will try to convert the value to a number using Float.</p>
+
+<p>Note that the regular expression above allows a trailing newline character.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Player extends Tower.Model
+  @validates 'points', numericality: true
+  @validates 'gamesPlayed', numericality: { onlyInteger: true }
+</pre></div>
+
+<p>Besides <code>onlyInteger</code>, this helper also accepts the following options to add constraints to acceptable values:</p>
+
+<p><code>greaterThan</code> – Specifies the value must be greater than the supplied value. The default error message for this option is 'must be greater than %{count}'.<br /><code>greaterThanOrEqualTo</code> – Specifies the value must be greater than or equal to the supplied value. The default error message for this option is 'must be greater than or equal to %{count}'.<br /><code>equalTo</code> – Specifies the value must be equal to the supplied value. The default error message for this option is 'must be equal to %{count}'.<br /><code>lessThan</code> – Specifies the value must be less than the supplied value. The default error message for this option is 'must be less than %{count}'.<br /><code>lessThanOrEqualTo</code> – Specifies the value must be less than or equal the supplied value. The default error message for this option is 'must be less than or equal to %{count}'.<br /><code>odd</code> – Specifies the value must be an odd number if set to true. The default error message for this option is 'must be odd'.<br /><code>even</code> – Specifies the value must be an even number if set to true. The default error message for this option is 'must be even'.<br />The default error message is 'is not a number'.</p>
+
+<p><a name="presence" href="#presence"></a></p>
+
+<h3>Presence</h3>
+
+<p>This helper validates that the specified attributes are not empty. It uses the blank? method to check if the value is either nil or a blank string, that is, a string that is either empty or consists of whitespace.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'name', 'login', 'email', presence: true
+</pre></div>
+
+<p>If you want to be sure that an association is present, you'll need to test whether the foreign key used to map the association is present, and not the associated object itself.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.LineItem extends Tower.Model
+  @belongsTo 'order'
+
+  @validates 'orderId', presence: true
+</pre></div>
+
+<p>Since false.blank? is true, if you want to validate the presence of a boolean field you should use validates <code>fieldName</code>, <code>inclusion: { in: [true, false] }</code>.</p>
+
+<p>The default error message is 'can't be empty'.</p>
+
+<p><a name="uniqueness" href="#uniqueness"></a></p>
+
+<h3>Uniqueness</h3>
+
+<p>This helper validates that the attribute's value is unique right before the object gets saved. It does not create a uniqueness constraint in the database, so it may happen that two different database connections create two records with the same value for a column that you intend to be unique. To avoid that, you must create a unique index in your database.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Account extends Tower.Model
+  @validates 'email', uniqueness: true
+</pre></div>
+
+<p>The validation happens by performing an SQL query into the model's table, searching for an existing record with the same value in that attribute.</p>
+
+<p>There is a <code>scope</code> option that you can use to specify other attributes that are used to limit the uniqueness check:</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Holiday extends Tower.Model
+  validates 'name', uniqueness: { scope: 'year', message: 'should happen once per year' }
+</pre></div>
+
+<p>There is also a <code>caseSensitive</code> option that you can use to define whether the uniqueness constraint will be case sensitive or not. This option defaults to true.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.User extends Tower.Model
+  @validates 'name', uniqueness: { caseSensitive: false }
+</pre></div>
+
+<p>Note that some databases are configured to perform case-insensitive searches anyway.</p>
+
+<p>The default error message is 'has already been taken'.</p>
+
+<h1>Relations</h1>
+
+<h1>One-to-One Relationships</h1>
+
+<p>One to one relationships where the children are referenced in the parent record are defined using Tower's <code>@hasOne</code> and <code>@belongsTo</code> macros.</p>
+
+<p><a name="defining" href="#defining"></a></p>
+
+<h2>Defining</h2>
+
+<p>The parent record of the relation should use the @hasOne macro to indicate is has <em>1</em> referenced child, where the record that is referenced in it uses <code>@belongsTo</code>.</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.User extends Tower.Model
+  @hasOne "game"
+
+class App.Game extends Tower.Model
+  @field 'name', type: 'String'
+
+  @belongsTo 'user'
+</pre></div>
+
+<p>Definitions are required on both sides to the relation in order for it to work properly.</p>
+
+<p><a name="storage" href="#storage"></a></p>
+
+<h3>Storage</h3>
+
+<p>When defining a relation of this nature, each record is stored in it's respective collection, but the child record contains a "foreign key" reference to the parent.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>The parent user record.</h1>
+
+{ "_id" : ObjectId("4d3ed089fb60ab534684b7e9") }
+
+
+
+<h1>The child post record.</h1>
+
+{
+  "_id" : ObjectId("4d3ed089fb60ab534684b7f1"),
+  "user_id" : ObjectId("4d3ed089fb60ab534684b7e9")
+}
+</pre></div>
+
+<p><a name="accessors" href="#accessors"></a></p>
+
+<h3>Accessors</h3>
+
+<p>Accessing the relations is handled through the methods created based on the names of the relations. The following example shows basic access on both sides of the relation.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>Return the child game.</h1>
+
+user.get('game')
+
+
+
+<h1>Set the child game.</h1>
+
+user.set('game', [ new App.Game ])
+
+
+
+<h1>Return the parent user.</h1>
+
+game.get('user')
+
+
+
+<h1>Set the parent user.</h1>
+
+game.get('user').build(new App.User)
+</pre></div>
+
+<p><a name="build-and-create" href="#build-and-create"></a></p>
+
+<h3>Build and Create</h3>
+
+<p>From the parent side, records in the referenced child can be initialized or created using the specially defined methods.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>Create a new child game given the provided attributes.</h1>
+
+user.get('game').build(name: "Tron")
+
+
+
+<h1>Create a persisted child game.</h1>
+
+user.get('game').create(name: "Tron")
+
+
+
+<h1>Replace the parent with a new one from the attributes.</h1>
+
+game.get('user').build(title: "Prince")
+
+
+
+<h1>Replace the parent with a newly saved one from the attributes.</h1>
+
+game.get('user').create(title: "Prince")
+</pre></div>
+
+<p>=== Removal</p>
+
+<p>Documents in the referenced many can be removed by either calling delete on the child or setting it to nil.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>Delete the child record</h1>
+
+user.get('game').destroy()
+user.set('game', nil)
+</pre></div>
+
+<p><a name="polymorphic-behavior" href="#polymorphic-behavior"></a></p>
+
+<h3>Polymorphic behavior</h3>
+
+<p>When a child referenced record can belong to more than one type of parent record, you can tell Tower to support this by adding the as option to the definition on the parents, and the polymorphic option on the child.</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.Arcade extends Tower.Model
+  @hasOne 'game', as: 'playable'
+
+class App.User extends Tower.Model
+  @hasOne 'game', as: 'playable'
+
+class App.Game extends Tower.Model
+  @belongsTo 'playable', polymorphic: true
+</pre></div>
+
+<p><a name="dependent-behavior" href="#dependent-behavior"></a></p>
+
+<h3>Dependent Behavior</h3>
+
+<p>You can tell Tower what to do with child relations of a has one when unsetting the relation via the dependent option. The valid options are:</p>
+
+<ul>
+<li><code>'destroy'</code> Destroy the child record.</li>
+<li><code>'nullify'</code> Orphan the child record.</li>
+</ul>
+
+<p>Polymorphic example illustrating different kinds of dependency behavior:</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.User extends Tower.Model
+  @hasOne 'game', as: 'playable', dependent: 'destroy'
+
+class App.Arcade extends Tower.Model
+  @hasOne 'game', as: 'playable', dependent: 'nullify'
+
+
+
+<h1>Deletes the existing game on the user.</h1>
+
+user.set('game', [])
+user.set('game', null)
+
+
+
+<h1>Orphans the existing game on the arcade (no delete).</h1>
+
+user.set('game', [])
+user.set('game', null)
+</pre></div>
+
+<p>If the dependent option is not defined, the default is to <code>nullify</code>.</p>
+
+<h1>One-to-Many Relationships</h1>
+
+<p>One to many relationships where the children are stored in a separate collection from the parent record are defined using Tower's <code>hasMany</code> and <code>belongsTo</code> macros. This exhibits similar behavior to Rails' Active Record.</p>
+
+<p><a name="defining-1" href="#defining-1"></a></p>
+
+<h2>Defining</h2>
+
+<p>The parent record of the relation should use the <code>hasMany</code> macro to indicate is has n number of referenced children, where the record that is referenced uses belongsTo.</p>
+
+<div class="highlight"><pre lang="coffeescript">class App.User extends Tower.Model
+  @hasMany 'posts'
+
+class App.Post extends Tower.Model
+  @field 'title', type: 'String'
+
+  @belongsTo 'user'
+</pre></div>
+
+<p>Definitions are required on both sides to the relation in order for it to work properly.</p>
+
+<p><a name="accessors-1" href="#accessors-1"></a></p>
+
+<h2>Accessors</h2>
+
+<p>Accessing the relations is handled through the methods created based on the names of the relations. The following example shows basic access on both sides of the relation.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>Return the child posts.</h1>
+
+user.get('posts').all()
+
+
+
+<h1>Set the child posts.</h1>
+
+user.get('posts').addEach([new App.Post])
+user.get('posts').add(new App.Post)
+
+
+
+<h1>Return the parent user relation.</h1>
+
+post.get('user')
+
+
+
+<h1>Set the parent user.</h1>
+
+post.get('user').create(new App.User)
+</pre></div>
+
+<p><a name="building-and-creating" href="#building-and-creating"></a></p>
+
+<h2>Building and Creating</h2>
+
+<p>From the parent side, records in the referenced child can be appended to using traditional array syntax or the special association proxy methods. On the child side the only option is to replace the existing with a newly built or created record.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>Append one or many child posts, saving them if the user is persisted.</h1>
+
+user.get('posts').create(new App.Post)
+
+
+
+<h1>Appends and returns a new child post from the attirbutes.</h1>
+
+user.get('posts').build(title: 'Berlin never sleeps.')
+
+
+
+<h1>Appends, saves, and returns a new child post from the attirbutes.</h1>
+
+user.get('posts').create(title: 'Berlin is far cooler than New York.')
+
+
+
+<h1>Replace the parent with a new one from the attributes.</h1>
+
+post.get('user').build(title: 'Prince')
+
+
+
+<h1>Replace the parent with a newly saved one from the attributes.</h1>
+
+post.get('user').create(title: 'Prince')
+</pre></div>
+
+<p><a name="removal" href="#removal"></a></p>
+
+<h2>Removal</h2>
+
+<p>Records in the referenced many can be removed in several different manners, either through the relation, criteria, or accessors.</p>
+
+<div class="highlight"><pre lang="coffeescript">
+
+<h1>Delete all referenced records</h1>
+
+user.get('posts').destroy()
+
+
+
+<h1>Delete all matching referenced records.</h1>
+
+user.get('posts').where(title: 'Berlin').destroy()
+
+
+
+<h1>Delete the parent referenced record.</h1>
+
+post.get('user').destroy()
+</pre></div>
+
+<p><a name="finding" href="#finding"></a></p>
+
+<h2>Finding</h2>
+
+<p>Finding records in the referenced children is handled through find or by using chained criteria on the relation.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>Find a child by a single or multiple ids.</h1>
+
+user.get('posts').find(id)
+user.get('posts').find([ idOne, idTwo ])
+
+
+
+<h1>Find matching referenced children.</h1>
+
+user.get('posts').where(title: 'Berlin')
+
+
+
+<h1>Do any children exist that are persisted?</h1>
+
+user.get('posts').exists()
+</pre></div>
+
+<p><a name="polymorphic-behavior-1" href="#polymorphic-behavior-1"></a></p>
+
+<h2>Polymorphic Behavior</h2>
+
+<p>When a child referenced record can belong to more than one type of parent record, you can tell Tower to support this by adding the as option to the definition on the parents, and the polymorphic option on the child.</p>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Company extends Tower.Model
+  @hasMany 'posts', as: 'postable'
+
+class App.User extends Tower.Model
+  @hasMany 'posts', as: 'postable'
+
+class App.Post extends Tower.Model
+  @belongsTo 'postable', polymorphic: true
+</pre></div>
+
+<p><a name="dependent-behavior-1" href="#dependent-behavior-1"></a></p>
+
+<h2>Dependent Behavior</h2>
+
+<p>You can tell Tower what to do with child relations of a has many when unsetting the relation via the dependent option. This also applies to calling <code>#destroy</code> on the relation. The valid options are:</p>
+
+<ul>
+<li><code>'destroy'</code>: Destroy the child records.</li>
+<li><code>'nullify'</code>: Orphan the child records.</li>
+</ul>
+
+<div class="highlight"><pre lang=" coffeescript">class App.Company extends Tower.Model
+  @hasMany 'posts', as: 'postable', dependent: 'destroy'
+
+class App.User extends Tower.Model
+  @hasMany 'posts', as: 'postable', dependent: 'nullify'
+
+
+
+<h1>Delete all the child relations:</h1>
+
+company.get('posts').destroy()
+
+
+
+<h1>Orphan all the child relations:</h1>
+
+user.get('posts').destroy()
+
+
+
+<h1>Delete a single child relation:</h1>
+
+company.get('posts').destroy(post)
+
+
+
+<h1>Orphan a single child relation:</h1>
+
+user.get('posts').destroy(post)
+</pre></div>
+
+<p>If the dependent option is not defined, the default is to nullify.</p>
+
+<p><a name="storage-1" href="#storage-1"></a></p>
+
+<h2>Storage</h2>
+
+<p>The database-specific ways the data is stored is recorded in the <a href="/wiki/stores"><code>Tower.Store</code></a> section.  Below we define how associations are stored <em>in general</em>; i.e. in MongoDB the <code>id</code> is actually saved in an <code>_id</code> field and defaults to a MongoDB specific object, so a MongoDB record with an <code>id</code> would look like this: <code>{ '_id' : ObjectId('4d2ed089fb60ab534684b7e9') }</code>.</p>
+
+<p><a name="referenced" href="#referenced"></a></p>
+
+<h3>Referenced</h3>
+
+<p>When defining a relation of this nature, each record is stored in it's respective collection, but the child record contains a 'foreign key' reference to the parent.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>The parent <code>user</code> record.</h1>
+
+
+
+<h1>user.save()</h1>
+
+{ 'id' : 123 }
+
+
+
+<h1>The child <code>post</code> record.</h1>
+
+
+
+<h1>user.get('posts').create()</h1>
+
+{
+  'id' : 987,
+  'userId' : 123,
+  'title': 'A Post!'
+}
+</pre></div>
+
+<p><a name="embedded" href="#embedded"></a></p>
+
+<h3>Embedded</h3>
+
+<p>Records that are embedded using the embedsMany macro are stored as an array of hashes inside the parent in the parent's database collection.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>users collection</h1>
+
+{
+  'id' : 123,
+  'posts' : [
+    { 
+      'id' : 987,
+      'title': 'A Post!'
+    }
+  ]
+}
+</pre></div>
+
+<p><a name="cached" href="#cached"></a></p>
+
+<h3>Cached</h3>
+
+<p>Sometimes you don't want to embed a record inside another, but you want a quick way to query the associated records.  This is when you use the <code>cache</code> option, which stores the ids of the associated record in an array on the parent record.</p>
+
+<div class="highlight"><pre lang=" coffeescript">
+
+<h1>users collection</h1>
+
+{
+  'id' : 123,
+  'postIds' : [987]
+}
+
+
+
+<h1>posts collection</h1>
+
+{
+  'id' : 987,
+  'userId' : 123,
+  'title': 'A Post!'
+}
+</pre></div>
+
+<p><a name="resources-1" href="#resources-1"></a></p>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href='http://en.wikipedia.org/wiki/Relational_algebra'>http://en.wikipedia.org/wiki/Relational_algebra</a></li>
+</ul>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Tower API Documentation</title>
+  <link rel='stylesheet' href='../../assets/codo.css' type='text/css'>
+  <script src='../../assets/codo.js'></script>
+  <script src='../../assets/search_data.js'></script>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Tower</span>
+    &raquo;
+    <span class='title'>StoreMongodbSerialization</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='../../class_list.html'>Classes</a>
+      <a id='mixin_list_link' href='../../mixin_list.html'>Mixins</a>
+      <a id='file_list_link' href='../../file_list.html'>Files</a>
+      <a id='method_list_link' href='../../method_list.html'>Methods</a>
+      <a id='extra_list_link' href='../../extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Mixin:
+        Tower.StoreMongodbSerialization
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>packages/tower-store/server/mongodb/serialization.coffee</td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>All things that deal with data types and serialization.</p> <ul><li><a href="http://bsonspec.org/">http://bsonspec.org/</a></li> <li><a href="http://www.mongodb.org/display/DOCS/Timestamp+data+type">http://www.mongodb.org/display/DOCS/Timestamp+data+type</a></li> <li><a href="http://www.mongodb.org/display/DOCS/Dates">http://www.mongodb.org/display/DOCS/Dates</a></li> <li><a href="http://stackoverflow.com/questions/7682714/does-mongodb-support-floating-point-types">http://stackoverflow.com/questions/7682714/does-mongodb-support-floating-point-types</a></li> </ul>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Node.js MongoDB Data Types
+    </h4>
+    <pre><code class='coffee'>new mongo.Long(numberString)
+new mongo.ObjectID(hexString)
+new mongo.Timestamp()  // the actual unique number is generated on insert.
+new mongo.DBRef(collectionName, id, dbName)
+new mongo.Binary(buffer)  // takes a string or Buffer
+new mongo.Code(code, [context])
+new mongo.Symbol(string)
+new mongo.MinKey()
+new mongo.MaxKey()
+new mongo.Double(number) 
+var motherOfAllDocuments = {
+  &#39;string&#39;: &#39;hello&#39;,
+  &#39;array&#39;: [1,2,3],
+  &#39;hash&#39;: {&#39;a&#39;:1, &#39;b&#39;:2},
+  &#39;date&#39;: date,
+  &#39;oid&#39;: oid,
+  &#39;binary&#39;: bin,
+  &#39;int&#39;: 42,
+  &#39;float&#39;: 33.3333,
+  &#39;boolean&#39;: true,
+  &#39;long&#39;: date.getTime(),
+  &#39;where&#39;: new Code(&#39;this.a &gt; i&#39;, {i:1}),
+  &#39;dbref&#39;: new DBRef(&#39;namespace&#39;, oid, &#39;integration_tests_&#39;)
+}</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#serializeModel-mixin'>
+        ? (void) <strong>serializeModel</strong>(attributes, saved = false)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#generateId-mixin'>
+        ? (void) <strong>generateId</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeAttributesForUpdate-mixin'>
+        ? (void) <strong>serializeAttributesForUpdate</strong>(attributes)
+      </a>
+    </span>
+    <span class='desc'>
+      tags: [1, 2] == $set: tags: [1, 2] createdAt: Date == $set: createdAt: mongodate
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_flattenObject-mixin'>
+        ? (void) <strong>_flattenObject</strong>(object)
+      </a>
+    </span>
+    <span class='desc'>
+      I think there might be an Ember helper for this already.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_flattenValue-mixin'>
+        ? (void) <strong>_flattenValue</strong>(host, key, value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeAttributesForInsert-mixin'>
+        ? (void) <strong>serializeAttributesForInsert</strong>(record)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#deserializeAttributes-mixin'>
+        ? (void) <strong>deserializeAttributes</strong>(attributes)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeConditions-mixin'>
+        ? (void) <strong>serializeConditions</strong>(cursor)
+      </a>
+    </span>
+    <span class='desc'>
+      title: &#39;santa&#39; createdAt: &#39;&lt;&#39;: new Date()
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#serializeOptions-mixin'>
+        ? (void) <strong>serializeOptions</strong>(cursor)
+      </a>
+    </span>
+    <span class='desc'>
+      batchSize hint explain
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encode-mixin'>
+        ? (void) <strong>encode</strong>(field, value, operation)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decode-mixin'>
+        ? (void) <strong>decode</strong>(field, value, operation)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeString-mixin'>
+        ? (void) <strong>encodeString</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeOrder-mixin'>
+        ? (void) <strong>encodeOrder</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeDate-mixin'>
+        ? (void) <strong>encodeDate</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeGeo-mixin'>
+        ? (void) <strong>encodeGeo</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decodeGeo-mixin'>
+        ? (void) <strong>decodeGeo</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decodeDate-mixin'>
+        ? (void) <strong>decodeDate</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeBoolean-mixin'>
+        ? (void) <strong>encodeBoolean</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeArray-mixin'>
+        ? (void) <strong>encodeArray</strong>(value, operation)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeFloat-mixin'>
+        ? (void) <strong>encodeFloat</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeInteger-mixin'>
+        ? (void) <strong>encodeInteger</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeLocalized-mixin'>
+        ? (void) <strong>encodeLocalized</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decodeLocalized-mixin'>
+        ? (void) <strong>decodeLocalized</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeNilClass-mixin'>
+        ? (void) <strong>encodeNilClass</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decodeNilClass-mixin'>
+        ? (void) <strong>decodeNilClass</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#encodeId-mixin'>
+        ? (void) <strong>encodeId</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      to mongo
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_encodeId-mixin'>
+        ? (void) <strong>_encodeId</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#decodeId-mixin'>
+        ? (void) <strong>decodeId</strong>(value)
+      </a>
+    </span>
+    <span class='desc'>
+      from mongo
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='serializeModel-mixin'>
+      ? (void) <strong>serializeModel</strong>(attributes, saved = false)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='generateId-mixin'>
+      ? (void) <strong>generateId</strong>()
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeAttributesForUpdate-mixin'>
+      ? (void) <strong>serializeAttributesForUpdate</strong>(attributes)
+    </p>
+    <div class='docstring'>
+  <p>tags: [1, 2] == $set: tags: [1, 2]<br />createdAt: Date == $set: createdAt: mongodate</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_flattenObject-mixin'>
+      ? (void) <strong>_flattenObject</strong>(object)
+    </p>
+    <div class='docstring'>
+  <p>I think there might be an Ember helper for this already.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_flattenValue-mixin'>
+      ? (void) <strong>_flattenValue</strong>(host, key, value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeAttributesForInsert-mixin'>
+      ? (void) <strong>serializeAttributesForInsert</strong>(record)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='deserializeAttributes-mixin'>
+      ? (void) <strong>deserializeAttributes</strong>(attributes)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeConditions-mixin'>
+      ? (void) <strong>serializeConditions</strong>(cursor)
+    </p>
+    <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    DBref and objectId
+  </div>
+  <p>title: &#39;santa&#39;<br />createdAt: &#39;&lt;&#39;: new Date()</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='serializeOptions-mixin'>
+      ? (void) <strong>serializeOptions</strong>(cursor)
+    </p>
+    <div class='docstring'>
+  <p>batchSize<br />hint<br />explain</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encode-mixin'>
+      ? (void) <strong>encode</strong>(field, value, operation)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decode-mixin'>
+      ? (void) <strong>decode</strong>(field, value, operation)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeString-mixin'>
+      ? (void) <strong>encodeString</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeOrder-mixin'>
+      ? (void) <strong>encodeOrder</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeDate-mixin'>
+      ? (void) <strong>encodeDate</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeGeo-mixin'>
+      ? (void) <strong>encodeGeo</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decodeGeo-mixin'>
+      ? (void) <strong>decodeGeo</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decodeDate-mixin'>
+      ? (void) <strong>decodeDate</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeBoolean-mixin'>
+      ? (void) <strong>encodeBoolean</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeArray-mixin'>
+      ? (void) <strong>encodeArray</strong>(value, operation)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeFloat-mixin'>
+      ? (void) <strong>encodeFloat</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeInteger-mixin'>
+      ? (void) <strong>encodeInteger</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeLocalized-mixin'>
+      ? (void) <strong>encodeLocalized</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decodeLocalized-mixin'>
+      ? (void) <strong>decodeLocalized</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeNilClass-mixin'>
+      ? (void) <strong>encodeNilClass</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decodeNilClass-mixin'>
+      ? (void) <strong>decodeNilClass</strong>(value)
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='encodeId-mixin'>
+      ? (void) <strong>encodeId</strong>(value)
+    </p>
+    <div class='docstring'>
+  <p>to mongo</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_encodeId-mixin'>
+      ? (void) <strong>_encodeId</strong>(value)
+    </p>
+    <div class='docstring'>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    need to figure out a better way to do this.
+  </div>
+  
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='decodeId-mixin'>
+      ? (void) <strong>decodeId</strong>(value)
+    </p>
+    <div class='docstring'>
+  <p>from mongo</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Sat Sep 22 2012 15:01:38 GMT-0700 (PDT)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.4.2
+  (Node.js v0.8.2).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>
