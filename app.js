@@ -6,6 +6,7 @@ var express = require('express');
 var partials = require('express-partials');
 var app = express();
 var path = require('path');
+var markdown = require('./markdown');
 
 /**
  * Configuration.
@@ -27,7 +28,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/guides', function(req, res){
-  res.render('guides');
+  res.render('guides', { code: markdown('code') });
 });
 
 app.get('/community', function(req, res){

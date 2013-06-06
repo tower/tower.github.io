@@ -1,0 +1,43 @@
+.keyword{color: #56b3a6} /* Keyword */
+.nt{color: #56b3a6; font-weight: bold} /* Tag name */
+.o{color: #56b3a6; font-weight: bold} /* Operator */
+.s{color: #e84c52} /* Attribute value */
+.string{color: #e84c52} /* String */
+.s2{color: #e84c52} /* String */
+.na{color: #e58a8e} /* Attribute */
+.ni{color: #e59e4b} /* Entity */
+.mi{color: #e59e4b} /* Integer */
+.mf{color: #e59e4b} /* Float */
+.c{color: #b6ae99; font-style: italic} /* Comment */
+.c1{color: #b6ae99; font-style: italic} /* Comment */
+.p{color: #dfdbce} /* Punctation */
+
+pre {
+  background: none;
+  border: none;
+}
+
+td.gutter {
+  width: 40px;
+  display: inline-block;
+  display: none;
+}
+
+td.code {
+  width: 80%;
+}
+
+pre {
+  width: 70%;
+  margin: 0 auto;
+  position: relative;
+  left: 90px;
+}
+
+code {
+font: 14px/14px Consolas, monospace;
+padding: 18px 22px;
+border-radius: 0px;
+background: #fff;
+color: #fff;
+}
