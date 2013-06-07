@@ -1,18 +1,19 @@
 /**
  * Animate Media Queries
-body, div, ul, li {
-  -moz-transition: all .2s linear;
-  -webkit-transition: all .2s linear;
-  transition: all .2s linear; }
 
- */
+body, div, ul, li {
+    -moz-transition: all .2s linear;
+    -webkit-transition: all .2s linear;
+    transition: all .2s linear;
+}*/
 /**
  * Useful Mixin for quick media queries
  */
 header {
   height: 65px;
   width: 100%;
-  margin: 40px auto 0 auto;
+  margin: 0 auto;
+  padding-top: 40px;
   line-height: 65px; }
   header ul {
     width: 90%;
@@ -81,6 +82,9 @@ header {
           header ul li.first {
             margin-left: 0%; } }
 
+li {
+  list-style: none; }
+
 section#content {
   position: relative;
   top: 70px;
@@ -114,6 +118,48 @@ section#content {
   text-align: center; }
 #tower-intro h2 {
   text-align: center; }
+
+.sidebar-nav-fixed {
+  position: fixed;
+  height: 60%;
+  overflow-y: auto; }
+
+.sidebar-nav-fixed.span2 {
+  width: 18%; }
+
+@media (max-width: 767px) {
+  .sidebar-nav-fixed {
+    width: auto; } }
+@media (max-width: 979px) {
+  .well.sidebar-nav-fixed.span2 {
+    position: static;
+    width: 100%; }
+
+  .span8.offset3.right-panel-info {
+    width: 100%;
+    margin-left: 0%; } }
+ul.module h5 {
+  padding-left: 5%; }
+
+ul.properties {
+  padding-left: 12%; }
+
+ul.methods {
+  padding-left: 12%; }
+
+div.module-content {
+  padding-left: 1em; }
+
+section.property {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid #c5cacb; }
+
+section.method {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid #c5cacb; }
+
+.nav.nav-list ul {
+  margin-left: 0em; }
 
 body {
   background-color: white;
