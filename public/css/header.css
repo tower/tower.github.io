@@ -82,41 +82,17 @@ header {
           header ul li.first {
             margin-left: 0%; } }
 
-#tower-intro h1 {
-  text-align: center; }
-#tower-intro h2 {
-  text-align: center; }
+li {
+  list-style: none; }
+
+li {
+  list-style: none; }
 
 section#content {
   position: relative;
-  padding-top: 70px;
+  top: 70px;
   width: 80%;
   margin: 0 auto; }
-  section#content li {
-    list-style: none; }
-  section#content .sidebar-nav-fixed {
-    position: fixed;
-    height: 60%;
-    overflow-y: auto; }
-  section#content .sidebar-nav-fixed.span2 {
-    width: 18%; }
-  section#content ul.properties,
-  section#content ul.methods {
-    padding-left: 8%; }
-  section#content .p-or-m-item {
-    padding-left: 11%; }
-  section#content div.module-content {
-    padding-left: 3%; }
-  section#content section.property {
-    padding: 0 0 1em 1em;
-    border-bottom: 1px solid #c5cacb; }
-  section#content section.method {
-    padding: 0 0 1em 1em;
-    border-bottom: 1px solid #c5cacb; }
-  section#content .nav.nav-list ul {
-    margin-left: 0em; }
-  section#content .module {
-    margin-bottom: 3em; }
   @media only screen and (max-width: 785px) {
     section#content #tower-intro {
       margin: 0 auto;
@@ -140,21 +116,53 @@ section#content {
         font-size: 20px; }
       section#content #tower-intro {
         margin-bottom: 30px; } }
-  @media (max-width: 767px) {
-    section#content .sidebar-nav-fixed {
-      width: auto; } }
-  @media (max-width: 979px) {
-    section#content .well.sidebar-nav-fixed.span2 {
-      position: static;
-      width: 100%; }
-    section#content .span8.offset3.right-panel-info {
-      width: 100%;
-      margin-left: 0%; }
-    section#content ul.properties,
-    section#content ul.methods {
-      padding-left: 4%; }
-    section#content .p-or-m-item {
-      padding-left: 3%; } }
+
+#tower-intro h1 {
+  text-align: center; }
+#tower-intro h2 {
+  text-align: center; }
+
+.sidebar-nav-fixed {
+  position: fixed;
+  height: 60%;
+  overflow-y: auto; }
+
+.sidebar-nav-fixed.span2 {
+  width: 18%; }
+
+@media (max-width: 767px) {
+  .sidebar-nav-fixed {
+    width: auto; } }
+@media (max-width: 979px) {
+  .well.sidebar-nav-fixed.span2 {
+    position: static;
+    width: 100%; }
+
+  .span8.offset3.right-panel-info {
+    width: 100%;
+    margin-left: 0%; } }
+ul.module h5 {
+  padding-left: 5%; }
+
+ul.properties {
+  padding-left: 12%; }
+
+ul.methods {
+  padding-left: 12%; }
+
+div.module-content {
+  padding-left: 1em; }
+
+section.property {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid #c5cacb; }
+
+section.method {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid #c5cacb; }
+
+.nav.nav-list ul {
+  margin-left: 0em; }
 
 body {
   background-color: white;

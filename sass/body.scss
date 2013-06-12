@@ -1,12 +1,62 @@
-li {
-  list-style:none;
+#tower-intro {
+  h1 {
+    text-align: center;
+  }
+  h2 {
+    text-align: center;
+  }
 }
+
 
 section#content {
   position: relative;
-  top: 70px;
+  padding-top: 70px;
   width: 80%;
   margin: 0 auto;
+  li {
+    list-style:none;
+  }
+  .sidebar-nav-fixed {
+    position: fixed;
+    height: 60%;
+    overflow-y: auto;
+  }
+
+  .sidebar-nav-fixed.span2 {
+    width: 18%;
+  }
+
+  ul.properties,
+  ul.methods {
+    padding-left: 8%;  
+  }
+
+  .p-or-m-item {
+    padding-left: 11%;
+  }
+
+  div.module-content {
+    padding-left: 3%;
+  }
+
+  section.property {
+    padding: 0 0 1em 1em;
+    border-bottom: 1px solid $fgcolor;
+  }
+
+  section.method {
+    padding: 0 0 1em 1em;
+    border-bottom: 1px solid $fgcolor;
+  }
+
+  .nav.nav-list ul {
+    margin-left: 0em;
+  }
+
+  .module {
+    margin-bottom: 3em;
+  }
+
   @media only screen and (max-width: 785px) {
     #tower-intro {
       margin: 0 auto;
@@ -38,71 +88,30 @@ section#content {
       margin-bottom: 30px;
     }
   }
-}
-
-#tower-intro {
-  h1 {
-    text-align: center;
+  @media (max-width: 767px) {
+    .sidebar-nav-fixed {
+      width: auto;
+    }
   }
-  h2 {
-    text-align: center;
+
+  @media (max-width: 979px) {
+    .well.sidebar-nav-fixed.span2 {
+      position: static;
+      width: 100%;
+    }
+    .span8.offset3.right-panel-info {
+      width: 100%;
+      margin-left: 0%;
+    }
+    ul.properties, 
+    ul.methods {
+      padding-left: 4%;    
+    }
+    .p-or-m-item {
+      padding-left: 3%;
+    }
   }
+
 }
 
-.sidebar-nav-fixed {
-  position: fixed;
-  height: 60%;
-  overflow-y: auto;
-}
-
-.sidebar-nav-fixed.span2 {
-  width: 18%;
-}
-
-@media (max-width: 767px) {
-  .sidebar-nav-fixed {
-    width: auto;
-  }
-}
-
-@media (max-width: 979px) {
-  .well.sidebar-nav-fixed.span2 {
-    position: static;
-    width: 100%;
-  }
-  .span8.offset3.right-panel-info {
-    width: 100%;
-    margin-left: 0%;
-  }
-}
-
-ul.module h5 {
-  padding-left: 5%;
-}
-
-ul.properties {
-  padding-left: 12%;
-}
-
-ul.methods {
-  padding-left: 12%;
-}
-
-div.module-content {
-  padding-left: 1em;
-}
-
-section.property {
-  padding: 0 0 1em 1em;
-  border-bottom: 1px solid $fgcolor;
-}
-
-section.method {
-  padding: 0 0 1em 1em;
-  border-bottom: 1px solid $fgcolor;
-}
-
-.nav.nav-list ul {
-  margin-left: 0em;
-}
 
