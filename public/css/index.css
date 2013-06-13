@@ -107,14 +107,17 @@ section#content {
     padding-left: 11%; }
   section#content div.module-content {
     padding-left: 3%; }
-  section#content section.property {
-    padding: 0 0 1em 1em;
-    border-bottom: 1px solid #c5cacb; }
+  section#content section.property,
   section#content section.method {
-    padding: 0 0 1em 1em;
+    padding: 1.5em 1.5em 2.5em 1.5em;
     border-bottom: 1px solid #c5cacb; }
-  section#content .nav.nav-list ul {
-    margin-left: 0em; }
+  section#content section.property.last-section,
+  section#content section.method.last-section {
+    border-bottom: 0px; }
+  section#content .nav.nav-list {
+    word-wrap: break-word; }
+    section#content .nav.nav-list ul {
+      margin-left: 0em; }
   section#content .module {
     margin-bottom: 3em; }
   @media only screen and (max-width: 785px) {
