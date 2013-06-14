@@ -6,7 +6,7 @@ $(document).ready(function () {
   $siblings1.slideUp();
 
   $('#nav-list').on('click', function (event) {
-    event.preventDefault();
+    //event.preventDefault();
 
     var target = event.target,
       targetTag = target.tagName.toLowerCase(),
