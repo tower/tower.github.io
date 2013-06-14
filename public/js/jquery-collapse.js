@@ -2,12 +2,20 @@ var jQuery = $ = require("component-jquery");
 
 $(document).ready(function () {
 
+  function showHide(event, siblings) {
+    if (siblings.first().is(":hidden")) {
+      siblings.slideDown();
+    } else {
+      event.preventDefault();
+      siblings.slideUp();
+    }  
+  }
+
   var $siblings1 = $('a.mod-link').parent().parent().siblings();
+
   $siblings1.slideUp();
 
   $('#nav-list').on('click', function (event) {
-    //event.preventDefault();
-
     var target = event.target,
       targetTag = target.tagName.toLowerCase(),
       $target = $(target),
@@ -17,22 +25,11 @@ $(document).ready(function () {
 
     if ($targetText === 'Methods:' || $targetText === 'Properties:') {
       var $siblings = $targetParent.siblings();
-      if ($siblings.first().is(":hidden")) {
-        $siblings.slideDown();
-      } else {
-        $siblings.slideUp();
-      }
-    }
-
-    if ($targetId === 'mod-link') {
+      showHide(event, $siblings);
+    }else if ($targetId === 'mod-link') {
       var $siblings = $targetParent.parent().siblings();
-      if ($siblings.first().is(":hidden")) {
-        $siblings.slideDown();
-      } else {
-        $siblings.slideUp();
-      }
-    }
-
+      showHide(event, $siblings);
+    }    
   });
 
 });

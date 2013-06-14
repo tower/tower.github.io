@@ -35,7 +35,7 @@ section#content {
     padding-left: 8%;  
   }
 
-  .p-or-m-item {
+  .class-indent{
     padding-left: 11%;
   }
 
@@ -54,17 +54,19 @@ section#content {
    border-bottom: 0px;  
   }
 
-  .nav.nav-list {
-    word-wrap: break-word;
-    ul {
-     margin-left: 0em;
-    }
-  }
-
   .module {
     margin-bottom: 3em;
   }
 
+  .nav.nav-list {
+    word-wrap: break-word;
+    ul {
+      margin-left: 0em;
+      margin-bottom: 1.2em;
+    }
+  }
+
+  
   @media only screen and (max-width: 785px) {
     #tower-intro {
       margin: 0 auto;
@@ -122,7 +124,7 @@ section#content {
     ul.methods {
       padding-left: 4%;    
     }
-    .p-or-m-item {
+    .class-indent {
       padding-left: 3%;
     }
   }

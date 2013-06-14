@@ -105,7 +105,7 @@ section#content {
   section#content ul.properties,
   section#content ul.methods {
     padding-left: 8%; }
-  section#content .p-or-m-item {
+  section#content .class-indent {
     padding-left: 11%; }
   section#content div.module-content {
     padding-left: 3%; }
@@ -116,12 +116,13 @@ section#content {
   section#content section.property.last-section,
   section#content section.method.last-section {
     border-bottom: 0px; }
+  section#content .module {
+    margin-bottom: 3em; }
   section#content .nav.nav-list {
     word-wrap: break-word; }
     section#content .nav.nav-list ul {
-      margin-left: 0em; }
-  section#content .module {
-    margin-bottom: 3em; }
+      margin-left: 0em;
+      margin-bottom: 1.2em; }
   @media only screen and (max-width: 785px) {
     section#content #tower-intro {
       margin: 0 auto;
@@ -160,7 +161,7 @@ section#content {
     section#content ul.properties,
     section#content ul.methods {
       padding-left: 4%; }
-    section#content .p-or-m-item {
+    section#content .class-indent {
       padding-left: 3%; } }
 
 body {
