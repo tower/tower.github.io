@@ -1,43 +1,79 @@
-.keyword{color: #56b3a6} /* Keyword */
-.nt{color: #56b3a6; font-weight: bold} /* Tag name */
-.o{color: #56b3a6; font-weight: bold} /* Operator */
-.s{color: #e84c52} /* Attribute value */
-.string{color: #e84c52} /* String */
-.s2{color: #e84c52} /* String */
-.na{color: #e58a8e} /* Attribute */
-.ni{color: #e59e4b} /* Entity */
-.mi{color: #e59e4b} /* Integer */
-.mf{color: #e59e4b} /* Float */
-.c{color: #b6ae99; font-style: italic} /* Comment */
-.c1{color: #b6ae99; font-style: italic} /* Comment */
-.p{color: #dfdbce} /* Punctation */
+
+
+pre, code {
+font-family: "Menlo", monospace;
+line-height: normal;
+}
 
 pre {
-  background: none;
   border: none;
-}
-
-td.gutter {
-  width: 40px;
+  overflow-x: auto;
+  border-left: solid 2px #CCC;
+  padding-left: 18px;
+  margin: 2em 0 2em -20px;
+  background: #fff;
+  border-radius: 0;
   display: inline-block;
-  display: none;
-}
-
-td.code {
-  width: 80%;
-}
-
-pre {
-  width: 70%;
-  margin: 0 auto;
-  position: relative;
-  left: 90px;
 }
 
 code {
-font: 14px/14px Consolas, monospace;
-padding: 18px 22px;
-border-radius: 0px;
-background: #fff;
-color: #fff;
+  font-size: 16px;
+  display: block;
+}
+
+#ct {
+  display: inline-block;
+  color: #333;
+  width: 70%;
+
+  p {
+    font-size: 19px;
+    line-height: 2;
+    margin:40px 0;
+  }
+
+  h2 {
+    display: block;
+    margin-top: 30px;
+    line-height: 10px;
+  }
+
+}
+
+
+.html .value,
+.javascript .string,
+.javascript .regexp {
+  color: #e6550d;
+}
+
+.html .tag,
+.css .tag,
+.javascript .keyword {
+  color: #419edd;
+}
+
+aside,
+.comment {
+  color: #636363;
+}
+
+.html .doctype,
+.javascript .number {
+  color: #28bfa2;
+}
+
+.html .attribute,
+.css .attribute,
+.javascript .class,
+.javascript .special {
+  color: #28bfa2;
+}
+
+.js .keyword, .javascript .keyword {
+  color: #419edd;
+}
+
+.js .string, .javascript .string {
+  color: #28bfa2;
 }

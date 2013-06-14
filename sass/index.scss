@@ -16,6 +16,7 @@ body {
     color: $header-color;
     color: #5E656D;
     margin-bottom: 30px;
+    margin-top: 0px;
     text-align: center;
   }
 
@@ -23,6 +24,24 @@ body {
     font-size: 23px;
     color: $h2-color;
     font-family: $h2-font;
+  }
+
+  div#sidebar {
+    display: inline-block;
+    float: left;
+    width: 200px;
+    margin-top: 25px;
+    margin-left: 40px;
+
+    ul li a {
+      font-size: 16px;
+    }
+
+    ul li {
+      margin: 10px 0;
+    }
+
+
   }
 
   footer {}
