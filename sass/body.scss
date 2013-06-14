@@ -1,3 +1,7 @@
+li {
+  list-style:none;
+}
+
 section#content {
   position: relative;
   top: 70px;
@@ -7,7 +11,8 @@ section#content {
     #tower-intro {
       margin: 0 auto;
       margin-bottom: 70px;
-      h1 {}
+      h1 {
+      }
     }
     #tower-hero {
       margin: 0 auto;
@@ -43,3 +48,61 @@ section#content {
     text-align: center;
   }
 }
+
+.sidebar-nav-fixed {
+  position: fixed;
+  height: 60%;
+  overflow-y: auto;
+}
+
+.sidebar-nav-fixed.span2 {
+  width: 18%;
+}
+
+@media (max-width: 767px) {
+  .sidebar-nav-fixed {
+    width: auto;
+  }
+}
+
+@media (max-width: 979px) {
+  .well.sidebar-nav-fixed.span2 {
+    position: static;
+    width: 100%;
+  }
+  .span8.offset3.right-panel-info {
+    width: 100%;
+    margin-left: 0%;
+  }
+}
+
+ul.module h5 {
+  padding-left: 5%;
+}
+
+ul.properties {
+  padding-left: 12%;
+}
+
+ul.methods {
+  padding-left: 12%;
+}
+
+div.module-content {
+  padding-left: 1em;
+}
+
+section.property {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid $fgcolor;
+}
+
+section.method {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid $fgcolor;
+}
+
+.nav.nav-list ul {
+  margin-left: 0em;
+}
+
