@@ -14,9 +14,9 @@ exports = module.exports = markdown;
  */
 
 marked.setOptions({
-  highlight: function(code, lang){
+  /**highlight: function(code, lang){
     return hl(code, "<span>  </span>");
-  },
+  }**/
   langPrefix: ''
 });
 
