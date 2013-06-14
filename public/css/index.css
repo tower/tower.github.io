@@ -100,6 +100,8 @@ section#content {
     overflow-y: auto; }
   section#content .sidebar-nav-fixed.span2 {
     width: 18%; }
+  section#content .module-items {
+    padding-left: 8%; }
   section#content ul.properties,
   section#content ul.methods {
     padding-left: 8%; }
@@ -153,6 +155,8 @@ section#content {
     section#content .span8.offset3.right-panel-info {
       width: 100%;
       margin-left: 0%; }
+    section#content .module-items {
+      padding-left: 3%; }
     section#content ul.properties,
     section#content ul.methods {
       padding-left: 4%; }

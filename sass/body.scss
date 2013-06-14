@@ -12,6 +12,7 @@ section#content {
   padding-top: 70px;
   width: 80%;
   margin: 0 auto;
+
   li {
     list-style:none;
   }
@@ -23,6 +24,10 @@ section#content {
 
   .sidebar-nav-fixed.span2 {
     width: 18%;
+  }
+
+  .module-items {
+    padding-left: 8%;
   }
 
   ul.properties,
@@ -92,6 +97,7 @@ section#content {
       margin-bottom: 30px;
     }
   }
+
   @media (max-width: 767px) {
     .sidebar-nav-fixed {
       width: auto;
@@ -107,6 +113,11 @@ section#content {
       width: 100%;
       margin-left: 0%;
     }
+
+    .module-items {
+      padding-left: 3%;
+    }    
+
     ul.properties, 
     ul.methods {
       padding-left: 4%;    
@@ -115,6 +126,7 @@ section#content {
       padding-left: 3%;
     }
   }
+
 }
 
 
