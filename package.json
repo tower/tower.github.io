@@ -38,6 +38,7 @@
     "node-syntaxhighlighter": "~0.8.1",
     "highlight": "~0.2.3",
     "tower-router": "*",
-    "tower-route": "*"
+    "tower-route": "*",
+    "jsdom": "~0.6.5"
   }
 }
