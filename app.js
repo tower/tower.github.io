@@ -1,3 +1,4 @@
+
 /**
  * Dependencies.
  */
@@ -5,6 +6,8 @@
 var express = require('express');
 var partials = require('express-partials');
 var app = express();
+var router = require('tower-router');
+var route = require('tower-route');
 var path = require('path');
 var markdown = require('./markdown');
 
@@ -20,31 +23,23 @@ app.configure(function(){
   app.use('/public', express.static(__dirname + '/public'));
   app.engine('html', require('ejs').renderFile);
   app.use(express.cookieParser());
-  app.use(app.router);
+  app.use(router);
 });
 
-app.get('/', function(req, res){
-  res.render('index');
+route('/', function(context){
+  context.res.render('index');
 });
 
-app.get('/guides', function(req, res){
-  res.render('guides', { code: markdown('code') });
+route('/guides', function(context){
+  context.res.render('guides', { code: markdown('code') });
 });
 
-app.get('/community', function(req, res){
-  res.render('community');
-});
-
-app.get('/screencasts', function(req, res){
-  res.render('screencasts');
-});
-
-app.get('/docs', function(req, res){
-  res.render('docs');
+route('/api', function(context){
+  context.res.render('docs');
 });
 
 /**
  * Listen.
  */
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);

@@ -6,15 +6,8 @@
   "homepage": "http://viatropos.github.com/towerjs.org",
   "main": "./server.js",
   "subdomain": "towerjs.org",
-  "author": "'Lance Pollard' <lancejpollard@gmail.com>",
   "keywords": [
     "node"
-  ],
-  "maintainers": [
-    {
-      "name": "Lance Pollard",
-      "email": "lancejpollard@gmail.com"
-    }
   ],
   "contributors": [
     "TheHydroImpulse"
@@ -43,6 +36,8 @@
     "highlight.js": "~7.3.0",
     "marked": "~0.2.9",
     "node-syntaxhighlighter": "~0.8.1",
-    "highlight": "~0.2.3"
+    "highlight": "~0.2.3",
+    "tower-router": "*",
+    "tower-route": "*"
   }
 }
