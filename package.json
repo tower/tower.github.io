@@ -39,6 +39,8 @@
     "highlight": "~0.2.3",
     "tower-router": "*",
     "tower-route": "*",
+    "tower-content": "*",
+    "tower-directive": "*",
     "jsdom": "~0.6.5"
   }
 }
