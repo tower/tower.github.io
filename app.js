@@ -17,12 +17,10 @@ var markdown = require('./markdown');
 
 app.configure(function(){
   app.use(partials());
-  app.use(express.bodyParser());
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use('/public', express.static(__dirname + '/public'));
   app.engine('html', require('ejs').renderFile);
-  app.use(express.cookieParser());
   app.use(router);
 });
 
