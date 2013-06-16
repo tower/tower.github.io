@@ -82,47 +82,17 @@ header {
           header ul li.first {
             margin-left: 0%; } }
 
-#tower-intro h1 {
-  text-align: center; }
-#tower-intro h2 {
-  text-align: center; }
+li {
+  list-style: none; }
+
+li {
+  list-style: none; }
 
 section#content {
   position: relative;
-  padding-top: 70px;
+  top: 70px;
   width: 80%;
   margin: 0 auto; }
-  section#content li {
-    list-style: none; }
-  section#content .sidebar-nav-fixed {
-    position: fixed;
-    height: 60%;
-    overflow-y: auto; }
-  section#content .sidebar-nav-fixed.span2 {
-    width: 18%; }
-  section#content .module-items {
-    padding-left: 8%; }
-  section#content ul.properties,
-  section#content ul.methods {
-    padding-left: 8%; }
-  section#content .class-indent {
-    padding-left: 11%; }
-  section#content div.module-content {
-    padding-left: 3%; }
-  section#content section.property,
-  section#content section.method {
-    padding: 1.5em 1.5em 2.5em 1.5em;
-    border-bottom: 1px solid #c5cacb; }
-  section#content section.property.last-section,
-  section#content section.method.last-section {
-    border-bottom: 0px; }
-  section#content .module {
-    margin-bottom: 3em; }
-  section#content .nav.nav-list {
-    word-wrap: break-word; }
-    section#content .nav.nav-list ul {
-      margin-left: 0em;
-      margin-bottom: 1.2em; }
   @media only screen and (max-width: 785px) {
     section#content #tower-intro {
       margin: 0 auto;
@@ -146,110 +116,66 @@ section#content {
         font-size: 20px; }
       section#content #tower-intro {
         margin-bottom: 30px; } }
-  @media (max-width: 767px) {
-    section#content .sidebar-nav-fixed {
-      width: auto; } }
-  @media (max-width: 979px) {
-    section#content .well.sidebar-nav-fixed.span2 {
-      position: static;
-      width: 100%; }
-    section#content .span8.offset3.right-panel-info {
-      width: 100%;
-      margin-left: 0%; }
-    section#content .module-items {
-      padding-left: 3%; }
-    section#content ul.properties,
-    section#content ul.methods {
-      padding-left: 4%; }
-    section#content .class-indent {
-      padding-left: 3%; } }
 
-pre, code {
-  font-family: "Menlo", monospace;
-  line-height: normal; }
+#tower-intro h1 {
+  text-align: center; }
+#tower-intro h2 {
+  text-align: center; }
 
-pre {
-  border: none;
-  overflow-x: auto;
-  border-left: solid 2px #CCC;
-  padding-left: 18px;
-  margin: 2em 0 2em -20px;
-  background: #fff;
-  border-radius: 0;
-  display: inline-block; }
+.sidebar-nav-fixed {
+  position: fixed;
+  height: 60%;
+  overflow-y: auto; }
 
-code {
-  font-size: 16px;
-  display: block; }
+.sidebar-nav-fixed.span2 {
+  width: 18%; }
 
-#ct {
-  display: inline-block;
-  color: #333;
-  width: 70%; }
-  #ct p {
-    font-size: 19px;
-    line-height: 2;
-    margin: 40px 0; }
-  #ct h2 {
-    display: block;
-    margin-top: 30px;
-    line-height: 10px; }
+@media (max-width: 767px) {
+  .sidebar-nav-fixed {
+    width: auto; } }
+@media (max-width: 979px) {
+  .well.sidebar-nav-fixed.span2 {
+    position: static;
+    width: 100%; }
 
-.html .value,
-.javascript .string,
-.javascript .regexp {
-  color: #e6550d; }
+  .span8.offset3.right-panel-info {
+    width: 100%;
+    margin-left: 0%; } }
+ul.module h5 {
+  padding-left: 5%; }
 
-.html .tag,
-.css .tag,
-.javascript .keyword {
-  color: #419edd; }
+ul.properties {
+  padding-left: 12%; }
 
-aside,
-.comment {
-  color: #636363; }
+ul.methods {
+  padding-left: 12%; }
 
-.html .doctype,
-.javascript .number {
-  color: #28bfa2; }
+div.module-content {
+  padding-left: 1em; }
 
-.html .attribute,
-.css .attribute,
-.javascript .class,
-.javascript .special {
-  color: #28bfa2; }
+section.property {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid #c5cacb; }
 
-.js .keyword, .javascript .keyword {
-  color: #419edd; }
+section.method {
+  padding: 0 0 1em 1em;
+  border-bottom: 1px solid #c5cacb; }
 
-.js .string, .javascript .string {
-  color: #28bfa2; }
+.nav.nav-list ul {
+  margin-left: 0em; }
 
 body {
   background-color: white;
   color: #c5cacb;
   font-family: "Droid Sans";
-  min-width: 320px;
-  margin-bottom: 30px; }
+  min-width: 320px; }
   body h1 {
     font-size: 35px;
     font-family: "Droid Serif";
     color: #2c3e50;
     color: #5E656D;
-    margin-bottom: 30px;
-    margin-top: 0px;
     text-align: center; }
   body h2 {
     font-size: 23px;
     color: #7f8c8d;
     font-family: "Droid Serif"; }
-  body div#sidebar {
-    display: inline-block;
-    float: left;
-    width: 200px;
-    margin-top: 25px;
-    margin-left: 40px; }
-    body div#sidebar ul li a {
-      font-size: 16px; }
-    body div#sidebar ul li {
-      margin: 10px 0; }

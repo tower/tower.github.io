@@ -1,0 +1,8 @@
+{
+  "name": "tower-docs",
+  "version": "1.0.0",
+  "development": {
+    "component/jquery": "*"
+  }
+}
+

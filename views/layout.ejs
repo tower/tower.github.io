@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/css/bootstrap-responsive.min.css" />
     <link rel="stylesheet" href="/public/css/index.css" />
+
     <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
+
+    <% if(typeof url !== 'undefined') { %>  
+      <%- partial('header', {url: url}) %>  
+    <% } %>      
+   
     <!--[if lt IE 9]>
       <script type="text/javascript" src="public/js/html5.js"></script>
     <![endif]-->

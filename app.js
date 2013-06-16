@@ -40,7 +40,7 @@ app.get('/screencasts', function(req, res){
 });
 
 app.get('/docs', function(req, res){
-  res.render('docs');
+  res.render('docs', { url: 'docs' });
 });
 
 /**
