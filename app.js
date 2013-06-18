@@ -47,8 +47,9 @@ guide('cookbook');
  */
 
 content('body')
+  .attr('guides', 'array', guide.collection)
   .helper('label', function(scope, name){
-    return text(name).render(scope);
+    return name;//text(name).render(scope);
   });
 
 /**
