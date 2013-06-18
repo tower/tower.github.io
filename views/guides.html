@@ -3,6 +3,10 @@
 <div id="sidebar">
   <nav>
     <ul>
+      <li data-list="guide in guides">
+        <a data-name="guide" data-text="label(guide)"></a>
+      </li>
+      <!--
       <li>
         <a href="#">Introduction</a>
         <ul>
@@ -26,9 +30,10 @@
       <li>
         <a href="#">Server vs Client</a>
       </li>
+      -->
     </ul>
   </nav>
 </div>
-<div id="ct">
-  <%- code %>
+<div id="guides">
+  <div data-list="guide in guides" data-markdown>{{guides[guide]}}</div>
 </div>

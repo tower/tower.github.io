@@ -9,9 +9,6 @@
   "keywords": [
     "node"
   ],
-  "contributors": [
-    "TheHydroImpulse"
-  ],
   "licenses": [
     {
       "type": "MIT",
@@ -37,10 +34,12 @@
     "marked": "~0.2.9",
     "node-syntaxhighlighter": "~0.8.1",
     "highlight": "~0.2.3",
+    "jsdom": "~0.6.5",
     "tower-router": "*",
     "tower-route": "*",
     "tower-content": "*",
     "tower-directive": "*",
-    "jsdom": "~0.6.5"
+    "tower-text": "*",
+    "tower-guides": "git://github.com/tower/guides.git"
   }
 }
