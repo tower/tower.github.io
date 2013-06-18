@@ -37,6 +37,10 @@ route('/api', function(context){
   context.res.render('docs');
 });
 
+app.get('/docs', function(req, res){
+  res.render('docs', { url: 'docs' });
+});
+
 /**
  * Listen.
  */

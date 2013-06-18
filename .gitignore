@@ -2,3 +2,5 @@
 .idea
 .DS_Store
 node_modules/
+.temp_tower_modules/
+components
