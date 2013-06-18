@@ -4,7 +4,7 @@
   <nav>
     <ul>
       <li data-list="guide in guides">
-        <a data-name="guide" data-text="label(guide)"></a>
+        <a data-href="guide.href" data-name="guide" data-text="guide.name" data-label="label(guide)"></a>
       </li>
       <!--
       <li>
@@ -35,5 +35,7 @@
   </nav>
 </div>
 <div id="guides">
-  <div data-list="guide in guides" data-markdown>{{guides[guide]}}</div>
+  <div data-list="guide in guides">
+    <div data-markdown="guide.content"></div>
+  </div>
 </div>

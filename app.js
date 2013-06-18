@@ -11,9 +11,15 @@ var content = require('tower-content');
 var router = require('tower-router');
 var route = require('tower-route');
 var text = require('tower-text');
-var markdown = require('./lib/markdown');
 var guide = require('./lib/guide');
 var render = require('./lib/render');
+
+/**
+ * Directives.
+ */
+
+require('tower-list-directive').document = render.document;
+require('tower-markdown-directive');
 
 /**
  * Configuration.
@@ -62,7 +68,7 @@ route('/', function(context){
 });
 
 route('/guides', function(context){
-  context.res.render('guides', { code: markdown('code') });
+  context.res.render('guides');
 });
 
 route('/api', function(context){

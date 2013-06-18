@@ -40,6 +40,8 @@
     "tower-content": "*",
     "tower-directive": "*",
     "tower-text": "*",
+    "tower-list-directive": "*",
+    "tower-markdown-directive": "*",
     "tower-guides": "git://github.com/tower/guides.git"
   }
 }
