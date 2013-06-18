@@ -88,33 +88,33 @@ li {
 li {
   list-style: none; }
 
-section#content {
+section#body {
   position: relative;
   top: 70px;
   width: 80%;
   margin: 0 auto; }
   @media only screen and (max-width: 785px) {
-    section#content #tower-intro {
+    section#body #tower-intro {
       margin: 0 auto;
       margin-bottom: 70px; }
-    section#content #tower-hero {
+    section#body #tower-hero {
       margin: 0 auto;
       text-align: center; } }
   @media only screen and (max-width: 507px) {
-    section#content {
+    section#body {
       margin: 0 auto;
       width: 100%;
       top: 190px;
       font-size: 12px;
       border-top: 1px solid #eee;
       padding-top: 20px; }
-      section#content h1 {
+      section#body h1 {
         text-align: center;
         font-size: 25px;
         margin-bottom: 8px; }
-      section#content h2 {
+      section#body h2 {
         font-size: 20px; }
-      section#content #tower-intro {
+      section#body #tower-intro {
         margin-bottom: 30px; } }
 
 #tower-intro h1 {

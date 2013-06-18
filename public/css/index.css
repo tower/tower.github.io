@@ -86,81 +86,81 @@ header {
 #tower-intro h2 {
   text-align: center; }
 
-section#content {
+section#body {
   position: relative;
   padding-top: 70px;
   width: 80%;
   margin: 0 auto; }
-  section#content .nav-list li {
+  section#body .nav-list li {
     list-style: none; }
-  section#content .sidebar-nav-fixed {
+  section#body .sidebar-nav-fixed {
     position: fixed;
     height: 60%;
     overflow-y: auto; }
-  section#content .sidebar-nav-fixed.span2 {
+  section#body .sidebar-nav-fixed.span2 {
     width: 18%; }
-  section#content .module-items {
+  section#body .module-items {
     padding-left: 8%; }
-  section#content ul.properties,
-  section#content ul.methods {
+  section#body ul.properties,
+  section#body ul.methods {
     padding-left: 8%; }
-  section#content .class-indent {
+  section#body .class-indent {
     padding-left: 11%; }
-  section#content div.module-content {
+  section#body div.module-content {
     padding-left: 3%; }
-  section#content section.property,
-  section#content section.method {
+  section#body section.property,
+  section#body section.method {
     padding: 1.5em 1.5em 2.5em 1.5em;
     border-bottom: 1px solid #c5cacb; }
-  section#content section.property.last-section,
-  section#content section.method.last-section {
+  section#body section.property.last-section,
+  section#body section.method.last-section {
     border-bottom: 0px; }
-  section#content .module {
+  section#body .module {
     margin-bottom: 3em; }
-  section#content .nav.nav-list {
+  section#body .nav.nav-list {
     word-wrap: break-word; }
-    section#content .nav.nav-list ul {
+    section#body .nav.nav-list ul {
       margin-left: 0em;
       margin-bottom: 1.2em; }
   @media only screen and (max-width: 785px) {
-    section#content #tower-intro {
+    section#body #tower-intro {
       margin: 0 auto;
       margin-bottom: 70px; }
-    section#content #tower-hero {
+    section#body #tower-hero {
       margin: 0 auto;
       text-align: center; } }
   @media only screen and (max-width: 507px) {
-    section#content {
+    section#body {
       margin: 0 auto;
       width: 100%;
       top: 190px;
       font-size: 12px;
       border-top: 1px solid #eee;
       padding-top: 20px; }
-      section#content h1 {
+      section#body h1 {
         text-align: center;
         font-size: 25px;
         margin-bottom: 8px; }
-      section#content h2 {
+      section#body h2 {
         font-size: 20px; }
-      section#content #tower-intro {
+      section#body #tower-intro {
         margin-bottom: 30px; } }
   @media (max-width: 767px) {
-    section#content .sidebar-nav-fixed {
+    section#body .sidebar-nav-fixed {
       width: auto; } }
   @media (max-width: 979px) {
-    section#content .well.sidebar-nav-fixed.span2 {
+    section#body .well.sidebar-nav-fixed.span2 {
       position: static;
       width: 100%; }
-    section#content .span8.offset3.right-panel-info {
+    section#body .span8.offset3.right-panel-info {
       width: 100%;
       margin-left: 0%; }
-    section#content .module-items {
+    section#body .module-items {
       padding-left: 3%; }
-    section#content ul.properties,
-    section#content ul.methods {
+    section#body ul.properties,
+    section#body ul.methods {
       padding-left: 4%; }
-    section#content .class-indent {
+    section#body .class-indent {
       padding-left: 3%; } }
 
 .description {
