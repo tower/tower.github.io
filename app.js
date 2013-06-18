@@ -45,8 +45,13 @@ guide('template');
 guide('content');
 guide('directive');
 guide('element');
+guide('expression');
 guide('route');
 guide('cookbook');
+guide('validator');
+guide('type');
+guide('text');
+guide('cli');
 
 /**
  * Content.
@@ -72,7 +77,7 @@ route('/guides', function(context){
 });
 
 route('/api', function(context){
-  context.res.render('docs');
+  context.res.render('api');
 });
 
 /**
