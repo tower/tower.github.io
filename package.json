@@ -35,13 +35,16 @@
     "node-syntaxhighlighter": "~0.8.1",
     "highlight": "~0.2.3",
     "jsdom": "~0.6.5",
+    "domify": "~1.0.0",
     "tower-router": "*",
     "tower-route": "*",
     "tower-content": "*",
+    "tower-template": "*",
     "tower-directive": "*",
     "tower-text": "*",
     "tower-list-directive": "*",
     "tower-markdown-directive": "*",
+    "tower-doc-cookbook": "git://github.com/btbinhtran/doc-cookbook.git",
     "tower-guides": "git://github.com/tower/guides.git"
   }
 }
