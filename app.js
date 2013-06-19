@@ -49,9 +49,9 @@ guide('element');
 guide('expression');
 guide('route');
 guide('cookbook');
-guide('validator');
-guide('type');
-guide('text');
+//guide('validator');
+//guide('type');
+//guide('text');
 guide('cli');
 
 /**
@@ -72,17 +72,17 @@ doc('template');
 doc('text');
 doc('type');
 doc('validator');
-doc.compile();
+//doc.compile();
 
 /**
  * Content.
  */
 
-// content('body')
-//   .attr('guides', 'array', guide.collection)
-//   .helper('label', function(scope, name){
-//     return name;//text(name).render(scope);
-//   });
+content('body')
+  .attr('guides', 'array', guide.collection)
+  .helper('label', function(scope, name){
+    return name;//text(name).render(scope);
+  });
 
 /**
  * Routes.
