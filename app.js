@@ -13,6 +13,7 @@ var route = require('tower-route');
 var text = require('tower-text');
 var guide = require('./lib/guide');
 var render = require('./lib/render');
+var doc = require('./lib/doc');
 
 /**
  * Directives.
@@ -54,14 +55,34 @@ guide('text');
 guide('cli');
 
 /**
+ * Docs.
+ */
+
+doc('adapter');
+doc('cli');
+doc('content');
+doc('cookbook');
+doc('directive');
+doc('element');
+doc('expression');
+doc('query');
+doc('resource');
+doc('route');
+doc('template');
+doc('text');
+doc('type');
+doc('validator');
+doc.compile();
+
+/**
  * Content.
  */
 
-content('body')
-  .attr('guides', 'array', guide.collection)
-  .helper('label', function(scope, name){
-    return name;//text(name).render(scope);
-  });
+// content('body')
+//   .attr('guides', 'array', guide.collection)
+//   .helper('label', function(scope, name){
+//     return name;//text(name).render(scope);
+//   });
 
 /**
  * Routes.
