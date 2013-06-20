@@ -126,7 +126,10 @@ route('/', function(context){
 });
 
 route('/guide', function(context){
+  var startDate = new Date;
   context.res.render('guides');
+  var endDate = new Date;
+  console.log(endDate.getTime() - startDate.getTime())
 });
 
 route('/api', function(context){
