@@ -364,7 +364,7 @@ body {
     color: #7e8c8d;
     font-family: Helvetica, arial, freesans, clean, sans-serif; }
   body div#sidebar {
-    display: inline-block;
+    display: block;
     float: left;
     width: 200px;
     margin-top: 25px;
