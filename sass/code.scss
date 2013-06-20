@@ -16,13 +16,9 @@ pre {
   border: none;
   overflow-x: auto;
   border-left: solid 2px #CCC;
-  padding-left: 18px;
-  /*margin: 2em 0 2em -20px;*/
-  margin: 15px 0px 15px -20px;
-  background: #f8f8f8;
   border-radius: 0;
   width: 790px;
-  display: inline-block;
+  display: block;
 }
 
 pre code {
@@ -105,9 +101,8 @@ aside,
 
 pre {
   background: none;
-  border: 1px solid rgb(238, 238, 238);
-  padding: 30px;
-  margin: 20px 30px 30px 30px;
+  border: 1px solid rgb(238, 244, 244);
+  padding: 20px;
 }
 
 td.gutter {

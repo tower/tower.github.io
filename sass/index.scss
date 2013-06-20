@@ -10,6 +10,13 @@ body {
   font-family: $body-font;
   min-width: $break-small;
 
+  a {
+    color: $link-color;
+    &:hover {
+      color: $link-color-hover;
+    }
+  }
+
   h1 {
     font-size: 35px;
     font-family: $header-font;
@@ -26,7 +33,7 @@ body {
   }
 
   .content {
-  
+
   }
 
   div#sidebar {
