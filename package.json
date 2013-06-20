@@ -44,6 +44,7 @@
     "tower-text": "*",
     "tower-list-directive": "*",
     "tower-markdown-directive": "*",
+    "tower-interpolation-directive": "*",
     "tower-doc-cookbook": "git://github.com/btbinhtran/doc-cookbook.git",
     "tower-guides": "git://github.com/tower/guides.git"
   }

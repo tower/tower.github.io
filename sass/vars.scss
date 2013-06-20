@@ -2,15 +2,18 @@ $bgcolor: #ffffff;
 $fgcolor: #c5cacb;
 $nav-link-color: #cbd0d3;
 
-$header-color: #2c3e50;
-$h2-color: #7f8c8d;
+$header-color: #2b3e4e;
+$h2-color: hsla(184, 6.1728%, 52.3529%, 1.0000);
 
 $break-small: 320px;
 $break-ssmall: 480px;
 $break-medium: 650px;
 $break-large: 1024px;
 
-$body-font: "Droid Sans";
-$header-font: "Droid Serif";
+$body-font: Helvetica, arial, freesans, clean, sans-serif;
+$body-font-color: #7e8c8d;
+$body-font-size: 15px;
+$body-line-height: 1.7;
+$header-font: $body-font;
 $link-font: $body-font;
 $h2-font: $header-font;

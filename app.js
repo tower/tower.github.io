@@ -20,7 +20,43 @@ var doc = require('./lib/doc');
  */
 
 require('tower-list-directive').document = render.document;
-require('tower-markdown-directive');
+//require('tower-markdown-directive');
+require('tower-interpolation-directive');
+
+
+/**
+ * Module dependencies.
+ */
+
+var directive = require('tower-directive');
+var md = require('marked');
+var hl = require("highlight").Highlight;
+
+md.setOptions({
+  highlight: function(code, lang){
+    return hl(code, "<span>  </span>");
+  }
+});
+
+/**
+ * Expose `markdownDirective`.
+ */
+
+//module.exports = directive('[type="text/markdown"]', markdownDirective);
+directive('data-markdown', markdownDirective);
+
+/**
+ * Define `markdownDirective`.
+ */
+
+function markdownDirective(scope, el, attr) {
+  // XXX: todo, expression
+  var val = attr.value
+    ? scope.get(attr.value)
+    : el.textContent;
+
+  if (val) el.innerHTML = md(val);
+}
 
 /**
  * Configuration.
@@ -90,7 +126,6 @@ content('body')
 
 route('/', function(context){
   context.res.render('index');
-  //context.res.send(document.innerHTML);
 });
 
 route('/guides', function(context){

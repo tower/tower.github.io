@@ -1,17 +1,46 @@
-#tower-intro {
-  h1 {
-    text-align: center;
-  }
-  h2 {
-    text-align: center;
-  }
+
+h1, h2, h3 {
+  color: #2b3e4e;
 }
 
-section#content {
+p {
+  margin-bottom: 15px;
+}
+
+section#body {
   position: relative;
   padding-top: 70px;
   width: 80%;
   margin: 0 auto;
+  color: $body-font-color;
+  font-size: $body-font-size;
+  line-height: $body-line-height;
+  li {
+    line-height: $body-line-height;
+  }
+  #sidebar li {
+    margin: 0px 0px 0px 0px;
+  }
+
+  h1, h2, h3 {
+    color: #2b3e4e;
+  }
+
+  h1 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 30px;
+  }
+
+  #tower-intro {
+    h1 {
+      border-bottom: none;
+    }
+    h2 {
+      color: $body-font-color;
+      font-weight: normal;
+    }
+  }
 
   .nav-list li {
     list-style:none;
