@@ -10,6 +10,10 @@ body {
   font-family: $body-font;
   min-width: $break-small;
 
+  hr {
+    margin-top: 0px;
+  }
+
   a {
     color: $link-color;
     &:hover {
