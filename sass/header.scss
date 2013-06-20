@@ -4,6 +4,9 @@ header {
   margin: 0 auto;
   padding-top: 40px;
   line-height: 65px;
+  h1 {
+    text-align: center;
+  }
 
   ul {
     width: 90%;
@@ -11,10 +14,10 @@ header {
     margin: 0 auto;
     list-style: none;
 
-
     @media only screen and (min-width: 700px) and (max-width: 900px) {
       width: 100%;
     }
+
     @media only screen and (max-width: 760px) {
       width: 100%;
     }
@@ -23,14 +26,13 @@ header {
       list-style: none;
       display: inline-block;
       padding: 0 10px;
-      margin: -3px 15px 0;
+      margin: -3px 0px 0;
 
       a {
         color: $nav-link-color;
         text-decoration: none;
-        font-weight: bold;
         font-family: $link-font;
-        font-size: 17px;
+        font-size: 15px;
 
         &:hover {
           color: #666;

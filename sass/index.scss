@@ -10,6 +10,17 @@ body {
   font-family: $body-font;
   min-width: $break-small;
 
+  hr {
+    margin-top: 0px;
+  }
+
+  a {
+    color: $link-color;
+    &:hover {
+      color: $link-color-hover;
+    }
+  }
+
   h1 {
     font-size: 35px;
     font-family: $header-font;
@@ -17,7 +28,6 @@ body {
     color: #5E656D;
     margin-bottom: 30px;
     margin-top: 0px;
-    text-align: center;
   }
 
   h2 {
@@ -26,8 +36,12 @@ body {
     font-family: $h2-font;
   }
 
+  .content {
+
+  }
+
   div#sidebar {
-    display: inline-block;
+    display: block;
     float: left;
     width: 200px;
     margin-top: 25px;

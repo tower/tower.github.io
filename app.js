@@ -20,7 +20,43 @@ var doc = require('./lib/doc');
  */
 
 require('tower-list-directive').document = render.document;
-require('tower-markdown-directive');
+//require('tower-markdown-directive');
+require('tower-interpolation-directive');
+
+
+/**
+ * Module dependencies.
+ */
+
+var directive = require('tower-directive');
+var md = require('marked');
+var hl = require("highlight").Highlight;
+
+md.setOptions({
+  highlight: function(code, lang){
+    return hl(code, "<span>  </span>");
+  }
+});
+
+/**
+ * Expose `markdownDirective`.
+ */
+
+//module.exports = directive('[type="text/markdown"]', markdownDirective);
+directive('data-markdown', markdownDirective);
+
+/**
+ * Define `markdownDirective`.
+ */
+
+function markdownDirective(scope, el, attr) {
+  // XXX: todo, expression
+  var val = attr.value
+    ? scope.get(attr.value)
+    : el.textContent;
+
+  if (val) el.innerHTML = md(val);
+}
 
 /**
  * Configuration.
@@ -49,9 +85,9 @@ guide('element');
 guide('expression');
 guide('route');
 guide('cookbook');
-guide('validator');
-guide('type');
-guide('text');
+//guide('validator');
+//guide('type');
+//guide('text');
 guide('cli');
 
 /**
@@ -72,17 +108,14 @@ doc('template');
 doc('text');
 doc('type');
 doc('validator');
-doc.compile();
+// doc.compile();
 
 /**
  * Content.
  */
 
-// content('body')
-//   .attr('guides', 'array', guide.collection)
-//   .helper('label', function(scope, name){
-//     return name;//text(name).render(scope);
-//   });
+content('body')
+  .attr('guides', 'array', guide.collection);
 
 /**
  * Routes.
@@ -90,11 +123,13 @@ doc.compile();
 
 route('/', function(context){
   context.res.render('index');
-  //context.res.send(document.innerHTML);
 });
 
-route('/guides', function(context){
+route('/guide', function(context){
+  var startDate = new Date;
   context.res.render('guides');
+  var endDate = new Date;
+  console.log(endDate.getTime() - startDate.getTime())
 });
 
 route('/api', function(context){
