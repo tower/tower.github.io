@@ -33,13 +33,12 @@ header {
       list-style: none;
       display: inline-block;
       padding: 0 10px;
-      margin: -3px 15px 0; }
+      margin: -3px 0px 0; }
       header ul li a {
         color: #cbd0d3;
         text-decoration: none;
-        font-weight: bold;
         font-family: Helvetica, arial, freesans, clean, sans-serif;
-        font-size: 17px; }
+        font-size: 15px; }
         header ul li a:hover {
           color: #666; }
       @media only screen and (max-width: 507px) {

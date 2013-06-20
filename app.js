@@ -115,10 +115,7 @@ doc('validator');
  */
 
 content('body')
-  .attr('guides', 'array', guide.collection)
-  .helper('label', function(scope, name){
-    return name;//text(name).render(scope);
-  });
+  .attr('guides', 'array', guide.collection);
 
 /**
  * Routes.
@@ -128,7 +125,7 @@ route('/', function(context){
   context.res.render('index');
 });
 
-route('/guides', function(context){
+route('/guide', function(context){
   context.res.render('guides');
 });
 
