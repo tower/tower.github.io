@@ -103,7 +103,7 @@ section#body {
     line-height: 1.7; }
   section#body #sidebar li {
     margin: 0px 0px 0px 0px; }
-  section#body p {
+  section#body p, section#body ul, section#body ol {
     width: 60%; }
   section#body h1, section#body h2, section#body h3 {
     color: #2b3e4e; }
