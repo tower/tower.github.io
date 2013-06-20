@@ -115,11 +115,13 @@ section#body {
     margin-top: 100px;
     border-bottom: none;
     margin-bottom: 0px;
-    padding-bottom: 0px; }
+    padding-bottom: 5px; }
   section#body #tower-intro h2 {
     color: #7e8c8d;
     margin-top: 0px;
-    font-weight: normal; }
+    margin-bottom: 0px;
+    font-weight: normal;
+    line-height: 1.3; }
   section#body .nav-list li {
     list-style: none; }
   section#body .sidebar-nav-fixed {

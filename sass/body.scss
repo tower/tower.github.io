@@ -41,12 +41,14 @@ section#body {
       margin-top: 100px;
       border-bottom: none;
       margin-bottom: 0px;
-      padding-bottom: 0px;
+      padding-bottom: 5px;
     }
     h2 {
       color: $body-font-color;
       margin-top: 0px;
+      margin-bottom: 0px;
       font-weight: normal;
+      line-height: 1.3;
     }
   }
 
