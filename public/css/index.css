@@ -9,6 +9,7 @@ body, div, ul, li {
 /**
  * Useful Mixin for quick media queries
  */
+/*#2081b4;*/
 header {
   height: 65px;
   width: 100%;
@@ -348,7 +349,7 @@ body {
   min-width: 320px;
   margin-bottom: 30px; }
   body a {
-    color: #2081b4; }
+    color: #2998d6; }
     body a:hover {
       color: #2998d6; }
   body h1 {
