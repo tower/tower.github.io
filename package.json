@@ -47,6 +47,7 @@
     "tower-interpolation-directive": "*",
     "tower-doc-cookbook": "git://github.com/btbinhtran/doc-cookbook.git",
     "tower-guides": "git://github.com/tower/guides.git",
-    "tower-strcase": "0.1.0pre"
+    "tower-strcase": "0.1.0pre",
+    "html-minifier": "~0.5.2"
   }
 }
