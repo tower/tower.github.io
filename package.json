@@ -32,8 +32,6 @@
     "express-partials": "~0.1.1",
     "highlight.js": "~7.3.0",
     "marked": "~0.2.9",
-    "node-syntaxhighlighter": "~0.8.1",
-    "highlight": "~0.2.3",
     "jsdom": "~0.6.5",
     "domify": "~1.0.0",
     "tower-router": "*",

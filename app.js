@@ -30,11 +30,16 @@ require('tower-interpolation-directive');
 
 var directive = require('tower-directive');
 var md = require('marked');
-var hl = require("highlight").Highlight;
+var hl = require('highlight.js');
+var langs = { js: 'javascript', html: 'xml' };
 
 md.setOptions({
   highlight: function(code, lang){
-    return hl(code, "<span>  </span>");
+    if (!hl.LANGUAGES[lang]) {
+      if (langs[lang]) lang = langs[lang];
+      else return code;
+    }
+    return hl.highlight(lang, code).value;
   }
 });
 
@@ -89,6 +94,7 @@ guide('cookbook');
 //guide('type');
 //guide('text');
 guide('cli');
+var overview = guide.compile('overview');
 
 /**
  * Docs.
@@ -115,6 +121,7 @@ doc('validator');
  */
 
 content('body')
+  .attr('overview', 'string', overview.content)
   .attr('guides', 'array', guide.collection);
 
 /**
