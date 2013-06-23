@@ -147,6 +147,8 @@ section#body {
     margin-bottom: 0px;
     font-weight: normal;
     line-height: 1.3; }
+  section#body h3 {
+    font-size: 20px; }
   section#body .sidebar-nav {
     /*margin-top: 42px;*/
     margin-top: 82px; }
@@ -250,7 +252,6 @@ pre code {
 
 pre {
   border: none;
-  overflow-x: auto;
   border-radius: 0;
   display: block;
   background: none;
@@ -260,7 +261,8 @@ pre {
 pre code {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   font-size: 13px;
-  line-height: 19px; }
+  line-height: 19px;
+  overflow-x: scroll; }
 
 #ct {
   display: inline-block;
@@ -369,6 +371,11 @@ td.gutter {
 
 td.code {
   width: 80%; }
+
+.lang-html .attribute {
+  color: #56b3a6; }
+.lang-html .value {
+  color: #e84c52; }
 
 body {
   background-color: white;

@@ -13,7 +13,6 @@ pre code {
 
 pre {
   border: none;
-  overflow-x: auto;
   border-radius: 0;
   display: block;
   background: none;
@@ -25,6 +24,7 @@ pre code {
   font-family: Consolas, 'Liberation Mono', Courier, monospace;
   font-size: 13px;
   line-height: 19px;
+  overflow-x: scroll;
 }
 
 #ct {
@@ -107,4 +107,9 @@ td.gutter {
 
 td.code {
   width: 80%;
+}
+
+.lang-html {
+  .attribute { color: #56b3a6 }
+  .value { color: #e84c52 }
 }
