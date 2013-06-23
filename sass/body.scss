@@ -7,11 +7,38 @@ p {
   margin-bottom: 15px;
 }
 
-section#body {
-  position: relative;
-  padding-top: 70px;
+.nav-list > li {
+  list-style:none;
+  background: none !important;
+  text-align: right;
+}
+.nav-list > li > a {
+  padding: 0px;
+  color: $nav-link-color;
+  text-decoration: none;
+  font-family: $link-font;
+  font-size: 15px;
+}
+.nav-list > li > a:hover {
+  background: none !important;
+}
+.container-fluid {
   width: 80%;
   margin: 0 auto;
+}
+
+li.pull-right {
+  padding-right: 0px;
+  padding-top: 13px;
+  text-align: right;
+  li {
+    padding-right: 0px;
+    padding-left: 35px;
+  }
+}
+section#body {
+  position: relative;
+  padding-top: 40px;
   color: $body-font-color;
   font-size: $body-font-size;
   line-height: $body-line-height;
@@ -24,6 +51,12 @@ section#body {
 
   p, ul, ol {
     width: 60%;
+    min-width: 420px;
+  }
+
+  blockquote p {
+    font-size: $body-font-size;
+    //color: $nav-link-color
   }
 
   h1, h2, h3 {
@@ -31,9 +64,14 @@ section#body {
   }
 
   h1 {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 30px;
+    margin-top: 50px;
+  }
+
+  #tower-introduction h1 {
+    padding-top: 20px;
+    border-top: none;
   }
 
   #tower-intro {
@@ -52,8 +90,9 @@ section#body {
     }
   }
 
-  .nav-list li {
-    list-style:none;
+  .sidebar-nav {
+    /*margin-top: 42px;*/
+    margin-top: 82px;
   }
   .sidebar-nav-fixed {
     position: fixed;
@@ -61,8 +100,12 @@ section#body {
     overflow-y: auto;
   }
 
+  .nav-list {
+    float: right;
+  }
+
   .sidebar-nav-fixed.span2 {
-    width: 18%;
+    
   }
 
   .module-items {
@@ -105,7 +148,6 @@ section#body {
     }
   }
 
-  
   @media only screen and (max-width: 785px) {
     #tower-intro {
       margin: 0 auto;
@@ -124,7 +166,6 @@ section#body {
     width: 100%;
     top: 190px;
     font-size: 12px;
-    border-top: 1px solid #eee;
     padding-top: 20px;
     h1 {
       text-align: center;
@@ -197,4 +238,3 @@ section#body {
     color: black
   }
 }
-
