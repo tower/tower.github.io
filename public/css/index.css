@@ -37,7 +37,7 @@ header {
       header ul li a {
         color: #cbd0d3;
         text-decoration: none;
-        font-family: Helvetica, arial, freesans, clean, sans-serif;
+        font-family: "Lato", Helvetica, arial, freesans, clean, sans-serif;
         font-size: 15px; }
         header ul li a:hover {
           color: #666; }
@@ -96,7 +96,7 @@ section#body {
   width: 80%;
   margin: 0 auto;
   color: #7e8c8d;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7; }
   section#body li {
     line-height: 1.7; }
@@ -352,7 +352,7 @@ td.code {
 body {
   background-color: white;
   color: #c5cacb;
-  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-family: "Lato", Helvetica, arial, freesans, clean, sans-serif;
   min-width: 320px;
   margin-bottom: 30px; }
   body hr {
@@ -363,7 +363,7 @@ body {
       color: #2998d6; }
   body h1 {
     font-size: 35px;
-    font-family: Helvetica, arial, freesans, clean, sans-serif;
+    font-family: "Lato", Helvetica, arial, freesans, clean, sans-serif;
     color: #2b3e4e;
     color: #5E656D;
     margin-bottom: 30px;
@@ -371,7 +371,7 @@ body {
   body h2 {
     font-size: 23px;
     color: #7e8c8d;
-    font-family: Helvetica, arial, freesans, clean, sans-serif; }
+    font-family: "Lato", Helvetica, arial, freesans, clean, sans-serif; }
   body div#sidebar {
     display: block;
     float: left;
