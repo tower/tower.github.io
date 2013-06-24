@@ -40,10 +40,10 @@
     "tower-template": "~0.1.0",
     "tower-directive": "~0.1.0",
     "tower-text": "~0.1.0",
-    "tower-list-directive": "*",
+    "tower-list-directive": "~0.1.0",
     "tower-markdown-directive": "*",
     "tower-interpolation-directive": "0.0.2",
-    "tower-guides": "~0.1.0",
+    "tower-guides": "*",
     "tower-strcase": "~0.1.0",
     "html-minifier": "~0.5.2",
     "superagent": "~0.14.9"
