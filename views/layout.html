@@ -2,49 +2,36 @@
 <html>
   <head>
     <title>Tower - A Component for Distributed Applications</title>
-    <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif" />-->
-    <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/public/css/bootstrap-responsive.min.css" />
-    <link rel="stylesheet" href="/public/css/index.css" />
-
-    <script src="http://yandex.st/highlightjs/7.3/highlight.min.js"></script>
-   
-    <!--[if lt IE 9]>
-      <script type="text/javascript" src="public/js/html5.js"></script>
-    <![endif]-->
-
-    <script>
-      hljs.initHighlightingOnLoad();
-    </script>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:300,400'>
+    <link rel="stylesheet" href="public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="public/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="public/css/index.css" />
   </head>
   <body data-scope="body">
     <div id="wrapper">
-      <header>
-        <ul>
-          <li class="logo">
-            <a href="/" title="">
-              <img src="/public/img/logo.png" alt="Tower"/>
-            </a>
-          </li>
-          <li class="first">
-            <a href="https://github.com/tower" title="GitHub Repos">Source</a>
-          </li>
-          <li>
-            <a href="/guide" title="Guide">Guide</a>
-          </li>
-          <li>
-            <a href="/api" title="API Docs">API</a>
-          </li>
-          <!--<li>
-            <a href="/examples" title="Examples">Examples</a>
-          </li>
-          <li>
-            <a href="/community" title="">Community</a>
-          </li>
-          <li>
-            <a href="/screencasts" title="">Screencasts</a>
-          </li>-->
-        </ul>
+      <header class="container-fluid">
+        <div class="row-fluid">
+          <ul class="span12">
+            <li class="logo">
+              <a href="./" title="">
+                <img src="public/img/logo.png" alt="Tower"/>
+              </a>
+            </li>
+            <li class="pull-right">
+              <ul>
+                <li>
+                  <a href="guide" title="Guide">Guide</a>
+                </li>
+                <li>
+                  <a href="https://github.com/tower/tower" title="GitHub Repos">GitHub</a>
+                </li>
+                <!--<li>
+                  <a href="/api" title="API Docs">API</a>
+                </li>-->
+              </ul>
+            </li>
+          </ul>
+      </div>
       </header>
       <section id="body" data-content class="container-fluid">
         

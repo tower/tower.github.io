@@ -1,30 +1,36 @@
 
 
 code {
-  display: inline;
   font-family: "Menlo", monospace;
   color: inherit;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 pre code {
   font-size: 16px;
   line-height: normal;
   display: block;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 pre {
   border: none;
-  overflow-x: auto;
-  border-left: solid 2px #CCC;
   border-radius: 0;
-  width: 790px;
   display: block;
+  background: none;
+  border: 1px solid rgb(238, 238, 238);
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 pre code {
   font-family: Consolas, 'Liberation Mono', Courier, monospace;
   font-size: 13px;
   line-height: 19px;
+  overflow-x: scroll;
 }
 
 #ct {
@@ -99,12 +105,6 @@ aside,
 .c1{color: #b6ae99; font-style: italic} /* Comment */
 .p{color: #dfdbce} /* Punctation */
 
-pre {
-  background: none;
-  border: 1px solid rgb(238, 244, 244);
-  padding: 20px;
-}
-
 td.gutter {
   width: 40px;
   display: inline-block;
@@ -113,4 +113,9 @@ td.gutter {
 
 td.code {
   width: 80%;
+}
+
+.lang-html {
+  .attribute { color: #56b3a6 }
+  .value { color: #e84c52 }
 }

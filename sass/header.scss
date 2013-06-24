@@ -1,6 +1,5 @@
 header {
   height: 65px;
-  width: 100%;
   margin: 0 auto;
   padding-top: 40px;
   line-height: 65px;
@@ -9,7 +8,6 @@ header {
   }
 
   ul {
-    width: 90%;
     height: 65px;
     margin: 0 auto;
     list-style: none;
@@ -27,6 +25,7 @@ header {
       display: inline-block;
       padding: 0 10px;
       margin: -3px 0px 0;
+      font-weight: 300;
 
       a {
         color: $nav-link-color;
@@ -57,7 +56,6 @@ header {
         position: relative;
         width: 50px;
         height: 55px;
-        margin-left: 10%;
         @media only screen and (max-width: 760px) {
           margin-left: 5%;
         }
@@ -71,7 +69,6 @@ header {
         }
       }
       &.first {
-        margin-left: 38%;
         @media only screen and (max-width: 1003px) {
           margin-left: 34%;
         }
