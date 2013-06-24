@@ -1,0 +1,196 @@
+<head><title>Tower - A Component for Distributed Applications</title><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400"><link rel="stylesheet" href="public/css/bootstrap.min.css"><link rel="stylesheet" href="public/css/bootstrap-responsive.min.css"><link rel="stylesheet" href="public/css/index.css"></head><body data-scope="body"><div id="wrapper"><header class="container-fluid"><div class="row-fluid"><ul class="span12"><li class="logo"><a href="/"><img src="public/img/logo.png" alt="Tower"></a></li><li class="pull-right"><ul><li><a href="/guide" title="Guide">Guide</a></li><li><a href="https://github.com/tower/tower" title="GitHub Repos">GitHub</a></li><!--<li>
+                  <a href="/api" title="API Docs">API</a>
+                </li>--></ul></li></ul></div></header><section id="body" data-content="" class="container-fluid"><div><div class="row-fluid"><div id="tower-intro" class="span7"><div id="tower-introduction"><h1>Tower</h1><h2>Small components for building apps.</h2><h2>And manipulating data.</h2></div></div><div id="tower-hero" class="span5"><img src="public/img/hero.png"></div></div><hr><div data-markdown="overview"><h2>Resource</h2><p>Data models that can be stored in any database or remote service using adapters.</p><pre><code class="lang-js"><span class="keyword">var</span> resource = require(<span class="string">'tower-resource'</span>);</code></pre><p>attributes:</p><pre><code class="lang-js">resource(<span class="string">'post'</span>)
+  .attr(<span class="string">'title'</span>) <span class="comment">// defaults to 'string'</span>
+  .attr(<span class="string">'body'</span>, <span class="string">'text'</span>)
+  .attr(<span class="string">'published'</span>, <span class="string">'boolean'</span>, <span class="literal">false</span>);</code></pre><p>validations:</p><pre><code class="lang-js">resource(<span class="string">'user'</span>)
+  .attr(<span class="string">'email'</span>)
+    .validate(<span class="string">'presence'</span>)
+    .validate(<span class="string">'isEmail'</span>)
+    .validate(<span class="string">'emailProvider'</span>, { <span class="keyword">in</span>: [ <span class="string">'gmail.com'</span> ] }) <span class="comment">// some hypothetical one</span>
+  .attr(<span class="string">'username'</span>)
+    .validator(<span class="keyword">function</span>(val){
+      <span class="keyword">return</span> !!val.match(<span class="regexp">/[a-zA-Z]/</span>);
+    });</code></pre><p>There are two DSL methods for validation.</p><ol><li><code>validate</code>: for using predefined validations (see <a href="https://github.com/tower/validator">tower-validator</a>), purely to clean up the API.</li><li><code>validator</code>: for defining custom validator functions right inline. If you want to reuse your custom validator function across resources, just move the function into tower-validator.</li></ol><p>queries:</p><pre><code class="lang-js">resource(<span class="string">'post'</span>)
+  .where(<span class="string">'published'</span>).eq(<span class="literal">true</span>)
+  .all(<span class="keyword">function</span>(err, posts){
+
+  });</code></pre><p>See <a href="">tower-query</a> for the entire syntax. The<code>where</code>method just delegates to a<code>Query</code>instance. You can also access the query object directly (it just adds<code>.select(resourceName)</code>for you):</p><pre><code class="lang-js">resource(<span class="string">'post'</span>).query().sort(<span class="string">'title'</span>, -<span class="number">1</span>).all();</code></pre><p>actions:</p><p>There are 4 main actions for resources (which are just delegated to<code>query().action(name)</code>:</p><ul><li>create</li><li>all</li><li>update</li><li>remove</li></ul><pre><code class="lang-js">resource(<span class="string">'post'</span>).create();
+resource(<span class="string">'post'</span>).all();
+resource(<span class="string">'post'</span>).update({ published: <span class="literal">true</span> });
+resource(<span class="string">'post'</span>).remove();</code></pre><p>Under the hood, when you execute one of these actions, they get handled by a database-/service-specific adapter (mongodb, cassandra, facebook, etc.). Those adapters can perform optimizations such as streaming query results back.</p><h2>Adapter</h2><p>Datastore abstraction layer.</p><p>To abstract out some database like Cassandra, a REST API like Facebook, or even something like plain web crawling, so that it can be queried like any other resource, just implement the<code>exec</code>method on a new adapter.</p><pre><code class="lang-js"><span class="keyword">var</span> adapter = require(<span class="string">'tower-adapter'</span>);</code></pre><p>See one of these for a complete example:</p><ul><li>mongodb: <a href="https://github.com/tower/mongodb-adapter">https://github.com/tower/mongodb-adapter</a></li><li>ec2: <a href="https://github.com/tower/ec2-adapter">https://github.com/tower/ec2-adapter</a></li></ul><p>Example custom REST adapter implementing the<code>exec</code>method:</p><pre><code class="lang-js"><span class="comment">/**
+ * Map of query actions to HTTP methods.
+ */</span>
+
+<span class="keyword">var</span> methods = {
+  find: <span class="string">'GET'</span>,
+  create: <span class="string">'POST'</span>,
+  update: <span class="string">'PUT'</span>,
+  remove: <span class="string">'DELETE'</span>
+};
+
+adapter(<span class="string">'rest'</span>).exec = <span class="keyword">function</span>(query, fn){
+  <span class="keyword">var</span> name = query.selects[<span class="number">0</span>].resource;
+  <span class="keyword">var</span> method = methods[query.type];
+  <span class="keyword">var</span> params = serializeParams(query);
+
+  $.ajax({
+    url: <span class="string">'/api/'</span> + name,
+    dataType: <span class="string">'json'</span>,
+    type: method,
+    data: params,
+    success: <span class="keyword">function</span>(data){
+      fn(<span class="literal">null</span>, data);
+    },
+    error: <span class="keyword">function</span>(data){
+      fn(data);
+    }
+  });
+};
+
+<span class="comment">/**
+ * Convert query constraints into query parameters.
+ */</span>
+
+<span class="function"><span class="keyword">function</span> <span class="title">serializeParams</span><span class="params">(query)</span> {</span>
+  <span class="keyword">var</span> constraints = query.constraints;
+  <span class="keyword">var</span> params = {};
+
+  constraints.forEach(<span class="keyword">function</span>(constraint){
+    params[constraint.left.attr] = constraint.right.value;
+  });
+
+  <span class="keyword">return</span> params;
+}</code></pre><p>Map REST API objects to resources:</p><pre><code class="lang-js">adapter(<span class="string">'facebook'</span>)
+  .model(<span class="string">'user'</span>)
+    .attr(<span class="string">'name'</span>)
+    .attr(<span class="string">'firstName'</span>).from(<span class="string">'first_name'</span>)
+    .attr(<span class="string">'middleName'</span>).from(<span class="string">'middle_name'</span>)
+    .attr(<span class="string">'lastName'</span>).from(<span class="string">'last_name'</span>)
+    .attr(<span class="string">'gender'</span>)
+      .validate(<span class="string">'in'</span>, [ <span class="string">'female'</span>, <span class="string">'male'</span> ])
+    .attr(<span class="string">'link'</span>)
+      .validate(<span class="string">'isUrl'</span>)
+    .attr(<span class="string">'username'</span>);</code></pre><p>Specify (optional) how to serialize data types from JavaScript to the database-/service-specific format:</p><pre><code class="lang-js">adapter(<span class="string">'mongodb'</span>)
+  .type(<span class="string">'string'</span>, fn)
+  .type(<span class="string">'text'</span>, fn)
+  .type(<span class="string">'date'</span>, fn)
+  .type(<span class="string">'float'</span>, fn)
+  .type(<span class="string">'integer'</span>, fn)
+  .type(<span class="string">'number'</span>, fn)
+  .type(<span class="string">'boolean'</span>, fn)
+  .type(<span class="string">'bitmask'</span>, fn)
+  .type(<span class="string">'array'</span>, fn);</code></pre><!--
+## Program
+
+```js
+var program = require('tower-query');
+```
+
+## Topology
+
+```js
+var topology = require('tower-topology');
+```
+--><h2>Template</h2><p>Client-side reactive templates (just plain DOM node manipulation, no strings).</p><pre><code class="lang-js"><span class="keyword">var</span> template = require(<span class="string">'tower-template'</span>);
+
+<span class="keyword">var</span> el = document.querySelector(<span class="string">'#todos'</span>);
+<span class="keyword">var</span> fn = template(el);
+fn({ some: <span class="string">'data'</span> }); <span class="comment">// applies content to DOM directives.</span></code></pre><h2>Directive</h2><p>API to the DOM. Tells the DOM what to do.</p><pre><code class="lang-js"><span class="keyword">var</span> directive = require(<span class="string">'tower-directive'</span>);
+
+directive(<span class="string">'data-text'</span>, <span class="keyword">function</span>(scope, element, attr){
+  element.textContent = scope[attr.value];
+});
+
+<span class="keyword">var</span> content = { foo: <span class="string">'Hello World'</span> };
+<span class="keyword">var</span> element = document.querySelector(<span class="string">'#example'</span>);
+
+directive(<span class="string">'data-text'</span>).exec(content, element);</code></pre><p>example template:</p><pre><code class="lang-html"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"example"</span> <span class="attribute">data-text</span>=<span class="value">"foo"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span></code></pre><p>becomes:</p><pre><code class="lang-html"><span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"example"</span> <span class="attribute">data-text</span>=<span class="value">"foo"</span>&gt;</span>Hello World<span class="tag">&lt;/<span class="title">span</span>&gt;</span></code></pre><p>The directives are used more robustly in <a href="https://github.com/tower/template">tower-template</a>.</p><h2>Content</h2><p>Data for the DOM.</p><pre><code class="lang-js"><span class="keyword">var</span> content = require(<span class="string">'tower-content'</span>);
+
+content(<span class="string">'menu'</span>)
+  .attr(<span class="string">'items'</span>, <span class="string">'array'</span>)
+  .attr(<span class="string">'selected'</span>, <span class="string">'object'</span>)
+  .action(<span class="string">'select'</span>, <span class="keyword">function</span>(index){
+    <span class="keyword">this</span>.selected = <span class="keyword">this</span>.items[index];
+  });
+
+content(<span class="string">'menu'</span>).init({ items: [ <span class="string">'a'</span>, <span class="string">'b'</span> ] }).select(<span class="number">1</span>);</code></pre><h2>Expression</h2><pre><code class="lang-js"><span class="keyword">var</span> expression = require(<span class="string">'tower-expression'</span>);</code></pre><h2>Route</h2><p>Tiny route component for client and server.</p><pre><code class="lang-js"><span class="keyword">var</span> route = require(<span class="string">'tower-route'</span>);
+
+route(<span class="string">'/welcome'</span>, <span class="keyword">function</span>(context, next){
+  context.render({ title: <span class="string">'Hello World'</span> });
+});</code></pre><p>Or with the<code>action</code>method:</p><pre><code class="lang-js">route(<span class="string">'/welcome'</span>)
+  .action(<span class="keyword">function</span>(context, next){
+    context.render({ title: <span class="string">'Hello World'</span> });
+  });</code></pre><p>You can also name them (makes it so you don't have to mess with url strings in code, to redirect/transition/etc.:</p><pre><code class="lang-js">route(<span class="string">'new-customer'</span>, <span class="string">'/welcome'</span>);</code></pre><h2>Router</h2><pre><code class="lang-js"><span class="keyword">var</span> router = require(<span class="string">'tower-router'</span>);
+
+router.start();</code></pre><h2>Type</h2><p>API for defining/sanitizing custom resource attribute types.</p><pre><code class="lang-js"><span class="keyword">var</span> type = require(<span class="string">'tower-type'</span>);</code></pre><p>Define comparators/validators for basic types:</p><pre><code class="lang-js">type(<span class="string">'string'</span>)
+  .validator(<span class="string">'gte'</span>, <span class="function"><span class="keyword">function</span> <span class="title">gte</span><span class="params">(a, b)</span>{</span>
+    <span class="keyword">return</span> a.length &gt;= b.length;
+  })
+  .validator(<span class="string">'gt'</span>, <span class="function"><span class="keyword">function</span> <span class="title">gt</span><span class="params">(a, b)</span>{</span>
+    <span class="keyword">return</span> a.length &gt; b.length;
+  });</code></pre><p>Define a custom type with custom validators:</p><pre><code class="lang-js"><span class="keyword">var</span> now = Date.parse(<span class="string">'2013-05-01'</span>);
+
+type(<span class="string">'birthdate'</span>)
+  .validator(<span class="string">'can-drive'</span>, <span class="keyword">function</span>(val){
+    <span class="keyword">return</span> now &gt;= val;
+  });
+
+<span class="keyword">var</span> validate = type.validator(<span class="string">'birthdate.can-drive'</span>);
+validate(Date.parse(<span class="string">'1950-12-21'</span>)); <span class="comment">// true</span></code></pre><p>Sanitize values:</p><pre><code class="lang-js">type(<span class="string">'digits'</span>)
+  .use(stripWhitespace)
+  .use(stripLetters);
+
+type(<span class="string">'digits'</span>).sanitize(<span class="string">'  1  foo b2a3r'</span>); <span class="comment">// 123</span>
+
+<span class="function"><span class="keyword">function</span> <span class="title">stripWhitespace</span><span class="params">(val)</span> {</span>
+  <span class="keyword">return</span> val.replace(<span class="regexp">/\s+/g</span>, <span class="string">''</span>);
+}
+
+<span class="function"><span class="keyword">function</span> <span class="title">stripLetters</span><span class="params">(val)</span> {</span>
+  <span class="keyword">return</span> val.replace(<span class="regexp">/[a-z]+/g</span>, <span class="string">''</span>);
+}</code></pre><h2>Validator</h2><p>Minimal, extensible validation component.</p><pre><code class="lang-js"><span class="keyword">var</span> validator = require(<span class="string">'tower-validator'</span>);
+
+validator(<span class="string">'eq'</span>, <span class="function"><span class="keyword">function</span> <span class="title">eq</span><span class="params">(a, b)</span>{</span>
+  <span class="keyword">return</span> a === b;
+});
+
+validator(<span class="string">'neq'</span>, <span class="function"><span class="keyword">function</span> <span class="title">neq</span><span class="params">(a, b)</span>{</span>
+  <span class="keyword">return</span> a !== b;
+});
+
+validator(<span class="string">'gte'</span>, <span class="function"><span class="keyword">function</span> <span class="title">gte</span><span class="params">(a, b)</span>{</span>
+  <span class="keyword">return</span> a &gt;= b;
+});
+
+validator(<span class="string">'gt'</span>, <span class="function"><span class="keyword">function</span> <span class="title">gte</span><span class="params">(a, b)</span>{</span>
+  <span class="keyword">return</span> a &gt; b;
+});</code></pre><h2>Text</h2><p>I18n, inflections, and other random bits of text to keep organized.</p><pre><code class="lang-js"><span class="keyword">var</span> text = require(<span class="string">'tower-text'</span>);
+
+text(<span class="string">'messages'</span>)
+  .one(<span class="string">'You have 1 message'</span>)
+    .past(<span class="string">'You had 1 message'</span>)
+    .future(<span class="string">'You might get a message'</span>)
+  .none(<span class="string">'You have no messages'</span>)
+    .past(<span class="string">'You never had any messages'</span>)
+    .future(<span class="string">'You might never get a message'</span>)
+  .other(<span class="string">'You have {{count}} messages'</span>)
+    .past(<span class="string">'You had {{count}} messages'</span>)
+    .future(<span class="string">'You might get {{count}} messages'</span>);
+
+assert(<span class="number">9</span> === text(<span class="string">'messages'</span>).inflections.length);
+
+<span class="comment">// 1</span>
+assert(<span class="string">'You have 1 message'</span> === text(<span class="string">'messages'</span>).render({ count: <span class="number">1</span> }));
+assert(<span class="string">'You had 1 message'</span> === text(<span class="string">'messages'</span>).render({ tense: <span class="string">'past'</span>, count: <span class="number">1</span> }));
+assert(<span class="string">'You might get a message'</span> === text(<span class="string">'messages'</span>).render({ tense: <span class="string">'future'</span>, count: <span class="number">1</span> }));
+
+<span class="comment">// 0</span>
+assert(<span class="string">'You have no messages'</span> === text(<span class="string">'messages'</span>).render({ count: <span class="number">0</span> }));
+assert(<span class="string">'You never had any messages'</span> === text(<span class="string">'messages'</span>).render({ tense: <span class="string">'past'</span>, count: <span class="number">0</span> }));
+assert(<span class="string">'You might never get a message'</span> === text(<span class="string">'messages'</span>).render({ tense: <span class="string">'future'</span>, count: <span class="number">0</span> }));
+
+<span class="comment">// n</span>
+assert(<span class="string">'You have 3 messages'</span> === text(<span class="string">'messages'</span>).render({ count: <span class="number">3</span> }));
+assert(<span class="string">'You had 3 messages'</span> === text(<span class="string">'messages'</span>).render({ tense: <span class="string">'past'</span>, count: <span class="number">3</span> }));
+assert(<span class="string">'You might get 3 messages'</span> === text(<span class="string">'messages'</span>).render({ tense: <span class="string">'future'</span>, count: <span class="number">3</span> }));</code></pre><h2>Cookbook</h2><pre><code class="lang-bash">$ tower create ec2:server</code></pre></div></div></section><footer></footer></div></body>
