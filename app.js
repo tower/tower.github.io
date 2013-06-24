@@ -26,7 +26,6 @@ require('tower-list-directive').document = render.document;
 //require('tower-markdown-directive');
 require('tower-interpolation-directive');
 
-
 /**
  * Module dependencies.
  */
