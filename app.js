@@ -11,6 +11,9 @@ var content = require('tower-content');
 var router = require('tower-router');
 var route = require('tower-route');
 var text = require('tower-text');
+var agent = require('superagent');
+var fs = require('fs');
+var exec = require('child_process').exec;
 var guide = require('./lib/guide');
 var render = require('./lib/render');
 var doc = require('./lib/doc');
@@ -133,10 +136,7 @@ route('/', function(context){
 });
 
 route('/guide', function(context){
-  var startDate = new Date;
   context.res.render('guides');
-  var endDate = new Date;
-  console.log(endDate.getTime() - startDate.getTime())
 });
 
 route('/api', function(context){
@@ -147,4 +147,23 @@ route('/api', function(context){
  * Listen.
  */
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, function(){
+  // wait conservatively for markdown to compile, 
+  // then save static html files for gh-pages.
+  setTimeout(function(){
+    fetch('/', 'index.html', function(){
+      fetch('/guide', 'guide.html', function(){
+        exec('cleancss -o public/css/index.css public/css/index.css', function(){
+          console.log('cached.');
+        });
+      });
+    });
+  }, 1000);
+});
+
+function fetch(path, name, fn) {
+  agent.get('http://localhost:3000' + path).end(function(res){
+    fs.writeFileSync(name, res.text);
+    process.nextTick(fn);
+  });
+}

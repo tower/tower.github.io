@@ -18,6 +18,7 @@ p {
   text-decoration: none;
   font-family: $link-font;
   font-size: 15px;
+  font-weight: 300;
 }
 .nav-list > li > a:hover {
   background: none !important;
@@ -44,9 +45,6 @@ section#body {
   line-height: $body-line-height;
   li {
     line-height: $body-line-height;
-  }
-  #sidebar li {
-    margin: 0px 0px 0px 0px;
   }
 
   p, ul, ol {
@@ -85,7 +83,7 @@ section#body {
       color: $body-font-color;
       margin-top: 0px;
       margin-bottom: 0px;
-      font-weight: normal;
+      font-weight: 300;
       line-height: 1.3;
     }
   }

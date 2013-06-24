@@ -31,7 +31,8 @@ header {
       list-style: none;
       display: inline-block;
       padding: 0 10px;
-      margin: -3px 0px 0; }
+      margin: -3px 0px 0;
+      font-weight: 300; }
       header ul li a {
         color: #cbd0d3;
         text-decoration: none;
@@ -95,7 +96,8 @@ p {
   color: #cbd0d3;
   text-decoration: none;
   font-family: "Lato", Helvetica, arial, freesans, clean, sans-serif;
-  font-size: 15px; }
+  font-size: 15px;
+  font-weight: 300; }
 
 .nav-list > li > a:hover {
   background: none !important; }
@@ -115,13 +117,11 @@ li.pull-right {
 section#body {
   position: relative;
   padding-top: 40px;
-  color: #7e8c8d;
+  color: #919e9f;
   font-size: 16px;
   line-height: 1.7; }
   section#body li {
     line-height: 1.7; }
-  section#body #sidebar li {
-    margin: 0px 0px 0px 0px; }
   section#body p, section#body ul, section#body ol {
     width: 60%;
     min-width: 420px; }
@@ -142,10 +142,10 @@ section#body {
     margin-bottom: 0px;
     padding-bottom: 5px; }
   section#body #tower-intro h2 {
-    color: #7e8c8d;
+    color: #919e9f;
     margin-top: 0px;
     margin-bottom: 0px;
-    font-weight: normal;
+    font-weight: 300;
     line-height: 1.3; }
   section#body h3 {
     font-size: 20px; }
@@ -243,12 +243,16 @@ section#body {
 
 code {
   font-family: "Menlo", monospace;
-  color: inherit; }
+  color: inherit;
+  margin-left: 5px;
+  margin-right: 5px; }
 
 pre code {
   font-size: 16px;
   line-height: normal;
-  display: block; }
+  display: block;
+  margin-left: 0px;
+  margin-right: 0px; }
 
 pre {
   border: none;
@@ -256,7 +260,9 @@ pre {
   display: block;
   background: none;
   border: 1px solid #eeeeee;
-  padding: 20px; }
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 15px; }
 
 pre code {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
@@ -381,6 +387,7 @@ body {
   background-color: white;
   color: #c5cacb;
   font-family: "Lato", Helvetica, arial, freesans, clean, sans-serif;
+  font-weight: 400;
   min-width: 320px;
   margin-bottom: 30px; }
   body hr {

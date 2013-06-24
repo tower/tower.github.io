@@ -3,12 +3,16 @@
 code {
   font-family: "Menlo", monospace;
   color: inherit;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 pre code {
   font-size: 16px;
   line-height: normal;
   display: block;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 pre {
@@ -18,6 +22,8 @@ pre {
   background: none;
   border: 1px solid rgb(238, 238, 238);
   padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 pre code {
