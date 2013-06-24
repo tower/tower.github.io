@@ -1,10 +1,10 @@
 {
-  "name": "towerjs.org",
+  "name": "tower-website",
   "private": true,
   "version": "0.2.0",
   "description": "",
-  "homepage": "http://viatropos.github.com/towerjs.org",
-  "main": "./server.js",
+  "homepage": "http://towerjs.org",
+  "main": "./app.js",
   "subdomain": "towerjs.org",
   "keywords": [
     "node"
@@ -16,11 +16,11 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/viatropos/towerjs.org/issues"
+    "url": "https://github.com/tower/tower.github.com/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/viatropos/towerjs.org.git"
+    "url": "https://github.com/tower/tower.github.com.git"
   },
   "engines": {
     "node": ">= 0.8.0",
@@ -34,18 +34,17 @@
     "marked": "~0.2.9",
     "jsdom": "~0.6.5",
     "domify": "~1.0.0",
-    "tower-router": "*",
-    "tower-route": "git://github.com/tower/route.git",
-    "tower-content": "git://github.com/tower/content.git",
-    "tower-template": "git://github.com/tower/template.git",
-    "tower-directive": "git://github.com/tower/directive.git",
-    "tower-text": "*",
-    "tower-list-directive": "*",
+    "tower-router": "~0.1.0",
+    "tower-route": "~0.1.0",
+    "tower-content": "~0.1.0",
+    "tower-template": "~0.1.0",
+    "tower-directive": "~0.1.0",
+    "tower-text": "~0.1.0",
+    "tower-list-directive": "~0.1.0",
     "tower-markdown-directive": "*",
-    "tower-interpolation-directive": "*",
-    "tower-doc-cookbook": "git://github.com/btbinhtran/doc-cookbook.git",
-    "tower-guides": "git://github.com/tower/guides.git",
-    "tower-strcase": "0.1.0pre",
+    "tower-interpolation-directive": "0.0.2",
+    "tower-guides": "*",
+    "tower-strcase": "~0.1.0",
     "html-minifier": "~0.5.2",
     "superagent": "~0.14.9"
   }

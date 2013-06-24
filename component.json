@@ -1,5 +1,5 @@
 {
-  "name": "tower-docs",
+  "name": "tower-website",
   "version": "1.0.0",
   "development": {
     "component/jquery": "*"
