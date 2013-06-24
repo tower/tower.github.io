@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "development": {
     "component/jquery": "*"
+  },
+  "dependencies": {
+    "tower/tower": "0.5.0"
   }
 }
-
