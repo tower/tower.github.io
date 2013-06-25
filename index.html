@@ -114,7 +114,34 @@ content(<span class="string">'menu'</span>)
     <span class="keyword">this</span>.selected = <span class="keyword">this</span>.items[index];
   });
 
-content(<span class="string">'menu'</span>).init({ items: [ <span class="string">'a'</span>, <span class="string">'b'</span> ] }).select(<span class="number">1</span>);</code></pre><h2>Expression</h2><pre><code class="lang-js"><span class="keyword">var</span> expression = require(<span class="string">'tower-expression'</span>);</code></pre><h2>Route</h2><p>Tiny route component for client and server.</p><pre><code class="lang-js"><span class="keyword">var</span> route = require(<span class="string">'tower-route'</span>);
+content(<span class="string">'menu'</span>).init({ items: [ <span class="string">'a'</span>, <span class="string">'b'</span> ] }).select(<span class="number">1</span>);</code></pre><h2>Expression</h2><p>API for creating custom parsers (based on parsing expression grammars, <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">PEGs</a>).</p><p>This is a basic math example inspired from <a href="http://pegjs.majda.cz/online">pegjs</a>.</p><pre><code class="lang-js"><span class="keyword">var</span> expression = require(<span class="string">'tower-expression'</span>);
+
+expression(<span class="string">'additive'</span>)
+  .match(<span class="string">':multiplicative'</span>, <span class="string">' + '</span>, <span class="string">':additive'</span>, <span class="keyword">function</span>(left, op, right){
+    <span class="keyword">return</span> left + right;
+  })
+  .match(<span class="string">':multiplicative'</span>);
+
+expression(<span class="string">'multiplicative'</span>)
+  .match(<span class="string">':primary'</span>, <span class="string">' * '</span>, <span class="string">':multiplicative'</span>, <span class="keyword">function</span>(left, op, right){
+    <span class="keyword">return</span> left * right;
+  })
+  .match(<span class="string">':primary'</span>);
+
+expression(<span class="string">'primary'</span>)
+  .match(<span class="string">':integer'</span>)
+  .match(<span class="string">'('</span>, <span class="string">':additive'</span>, <span class="string">')'</span>, <span class="keyword">function</span>(l, additive, r){
+    <span class="keyword">return</span> additive;
+  });
+
+expression(<span class="string">'integer'</span>)
+  .match(<span class="regexp">/[0-9]+/</span>, <span class="keyword">function</span>(digits){
+    <span class="keyword">return</span> parseInt(digits, <span class="number">10</span>);
+  });
+
+<span class="keyword">var</span> integer = expression(<span class="string">'additive'</span>).parse(<span class="string">'(7 + 8) * 2'</span>);
+console.log(integer); <span class="comment">// 15</span></code></pre><p>One place expressions are used is in directives, for parsing statments, such as:</p><pre><code class="lang-html"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">data-each</span>=<span class="value">"user in users"</span>&gt;</span>{{user.username}}<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">data-text</span>=<span class="value">"loggedIn ? 'Profile' : 'Log in"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre><p>There are many applications for expressions, such as custom search input expressions (like google/twitter have), custom macros, building fast client-side syntax highlighters, etc.</p><h2>Route</h2><p>Tiny route component for client and server.</p><pre><code class="lang-js"><span class="keyword">var</span> route = require(<span class="string">'tower-route'</span>);
 
 route(<span class="string">'/welcome'</span>, <span class="keyword">function</span>(context, next){
   context.render({ title: <span class="string">'Hello World'</span> });
