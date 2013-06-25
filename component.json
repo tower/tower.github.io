@@ -1,10 +1,12 @@
 {
   "name": "tower-website",
   "version": "1.0.0",
-  "development": {
+  "dependencies": {
+    "tower/tower": "0.5.0",
     "component/jquery": "*"
   },
-  "dependencies": {
-    "tower/tower": "0.5.0"
-  }
+  "scripts": [
+    "public/js/index.js"
+  ],
+  "main": "public/js/index.js"
 }
