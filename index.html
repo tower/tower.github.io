@@ -1,6 +1,6 @@
 <head><title>Tower.js - Small components for building hardcore apps.</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400"><link rel="stylesheet" href="public/css/bootstrap.min.css"><link rel="stylesheet" href="public/css/bootstrap-responsive.min.css"><link rel="stylesheet" href="public/css/index.css"></head><body data-scope="body"><div id="wrapper"><header class="container-fluid"><div class="row-fluid"><ul class="span12"><li class="logo"><a href="./"><img src="public/img/logo.png" alt="Tower"></a></li><li class="pull-right"><ul><li><a href="guide" title="Guide">Guide</a></li><li><a href="https://github.com/tower/tower" title="GitHub Repos">GitHub</a></li><!--<li>
                   <a href="/api" title="API Docs">API</a>
-                </li>--></ul></li></ul></div></header><section id="body" data-content="" class="container-fluid"><div><div class="row-fluid"><div id="tower-intro" class="span7"><div id="tower-introduction"><h1>Tower</h1><h2>Small components for building apps, manipulating data, and managing a distributed infrastructure.</h2></div></div><div id="tower-hero" class="span5"><img src="public/img/hero.png"></div></div><hr><div data-markdown="overview"><h2>Resource</h2><p>Data models that can be stored in any database or remote service using adapters.</p><pre><code class="lang-js"><span class="keyword">var</span> resource = require(<span class="string">'tower-resource'</span>);</code></pre><p>attributes:</p><pre><code class="lang-js">resource(<span class="string">'post'</span>)
+                </li>--></ul></li></ul></div></header><section id="body" data-content="" class="container-fluid"><div><div class="row-fluid"><div id="tower-intro" class="span7"><div id="tower-introduction"><h1>Tower</h1><h2>Small components for building apps, manipulating data, and automating a distributed infrastructure.</h2></div></div><div id="tower-hero" class="span5"><img src="public/img/hero.png"></div></div><hr><div data-markdown="overview"><h2>Resource</h2><p>Data models that can be stored in any database or remote service using adapters.</p><pre><code class="lang-js"><span class="keyword">var</span> resource = require(<span class="string">'tower-resource'</span>);</code></pre><p>attributes:</p><pre><code class="lang-js">resource(<span class="string">'post'</span>)
   .attr(<span class="string">'title'</span>) <span class="comment">// defaults to 'string'</span>
   .attr(<span class="string">'body'</span>, <span class="string">'text'</span>)
   .attr(<span class="string">'published'</span>, <span class="string">'boolean'</span>, <span class="literal">false</span>);</code></pre><p>validations:</p><pre><code class="lang-js">resource(<span class="string">'user'</span>)
@@ -114,7 +114,34 @@ content(<span class="string">'menu'</span>)
     <span class="keyword">this</span>.selected = <span class="keyword">this</span>.items[index];
   });
 
-content(<span class="string">'menu'</span>).init({ items: [ <span class="string">'a'</span>, <span class="string">'b'</span> ] }).select(<span class="number">1</span>);</code></pre><h2>Expression</h2><pre><code class="lang-js"><span class="keyword">var</span> expression = require(<span class="string">'tower-expression'</span>);</code></pre><h2>Route</h2><p>Tiny route component for client and server.</p><pre><code class="lang-js"><span class="keyword">var</span> route = require(<span class="string">'tower-route'</span>);
+content(<span class="string">'menu'</span>).init({ items: [ <span class="string">'a'</span>, <span class="string">'b'</span> ] }).select(<span class="number">1</span>);</code></pre><h2>Expression</h2><p>API for creating custom parsers (based on parsing expression grammars, <a href="http://en.wikipedia.org/wiki/Parsing_expression_grammar">PEGs</a>).</p><p>This is a basic math example inspired from <a href="http://pegjs.majda.cz/online">pegjs</a>.</p><pre><code class="lang-js"><span class="keyword">var</span> expression = require(<span class="string">'tower-expression'</span>);
+
+expression(<span class="string">'additive'</span>)
+  .match(<span class="string">':multiplicative'</span>, <span class="string">' + '</span>, <span class="string">':additive'</span>, <span class="keyword">function</span>(left, op, right){
+    <span class="keyword">return</span> left + right;
+  })
+  .match(<span class="string">':multiplicative'</span>);
+
+expression(<span class="string">'multiplicative'</span>)
+  .match(<span class="string">':primary'</span>, <span class="string">' * '</span>, <span class="string">':multiplicative'</span>, <span class="keyword">function</span>(left, op, right){
+    <span class="keyword">return</span> left * right;
+  })
+  .match(<span class="string">':primary'</span>);
+
+expression(<span class="string">'primary'</span>)
+  .match(<span class="string">':integer'</span>)
+  .match(<span class="string">'('</span>, <span class="string">':additive'</span>, <span class="string">')'</span>, <span class="keyword">function</span>(l, additive, r){
+    <span class="keyword">return</span> additive;
+  });
+
+expression(<span class="string">'integer'</span>)
+  .match(<span class="regexp">/[0-9]+/</span>, <span class="keyword">function</span>(digits){
+    <span class="keyword">return</span> parseInt(digits, <span class="number">10</span>);
+  });
+
+<span class="keyword">var</span> integer = expression(<span class="string">'additive'</span>).parse(<span class="string">'(7 + 8) * 2'</span>);
+console.log(integer); <span class="comment">// 15</span></code></pre><p>One place expressions are used is in directives, for parsing statments, such as:</p><pre><code class="lang-html"><span class="tag">&lt;<span class="title">li</span> <span class="attribute">data-each</span>=<span class="value">"user in users"</span>&gt;</span>{{user.username}}<span class="tag">&lt;/<span class="title">li</span>&gt;</span>
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">data-text</span>=<span class="value">"loggedIn ? 'Profile' : 'Log in"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre><p>There are many applications for expressions, such as custom search input expressions (like google/twitter have), custom macros, building fast client-side syntax highlighters, etc.</p><h2>Route</h2><p>Tiny route component for client and server.</p><pre><code class="lang-js"><span class="keyword">var</span> route = require(<span class="string">'tower-route'</span>);
 
 route(<span class="string">'/welcome'</span>, <span class="keyword">function</span>(context, next){
   context.render({ title: <span class="string">'Hello World'</span> });
