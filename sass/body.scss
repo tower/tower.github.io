@@ -98,29 +98,43 @@ section#body {
   }
   .sidebar-nav-fixed {
     position: fixed;
-    height: 60%;
-    overflow-y: auto;
+    max-height: 700px;
+    overflow-y: scroll;
+
+    ul {
+      list-style: none;
+    }
+
+    li a {
+      color: #cbd0d3;
+      text-decoration: none;
+
+      &:hover, &:focus {
+        color: #2998d6;
+      }
+
+      &.active {
+        color: #2998d6;
+      }
+    }
+
   }
 
   .nav-list {
-    float: right;
-  }
-
-  .sidebar-nav-fixed.span2 {
     
   }
 
   .module-items {
-    padding-left: 8%;
+    
   }
 
   ul.properties,
   ul.methods {
-    padding-left: 8%;  
+    
   }
 
   .class-indent{
-    padding-left: 11%;
+    
   }
 
   div.module-content {
@@ -139,7 +153,7 @@ section#body {
   }
 
   .module {
-    margin-bottom: 3em;
+    
   }
 
   .nav.nav-list {
