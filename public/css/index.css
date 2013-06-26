@@ -40,6 +40,9 @@ header {
         font-size: 15px; }
         header ul li a:hover {
           color: #666; }
+        header ul li a.active {
+          font-weight: bold;
+          color: #666; }
       @media only screen and (max-width: 507px) {
         header ul li {
           display: block;

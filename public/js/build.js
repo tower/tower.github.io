@@ -17046,6 +17046,10 @@ module.exports = function() {
       }
     }
 
+    var urlParts = document.URL.split('/'),
+        page = urlParts[3].split('#')[0];
+
+    $('li.pull-right a[href="' + page + '"]').addClass('active');
     $('.module ul.module-items')
       .slice(1)
       .hide();
