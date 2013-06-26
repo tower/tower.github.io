@@ -116,7 +116,7 @@ doc('template');
 doc('text');
 doc('type');
 doc('validator');
-//doc.compile();
+// doc.compile();
 
 /**
  * Content.
