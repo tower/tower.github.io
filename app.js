@@ -152,8 +152,10 @@ app.listen(process.env.PORT || 3000, function(){
   setTimeout(function(){
     fetch('/', 'index.html', function(){
       fetch('/guide', 'guide.html', function(){
-        exec('cleancss -o public/css/index.css public/css/index.css', function(){
-          console.log('cached.');
+        fetch('/api', 'api.html', function(){
+          exec('cleancss -o public/css/index.css public/css/index.css', function(){
+            console.log('cached.');
+          });
         });
       });
     });
