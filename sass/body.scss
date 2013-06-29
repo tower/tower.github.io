@@ -47,9 +47,11 @@ section#body {
     line-height: $body-line-height;
   }
 
-  p, ul, ol {
-    width: 60%;
-    min-width: 420px;
+  .api-page2 {
+    p, ul, ol {
+      width: 60%;
+      min-width: 420px;
+    }
   }
 
   blockquote p {
